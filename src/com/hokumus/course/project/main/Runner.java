@@ -8,6 +8,7 @@ public class Runner {
 		//halilerkanözcan
 		//Omer Faruk
 		//kübra
+		// Kalkýn Ey Ehl_i Vatan Dediler, Kalktýk; Herkes Oturdu Biz Ayakta Kaldýk./B.KUS
 	}
 
 }
