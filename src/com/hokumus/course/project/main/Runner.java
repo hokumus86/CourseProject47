@@ -9,6 +9,7 @@ public class Runner {
 		//Omer Faruk
 		//kübra
 		// Kalkýn Ey Ehl_i Vatan Dediler, Kalktýk; Herkes Oturdu Biz Ayakta Kaldýk./B.KUS
+		//samet was here
 	}
 
 }
