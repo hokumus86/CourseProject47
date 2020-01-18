@@ -14,7 +14,7 @@ public class Runner {
 		// Kalkýn Ey Ehl_i Vatan Dediler, Kalktýk; Herkes Oturdu Biz Ayakta Kaldýk./B.KUS
 		//samet was here
 		//Bi commit
-		
+		//yasin
 		DbServicessBase<CourseUsers> dao = new DbServicessBase<CourseUsers>();
 		dao.getAllRows(new CourseUsers());
 	}
