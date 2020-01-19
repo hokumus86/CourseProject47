@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hokumus.course.project.models.base.BaseEntity;
+
 @Entity
 @Table(name = "course_users")
-public class CourseUsers {
+public class CourseUsers extends BaseEntity {
 
 	private Long id;
 	private String userName;
