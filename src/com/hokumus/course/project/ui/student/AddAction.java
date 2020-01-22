@@ -48,10 +48,9 @@ public class AddAction extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				txtKullaniciAdi.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-				txtAdi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-				txtEmail.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-				txtSoyadi.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
-				id = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+				txtAdi.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+				txtEmail.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+				txtSoyadi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			}
 		});
 		scrollPane.setViewportView(table);
