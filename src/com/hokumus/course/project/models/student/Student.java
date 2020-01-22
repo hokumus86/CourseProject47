@@ -12,7 +12,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.hokumus.course.project.models.GenderEnums;
+import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.models.base.BaseEntity;
+
 
 @Entity
 @Table(name = "student")
@@ -26,8 +28,11 @@ public class Student extends BaseEntity{
     private String mail;
     private Date kayitTarihi;
     private GenderEnums cinsiyet;
+    private UserRoleTypes rol;
 
-    @Id
+   
+
+	@Id
     @SequenceGenerator(name = "seq_student", allocationSize = 1, sequenceName = "seq_student")
     @GeneratedValue(generator = "seq_student", strategy = GenerationType.SEQUENCE)
     public Long getId() {
@@ -101,6 +106,16 @@ public class Student extends BaseEntity{
     public void setCinsiyet(GenderEnums cinsiyet) {
         this.cinsiyet = cinsiyet;
     }
+    
+    @Enumerated
+	@Column(name="rol_id")
+    public UserRoleTypes getRol() {
+		return rol;
+	}
+
+	public void setRol(UserRoleTypes rol) {
+		this.rol = rol;
+	}
     
     
 
