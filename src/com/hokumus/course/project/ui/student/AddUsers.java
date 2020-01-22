@@ -14,12 +14,12 @@ import com.toedter.calendar.JDateChooser;
 
 public class AddUsers extends JFrame{
 	
-	private JTextField txtKulAdi;
-	private JTextField txtEmail;
 	private JTextField txtAdi;
-	private JTextField txtSoyadi;
-	private JPasswordField txtSifre;
-	private JDateChooser dateUyelikTarihi;
+	private JTextField txtTelNo;
+	private JTextField txtAdress;
+	private JTextField txtMail;
+	private JPasswordField txtSoyadi;
+	private JDateChooser dateKayitTarihi;
 	
 	public AddUsers() {
 		initialize();
@@ -35,10 +35,10 @@ public class AddUsers extends JFrame{
 		lblAdi.setBounds(23, 24, 67, 14);
 		getContentPane().add(lblAdi);
 		
-		txtKulAdi = new JTextField();
-		txtKulAdi.setBounds(100, 21, 158, 20);
-		getContentPane().add(txtKulAdi);
-		txtKulAdi.setColumns(10);
+		txtAdi = new JTextField();
+		txtAdi.setBounds(100, 21, 158, 20);
+		getContentPane().add(txtAdi);
+		txtAdi.setColumns(10);
 		
 		JLabel lblSoyadi = new JLabel("Soyad");
 		lblSoyadi.setBounds(282, 27, 67, 14);
@@ -48,10 +48,10 @@ public class AddUsers extends JFrame{
 		lblTel.setBounds(23, 75, 67, 14);
 		getContentPane().add(lblTel);
 		
-		txtEmail = new JTextField();
-		txtEmail.setColumns(10);
-		txtEmail.setBounds(100, 72, 158, 20);
-		getContentPane().add(txtEmail);
+		txtTelNo = new JTextField();
+		txtTelNo.setColumns(10);
+		txtTelNo.setBounds(100, 72, 158, 20);
+		getContentPane().add(txtTelNo);
 		
 		JLabel lblKytTrihi = new JLabel("Kay\u0131t Tarihi");
 		lblKytTrihi.setBounds(282, 78, 67, 14);
@@ -61,10 +61,10 @@ public class AddUsers extends JFrame{
 		lblAdress.setBounds(23, 128, 67, 14);
 		getContentPane().add(lblAdress);
 		
-		txtAdi = new JTextField();
-		txtAdi.setColumns(10);
-		txtAdi.setBounds(100, 125, 158, 82);
-		getContentPane().add(txtAdi);
+		txtAdress = new JTextField();
+		txtAdress.setColumns(10);
+		txtAdress.setBounds(100, 125, 158, 82);
+		getContentPane().add(txtAdress);
 		
 		JLabel lblMail = new JLabel("Email");
 		lblMail.setBounds(282, 128, 67, 14);
@@ -91,19 +91,19 @@ public class AddUsers extends JFrame{
 			}
 		});
 		
-		txtSoyadi = new JTextField();
-		txtSoyadi.setColumns(10);
-		txtSoyadi.setBounds(359, 125, 130, 20);
+		txtMail = new JTextField();
+		txtMail.setColumns(10);
+		txtMail.setBounds(359, 125, 130, 20);
+		getContentPane().add(txtMail);
+		
+		
+		txtSoyadi = new JPasswordField();
+		txtSoyadi.setBounds(358, 21, 131, 20);
 		getContentPane().add(txtSoyadi);
 		
-		
-		txtSifre = new JPasswordField();
-		txtSifre.setBounds(358, 21, 131, 20);
-		getContentPane().add(txtSifre);
-		
-		dateUyelikTarihi = new JDateChooser();
-		dateUyelikTarihi.setBounds(359, 75, 130, 20);
-		getContentPane().add(dateUyelikTarihi);
+		dateKayitTarihi = new JDateChooser();
+		dateKayitTarihi.setBounds(359, 75, 130, 20);
+		getContentPane().add(dateKayitTarihi);
 		setTitle("KAYIT");
 		
 	}
