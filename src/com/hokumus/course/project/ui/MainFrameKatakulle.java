@@ -3,9 +3,12 @@ package com.hokumus.course.project.ui;
 import javax.swing.JFrame;
 
 import com.hokumus.course.project.models.UserRoleTypes;
+import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainFrameKatakulle extends JFrame {
 	private JButton btnUserMngmt;
@@ -113,6 +116,11 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton getBtnMuhasebeModl() {
 		if (btnMuhasebeModl == null) {
 			btnMuhasebeModl = new JButton("Muhasebe Mod\u00FCl\u00FC");
+			btnMuhasebeModl.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new MainScreenAccounting().setVisible(true);
+				}
+			});
 			btnMuhasebeModl.setBounds(325, 175, 239, 128);
 		}
 		return btnMuhasebeModl;
