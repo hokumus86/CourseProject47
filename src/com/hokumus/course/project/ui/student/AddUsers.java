@@ -9,14 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
-
 import com.hokumus.course.project.models.student.Student;
-
 import com.hokumus.course.project.utils.dao.StudentDao;
-
 import com.toedter.calendar.JDateChooser;
 
-public class AddUsers extends JFrame {  //???????
+public class AddUsers extends JFrame { // ???????
 
 	private JTextField txtAdi;
 	private JTextField txtTelNo;
@@ -26,7 +23,9 @@ public class AddUsers extends JFrame {  //???????
 	private JDateChooser dateKayitTarihi;
 
 	public AddUsers() {
+		
 		initialize();
+		
 	}
 
 	private void initialize() {
@@ -100,14 +99,13 @@ public class AddUsers extends JFrame {  //???????
 				Student student = new Student();
 				student.setAd(txtAdi.getText());
 				student.setSoyad(txtSoyadi.getText()); // ?????????
-				student.setAdres(txtAdress.getText()); 
+				student.setAdres(txtAdress.getText());
 				student.setMail(txtMail.getText());
 				if (studentDao.save(student)) {
 					JOptionPane.showMessageDialog(AddUsers.this, "Kayýt Baþarýlý..!");
 				} else
-					JOptionPane.showMessageDialog(AddUsers.this, "Baþarýsýz..!");
+					JOptionPane.showMessageDialog(AddUsers.this, "Kayýt Baþarýsýz..!");
 			}
-
 		});
 
 		txtMail = new JTextField();

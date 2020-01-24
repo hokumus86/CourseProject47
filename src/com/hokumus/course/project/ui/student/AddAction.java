@@ -120,7 +120,7 @@ public class AddAction extends JFrame { //??????
 		});
 		getContentPane().add(btnGuncelle);
 		btnGuncelle.setFont(new Font("Arial", Font.BOLD, 14));
-		setTitle("Dersane Uygulamasý ");
+		setTitle("Dershane Uygulamasý ");
 
 		JMenuBar menuBarKullaniciIslem = new JMenuBar();
 		setJMenuBar(menuBarKullaniciIslem);
