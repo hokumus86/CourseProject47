@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
+import com.hokumus.course.project.ui.accounting2.Main;
 import com.hokumus.course.project.ui.student.AddUsers;
 import com.hokumus.course.project.models.managementscreen.ManagementScreen;
 import com.hokumus.course.project.utils.CourseUtils;
@@ -20,7 +21,7 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton btnMuhasebeModl;
 	private JButton btnInsanKaynaklarModl;
 	private JButton button_5;
-	private JButton button_6;
+	private JButton btnMuhasebeMod2;
 	private JButton button_7;
 
 	public MainFrameKatakulle() {
@@ -39,7 +40,7 @@ public class MainFrameKatakulle extends JFrame {
 		getContentPane().add(getBtnMuhasebeModl());
 		getContentPane().add(getBtnInsanKaynaklarModl());
 		getContentPane().add(getButton_5());
-		getContentPane().add(getButton_6());
+		getContentPane().add(getBtnMuhasebeMod2());
 		getContentPane().add(getButton_7());
 		setSize(857, 610);
 		switch (CourseUtils.loginedUser.getRole()) {
@@ -154,12 +155,17 @@ public class MainFrameKatakulle extends JFrame {
 		return button_5;
 	}
 
-	private JButton getButton_6() {
-		if (button_6 == null) {
-			button_6 = new JButton("New button");
-			button_6.setBounds(325, 338, 239, 128);
+	private JButton getBtnMuhasebeMod2() {
+		if (btnMuhasebeMod2 == null) {
+			btnMuhasebeMod2 = new JButton("Muhasebe Mod\u00FCl\u00FC-2");
+			btnMuhasebeMod2.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new Main().setVisible(true);
+				}
+			});
+			btnMuhasebeMod2.setBounds(325, 338, 239, 128);
 		}
-		return button_6;
+		return btnMuhasebeMod2;
 	}
 
 	private JButton getButton_7() {
