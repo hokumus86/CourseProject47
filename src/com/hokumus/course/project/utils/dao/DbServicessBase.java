@@ -109,4 +109,17 @@ public class DbServicessBase<T> implements IDbServicess<T>{
 		}
 	}
 
+
+	@Override
+	public Boolean delete(T temp) {
+		try {
+			ss.delete(temp);
+			closeSessionAndCommit();
+			return true;
+		} catch (Exception e) {
+			closeSessionAndRollback();
+			return false;
+		}
+	}
+
 }

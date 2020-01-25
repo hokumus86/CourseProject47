@@ -8,5 +8,6 @@ public interface IDbServicess<T> {
 	public Boolean update(T temp);
 	public List<T> getAllRows(T temp);
 	public List<T> search(T temp);
+	public Boolean delete(T temp);
 
 }
