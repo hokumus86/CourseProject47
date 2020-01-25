@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
 public class ManagementScreen extends JFrame{
 	private JMenuBar menuBar;
 	private JMenu mnKursIlemleri;

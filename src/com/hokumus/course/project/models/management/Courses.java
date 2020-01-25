@@ -28,7 +28,7 @@ public class Courses extends BaseEntity{
     public Long getId() {
         return id;
     }
-
+ 
     public void setId(Long id) {
         this.id = id;
     }
@@ -41,7 +41,6 @@ public class Courses extends BaseEntity{
     public void setAdi(String adi) {
         this.adi = adi;
     }
-
     @Column(name = "price", precision = 14, scale = 2)
     public BigDecimal getFiyat() {
         return fiyat;

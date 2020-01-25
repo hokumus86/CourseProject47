@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+
 public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JLabel lblKursAd;
 	private JComboBox cmbKursAdi;

@@ -16,6 +16,8 @@
 		<property name="hibernate.show_sql">true</property> <!-- Show SQL in console -->
 		<mapping class="com.hokumus.course.project.models.CourseUsers"/>
 		<mapping class="com.hokumus.course.project.models.student.Student"/>
+		<mapping class="com.hokumus.course.project.models.management.Courses"/>
+		<mapping class="com.hokumus.course.project.models.management.LessonClass"/>
 		
 	</session-factory>
 </hibernate-configuration>

@@ -5,26 +5,43 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.text.TableView.TableRow;
+
+import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+
 import java.awt.Font;
+import java.util.List;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 
 public class KursGoruntuleGuncelleSil extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btnGuncelle;
-	private JTable table;
+	private JTable tblKurslar;
 	private JLabel lblKursAd;
 	private JTextField txtKursAdi;
-	private JLabel lblBalamaTarihi;
-	private JTextField txtBaslamaTarihi;
 	private JTextField txtFiyat;
 	private JLabel lblFiyat;
 	private JLabel lblDurum;
-	private JComboBox comboBox;
+	private JComboBox cmbDurum;
 	private JTextField txtArama;
 	private JTextField txtMesaj;
 	private JPanel panel;
@@ -44,49 +61,126 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getBtnGuncelle());
 		getContentPane().add(getLblKursAd());
 		getContentPane().add(getTxtKursAdi());
-		getContentPane().add(getLblBalamaTarihi());
-		getContentPane().add(getTxtBaslamaTarihi());
 		getContentPane().add(getTxtFiyat());
 		getContentPane().add(getLblFiyat());
 		getContentPane().add(getLblDurum());
-		getContentPane().add(getComboBox());
+		getContentPane().add(getCmbDurum());
 		getContentPane().add(getPanel());
 		getContentPane().add(getPanel_1());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getBtnIptal());
+		kursTablosuGoster();
 	}
+	DefaultTableModel model=new DefaultTableModel();
 
+	public void kursTablosuGoster() {
+		
+		
+		DbServicessBase<Courses> dao=new DbServicessBase<Courses>(); 
+		Courses temp=new Courses();
+		List<Courses> kurs_listesi=dao.getAllRows(temp);
+		
+		
+		String [] columnNames= {"ID","AD","FÝYAT","DURUM"};
+		String [][] data=new String [kurs_listesi.size()][columnNames.length];
+		
+		
+		for (int i = 0; i < kurs_listesi.size(); i++) {
+			
+			data[i][0]=kurs_listesi.get(i).getId().toString();
+			data[i][1]=kurs_listesi.get(i).getAdi();
+			data[i][2]=kurs_listesi.get(i).getFiyat().toString();
+			data[i][3]=kurs_listesi.get(i).getDurum();
+			
+			
+		}
+		
+		model=new DefaultTableModel(data,columnNames);
+		tblKurslar.setModel(model);
+		
+		
+		
+	}
 	
+	public void arama(String ara) {
+		
+		TableRowSorter<DefaultTableModel> tr=new TableRowSorter<DefaultTableModel>(model);
+		tblKurslar.setRowSorter(tr);
+		
+		tr.setRowFilter(RowFilter.regexFilter(ara));
+		
+		
+		
+		
+		
+	}
 	
 	
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
 			scrollPane.setBounds(10, 197, 682, 337);
-			scrollPane.setViewportView(getTable());
+			scrollPane.setViewportView(getTblKurslar());
 		}
 		return scrollPane;
 	}
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton(" G\u00FCncelle");
+			btnGuncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+					Courses yenikurs=new Courses();
+					
+					yenikurs.setAdi(txtKursAdi.getText());
+					yenikurs.setFiyat(new BigDecimal(txtFiyat.getText()));
+					yenikurs.setDurum(cmbDurum.getSelectedItem().toString());
+					
+					if (dao.update(yenikurs)) {
+						txtMesaj.setText("Kurs Baþarý ile Güncellendi");
+						kursTablosuGoster();
+					}
+					else {
+						txtMesaj.setText("Kurs  Güncellenemedi");
+					}
+					
+					
+					
+				}
+			});
 			btnGuncelle.setBounds(443, 20, 103, 29);
 		}
 		return btnGuncelle;
 	}
-	private JTable getTable() {
-		if (table == null) {
-			table = new JTable();
-			table.setModel(new DefaultTableModel(
+	private JTable getTblKurslar() {
+		if (tblKurslar == null) {
+			tblKurslar = new JTable();
+			tblKurslar.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					int row=tblKurslar.getSelectedRow();
+					
+					
+					txtKursAdi.setText(tblKurslar.getValueAt(row, 1).toString());
+					txtFiyat.setText(tblKurslar.getValueAt(row, 2).toString());
+					cmbDurum.setSelectedItem(tblKurslar.getValueAt(row, 3));
+					
+					
+					
+					
+				}
+			});
+			tblKurslar.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
 				new String[] {
-					"ID", "ADI", "BA\u015ELAMA TAR\u0130H\u0130", "F\u0130YAT", "DURUM"
+					
 				}
 			));
 		}
-		return table;
+		return tblKurslar;
 	}
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
@@ -103,22 +197,6 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 			txtKursAdi.setColumns(10);
 		}
 		return txtKursAdi;
-	}
-	private JLabel getLblBalamaTarihi() {
-		if (lblBalamaTarihi == null) {
-			lblBalamaTarihi = new JLabel("Ba\u015Flama Tarihi:");
-			lblBalamaTarihi.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblBalamaTarihi.setBounds(10, 55, 95, 14);
-		}
-		return lblBalamaTarihi;
-	}
-	private JTextField getTxtBaslamaTarihi() {
-		if (txtBaslamaTarihi == null) {
-			txtBaslamaTarihi = new JTextField();
-			txtBaslamaTarihi.setColumns(10);
-			txtBaslamaTarihi.setBounds(103, 55, 86, 20);
-		}
-		return txtBaslamaTarihi;
 	}
 	private JTextField getTxtFiyat() {
 		if (txtFiyat == null) {
@@ -140,22 +218,30 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		if (lblDurum == null) {
 			lblDurum = new JLabel("Durum:");
 			lblDurum.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblDurum.setBounds(254, 55, 80, 14);
+			lblDurum.setBounds(10, 55, 80, 14);
 		}
 		return lblDurum;
 	}
-	private JComboBox getComboBox() {
-		if (comboBox == null) {
-			comboBox = new JComboBox();
-			comboBox.setToolTipText("\r\n");
-			comboBox.setModel(new DefaultComboBoxModel(new String[] {"AKT\u0130F", "PAS\u0130F"}));
-			comboBox.setBounds(327, 52, 86, 20);
+	private JComboBox getCmbDurum() {
+		if (cmbDurum == null) {
+			cmbDurum = new JComboBox();
+			cmbDurum.setToolTipText("\r\n");
+			cmbDurum.setModel(new DefaultComboBoxModel(new String[] {"AKT\u0130F", "PAS\u0130F"}));
+			cmbDurum.setBounds(103, 52, 86, 20);
 		}
-		return comboBox;
+		return cmbDurum;
 	}
 	private JTextField getTxtArama() {
 		if (txtArama == null) {
 			txtArama = new JTextField();
+			txtArama.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent arg0) {
+					
+					String ara=txtArama.getText().toString();
+					arama(ara);
+				}
+			});
 			txtArama.setBounds(10, 19, 714, 26);
 			txtArama.setToolTipText("Arama");
 			txtArama.setColumns(10);
@@ -165,6 +251,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JTextField getTxtMesaj() {
 		if (txtMesaj == null) {
 			txtMesaj = new JTextField();
+			txtMesaj.setForeground(Color.RED);
 			txtMesaj.setBounds(10, 14, 300, 26);
 			txtMesaj.setColumns(10);
 		}
@@ -200,6 +287,13 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnTemizle() {
 		if (btnTemizle == null) {
 			btnTemizle = new JButton("Temizle");
+			btnTemizle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					txtKursAdi.setText("");
+					txtFiyat.setText("");
+					cmbDurum.addItem("");
+				}
+			});
 			btnTemizle.setBounds(579, 20, 103, 29);
 		}
 		return btnTemizle;
@@ -207,6 +301,11 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
+			btnIptal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					KursGoruntuleGuncelleSil.this.dispose();
+				}
+			});
 			btnIptal.setBounds(579, 72, 103, 29);
 		}
 		return btnIptal;

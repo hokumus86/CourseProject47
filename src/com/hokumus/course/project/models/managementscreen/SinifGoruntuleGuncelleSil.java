@@ -4,13 +4,23 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.util.List;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JLabel lblAd;
@@ -20,22 +30,22 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JLabel lblKapasite;
 	private JTextField txtKapasite;
 	private JButton btnGuncelle;
-	private JButton btnIptal;
 	private JPanel panel;
 	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JPanel panelArama;
 	private JTextField textField_1;
-	private JTable table;
 	private JButton btnSil;
 	private JButton btnTemizle;
+	private JButton btnIptal;
+	private JTable tblSiniflar;
 	public SinifGoruntuleGuncelleSil() {
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("S\u0131n\u0131f G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
-		setBounds(400, 150, 723, 528);
+		setBounds(400, 150, 787, 528);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblAd());
 		getContentPane().add(getTxtSinifAdi());
@@ -44,13 +54,59 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getLblKapasite());
 		getContentPane().add(getTxtKapasite());
 		getContentPane().add(getBtnGuncelle());
-		getContentPane().add(getBtnIptal());
 		getContentPane().add(getPanel());
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getPanelArama());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getBtnTemizle());
+		getContentPane().add(getBtnIptal());
+		sinifTablosuGöster();
 	}
+	
+	
+	
+	
+	DefaultTableModel model=new DefaultTableModel();
+	
+	public void sinifTablosuGöster() {
+		
+		DbServicessBase<LessonClass> dao=new DbServicessBase<LessonClass>();
+		LessonClass temp=new LessonClass();
+		
+		List<LessonClass> sinif_listesi=dao.getAllRows(temp);
+		
+
+		String [] columnNames= {"ID","ADI","KODU","KAPASÝTE","PAZARTESÝ","SALI","ÇARÞAMBA","PERÞEMBE","CUMA","CUMARTESÝ","PAZAR"};
+		String [][] data=new String[sinif_listesi.size()][columnNames.length];
+		
+		for (int i = 0; i <sinif_listesi.size(); i++) {
+			
+			
+			data[i][0]=sinif_listesi.get(i).getId().toString();
+			data[i][1]=sinif_listesi.get(i).getAdi().toString();
+			data[i][2]=sinif_listesi.get(i).getKod().toString();
+			data[i][3]=String.valueOf(sinif_listesi.get(i).getKapasite());
+			
+
+			
+		}
+
+		model=new DefaultTableModel(data,columnNames);
+		
+		
+	}
+
+	public void arama(String ara) {
+		
+		TableRowSorter<DefaultTableModel> tr=new TableRowSorter<DefaultTableModel>(model);
+		tblSiniflar.setRowSorter(tr);
+		
+		tr.setRowFilter(RowFilter.regexFilter(ara));
+		
+		
+	}
+
+	
 	private JLabel getLblAd() {
 		if (lblAd == null) {
 			lblAd = new JLabel("S\u0131n\u0131f Ad\u0131:");
@@ -99,16 +155,9 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton("G\u00FCncelle");
-			btnGuncelle.setBounds(345, 26, 89, 23);
+			btnGuncelle.setBounds(414, 13, 89, 49);
 		}
 		return btnGuncelle;
-	}
-	private JButton getBtnIptal() {
-		if (btnIptal == null) {
-			btnIptal = new JButton("\u0130ptal");
-			btnIptal.setBounds(468, 64, 89, 23);
-		}
-		return btnIptal;
 	}
 	
 	
@@ -134,8 +183,8 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 204, 687, 274);
-			scrollPane.setViewportView(getTable());
+			scrollPane.setBounds(10, 204, 751, 274);
+			scrollPane.setViewportView(getTblSiniflar());
 		}
 		return scrollPane;
 	}
@@ -157,40 +206,44 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		}
 		return textField_1;
 	}
-	private JTable getTable() {
-		if (table == null) {
-			table = new JTable();
-			table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"ID", "SINIF ADI", "SINIF KODU", "KAPAS\u0130TE", "PAZARTES\u0130", "SALI", "\u00C7AR\u015EAMBA", "PER\u015EEMBE", "CUMA", "C.ERTES\u0130", "PAZAR"
-				}
-			));
-			table.getColumnModel().getColumn(0).setPreferredWidth(38);
-			table.getColumnModel().getColumn(1).setPreferredWidth(65);
-			table.getColumnModel().getColumn(3).setPreferredWidth(62);
-			table.getColumnModel().getColumn(4).setPreferredWidth(65);
-			table.getColumnModel().getColumn(5).setPreferredWidth(47);
-			table.getColumnModel().getColumn(6).setPreferredWidth(66);
-			table.getColumnModel().getColumn(8).setPreferredWidth(48);
-			table.getColumnModel().getColumn(9).setPreferredWidth(63);
-			table.getColumnModel().getColumn(10).setPreferredWidth(44);
-		}
-		return table;
-	}
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
-			btnSil.setBounds(468, 26, 89, 23);
+			btnSil.setBounds(537, 13, 89, 49);
 		}
 		return btnSil;
 	}
 	private JButton getBtnTemizle() {
 		if (btnTemizle == null) {
 			btnTemizle = new JButton("Temizle");
-			btnTemizle.setBounds(345, 64, 89, 23);
+			btnTemizle.setBounds(659, 13, 89, 49);
 		}
 		return btnTemizle;
+	}
+	private JButton getBtnIptal() {
+		if (btnIptal == null) {
+			btnIptal = new JButton("\u0130ptal");
+			btnIptal.setBounds(659, 68, 89, 49);
+		}
+		return btnIptal;
+	}
+	private JTable getTblSiniflar() {
+		if (tblSiniflar == null) {
+			tblSiniflar = new JTable();
+			tblSiniflar.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+					int row=tblSiniflar.getSelectedRow();
+					
+					
+					txtSinifAdi.setText(tblSiniflar.getValueAt(row, 1).toString());
+					txtSinifKodu.setText(tblSiniflar.getValueAt(row, 2).toString());
+					txtKapasite.setText((String.valueOf(tblSiniflar.getValueAt(row, 3))));
+					
+				}
+			});
+		}
+		return tblSiniflar;
 	}
 }
