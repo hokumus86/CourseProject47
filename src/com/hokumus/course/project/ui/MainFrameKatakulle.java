@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
+import com.hokumus.course.project.ui.student.AddUsers;
+import com.hokumus.course.project.models.managementscreen.ManagementScreen;
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
@@ -49,28 +51,27 @@ public class MainFrameKatakulle extends JFrame {
 			btnUserMngmt.setEnabled(false);
 
 			break;
-			
+
 		case TEACHER:
 
 			btnUserMngmt.setEnabled(false);
 			btnInsanKaynaklarModl.setEnabled(false);
 			btnTanmlamaModl.setEnabled(false);
 			btnMuhasebeModl.setEnabled(false);
-			btnYnetimModl.setEnabled(false);
 			break;
-			
+
 		case STUDENT:
 
 			break;
-			
+
 		case HUMAN_RESOURCES:
 
 			break;
-			
+
 		case ACCOUNTING:
 
 			break;
-			
+
 		case MANAGER:
 
 			break;
@@ -92,6 +93,12 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton getBtnTanmlamaModl() {
 		if (btnTanmlamaModl == null) {
 			btnTanmlamaModl = new JButton("Tan\u0131mlama Mod\u00FCl\u00FC");
+			btnTanmlamaModl.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddUsers frame = new AddUsers();
+					frame.setVisible(true);
+				}
+			});
 			btnTanmlamaModl.setBounds(325, 13, 239, 128);
 		}
 		return btnTanmlamaModl;
@@ -100,6 +107,11 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton getBtnYnetimModl() {
 		if (btnYnetimModl == null) {
 			btnYnetimModl = new JButton("Y\u00F6netim Mod\u00FCl\u00FC");
+			btnYnetimModl.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new ManagementScreen().setVisible(true);
+				}
+			});
 			btnYnetimModl.setBounds(580, 13, 239, 128);
 		}
 		return btnYnetimModl;

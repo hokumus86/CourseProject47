@@ -38,7 +38,7 @@ public class LoginFrame extends JFrame{
 				CourseUsers temp = new CourseUsers();
 				temp.setUserName("Test");
 				temp.setPassword("test");
-				temp.setRole(UserRoleTypes.TEACHER);
+				temp.setRole(UserRoleTypes.ADMIN);
 				CourseUtils.loginedUser = temp;
 				new MainFrameKatakulle().setVisible(true);
 				

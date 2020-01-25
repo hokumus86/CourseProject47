@@ -26,6 +26,7 @@ public class DbServicessBase<T> implements IDbServicess<T>{
 		tt = ss.beginTransaction();
 	}
 	
+	
 	private void closeSessionAndCommit() {
 		tt.commit();
 		ss.close();

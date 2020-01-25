@@ -49,11 +49,6 @@ public class MainFrame extends JFrame {
 			
 		case TEACHER:
 
-			btnUserMngmt.setEnabled(false);
-			btnInsanKaynaklarModl.setEnabled(false);
-			btnTanmlamaModl.setEnabled(false);
-			btnMuhasebeModl.setEnabled(false);
-			btnYnetimModl.setEnabled(false);
 			break;
 			
 		case STUDENT:

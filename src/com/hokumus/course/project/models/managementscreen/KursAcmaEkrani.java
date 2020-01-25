@@ -3,6 +3,10 @@ package com.hokumus.course.project.models.managementscreen;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
+
 import java.awt.Font;
 import javax.swing.JScrollBar;
 import javax.swing.JLayeredPane;
@@ -12,16 +16,24 @@ import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
+
 
 public class KursAcmaEkrani extends JFrame {
 	private JLabel lblKursAd;
-	private JLabel lblBalamaTarihi;
-	private JTextField txtbaslamaTarihi;
 	private JLabel lblFiyat;
 	private JTextField txtfiyat;
 	private JLabel lblDurum;
 	private JTextField txtKullaniciAdi;
-	private JComboBox comboBox;
+	private JComboBox cmbDurum;
 	private JButton btnKaydet;
 	private JButton btnIptal;
 
@@ -36,16 +48,24 @@ public class KursAcmaEkrani extends JFrame {
 		setBounds(400, 200, 684, 400);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblKursAd());
-		getContentPane().add(getLblBalamaTarihi());
-		getContentPane().add(getTxtbaslamaTarihi());
 		getContentPane().add(getLblFiyat());
 		getContentPane().add(getTxtfiyat());
 		getContentPane().add(getLblDurum());
 		getContentPane().add(getTxtKullaniciAdi());
-		getContentPane().add(getComboBox());
+		getContentPane().add(getCmbDurum());
 		getContentPane().add(getBtnKaydet());
 		getContentPane().add(getBtnIptal());
+		getContentPane().add(getPanel());
 	}
+	private JPanel panel;
+	private JTextField txtMesaj;
+	
+	
+	
+	
+	
+	
+	
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
 			lblKursAd = new JLabel("Kurs Ad\u0131:");
@@ -54,27 +74,11 @@ public class KursAcmaEkrani extends JFrame {
 		}
 		return lblKursAd;
 	}
-	private JLabel getLblBalamaTarihi() {
-		if (lblBalamaTarihi == null) {
-			lblBalamaTarihi = new JLabel("Ba\u015Flama Tarihi:");
-			lblBalamaTarihi.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblBalamaTarihi.setBounds(39, 127, 108, 14);
-		}
-		return lblBalamaTarihi;
-	}
-	private JTextField getTxtbaslamaTarihi() {
-		if (txtbaslamaTarihi == null) {
-			txtbaslamaTarihi = new JTextField();
-			txtbaslamaTarihi.setColumns(10);
-			txtbaslamaTarihi.setBounds(150, 124, 127, 20);
-		}
-		return txtbaslamaTarihi;
-	}
 	private JLabel getLblFiyat() {
 		if (lblFiyat == null) {
 			lblFiyat = new JLabel("Fiyat:");
 			lblFiyat.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblFiyat.setBounds(39, 191, 46, 14);
+			lblFiyat.setBounds(42, 132, 46, 14);
 		}
 		return lblFiyat;
 	}
@@ -82,7 +86,7 @@ public class KursAcmaEkrani extends JFrame {
 		if (txtfiyat == null) {
 			txtfiyat = new JTextField();
 			txtfiyat.setColumns(10);
-			txtfiyat.setBounds(150, 188, 127, 20);
+			txtfiyat.setBounds(150, 131, 127, 20);
 		}
 		return txtfiyat;
 	}
@@ -90,7 +94,7 @@ public class KursAcmaEkrani extends JFrame {
 		if (lblDurum == null) {
 			lblDurum = new JLabel("Durum:");
 			lblDurum.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblDurum.setBounds(39, 260, 78, 17);
+			lblDurum.setBounds(39, 193, 78, 17);
 		}
 		return lblDurum;
 	}
@@ -102,17 +106,38 @@ public class KursAcmaEkrani extends JFrame {
 		}
 		return txtKullaniciAdi;
 	}
-	private JComboBox getComboBox() {
-		if (comboBox == null) {
-			comboBox = new JComboBox();
-			comboBox.setModel(new DefaultComboBoxModel(new String[] {"AKT\u0130F", "PAS\u0130F"}));
-			comboBox.setBounds(150, 260, 127, 20);
+	private JComboBox getCmbDurum() {
+		if (cmbDurum == null) {
+			cmbDurum = new JComboBox();
+			cmbDurum.setModel(new DefaultComboBoxModel(new String[] {"AKT\u0130F", "PAS\u0130F"}));
+			cmbDurum.setBounds(150, 193, 127, 20);
 		}
-		return comboBox;
+		return cmbDurum;
 	}
 	private JButton getBtnKaydet() {
 		if (btnKaydet == null) {
 			btnKaydet = new JButton("Kaydet");
+			btnKaydet.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+					DateTimeFormatter format=DateTimeFormatter.ofPattern("d/M/yyyy");
+					
+					Courses temp=new Courses();
+					temp.setAdi(txtKullaniciAdi.getText());
+					temp.setDurum(cmbDurum.getSelectedItem().toString());
+					temp.setFiyat(new BigDecimal(txtfiyat.getText()));
+					
+					if (dao.save(temp)) {
+						txtMesaj.setText("Kurs Baþarlý Ýle Oluþturuldu");
+					}
+					else {
+						txtMesaj.setText("Kurs Baþarlý Ýle Oluþturulamadý");
+					}
+					
+					
+					
+				}
+			});
 			btnKaydet.setBounds(475, 79, 114, 38);
 		}
 		return btnKaydet;
@@ -120,8 +145,32 @@ public class KursAcmaEkrani extends JFrame {
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
+			btnIptal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					KursAcmaEkrani.this.dispose();
+				}
+			});
 			btnIptal.setBounds(475, 168, 114, 40);
 		}
 		return btnIptal;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setBorder(new TitledBorder(null, "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel.setBounds(316, 260, 318, 51);
+			panel.setLayout(null);
+			panel.add(getTxtMesaj());
+		}
+		return panel;
+	}
+	private JTextField getTxtMesaj() {
+		if (txtMesaj == null) {
+			txtMesaj = new JTextField();
+			txtMesaj.setForeground(Color.RED);
+			txtMesaj.setBounds(10, 20, 298, 20);
+			txtMesaj.setColumns(10);
+		}
+		return txtMesaj;
 	}
 }

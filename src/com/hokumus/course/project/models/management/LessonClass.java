@@ -48,7 +48,7 @@ public class LessonClass extends BaseEntity{
         this.kapasite = kapasite;
     }
 
-    @Column(name = "room_code", length = 10)
+    @Column(name = "room_code", length = 20)
     public String getKod() {
         return kod;
     }
