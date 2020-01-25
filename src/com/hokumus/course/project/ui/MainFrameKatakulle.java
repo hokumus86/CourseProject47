@@ -5,9 +5,7 @@ import javax.swing.JFrame;
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
 import com.hokumus.course.project.ui.student.AddUsers;
-
 import com.hokumus.course.project.models.managementscreen.ManagementScreen;
-
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
@@ -60,7 +58,6 @@ public class MainFrameKatakulle extends JFrame {
 			btnInsanKaynaklarModl.setEnabled(false);
 			btnTanmlamaModl.setEnabled(false);
 			btnMuhasebeModl.setEnabled(false);
-
 			break;
 
 		case STUDENT:
@@ -112,7 +109,6 @@ public class MainFrameKatakulle extends JFrame {
 			btnYnetimModl = new JButton("Y\u00F6netim Mod\u00FCl\u00FC");
 			btnYnetimModl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
 					new ManagementScreen().setVisible(true);
 				}
 			});
