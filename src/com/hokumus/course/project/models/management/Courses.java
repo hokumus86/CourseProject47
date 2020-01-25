@@ -17,11 +17,8 @@ import com.hokumus.course.project.models.base.BaseEntity;
 @Entity
 @Table(name = "course")
 public class Courses extends BaseEntity{
-
-    public Groups Groups = new Groups();
     private Long id;
     private String adi;
-    private Date baslamaTarihi = Groups.getBaslamaTarihi();
     private BigDecimal fiyat; 
     private String durum;
 
@@ -43,16 +40,6 @@ public class Courses extends BaseEntity{
 
     public void setAdi(String adi) {
         this.adi = adi;
-    }
-
-    @Column(name = "start_date")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    public Date getbaslamaTarihi() {
-        return baslamaTarihi;
-    }
-
-    public void setbaslamaTarihi(Date baslamaTarihi) {
-        this.baslamaTarihi = baslamaTarihi;
     }
 
     @Column(name = "price", precision = 14, scale = 2)
