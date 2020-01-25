@@ -2,6 +2,7 @@ package com.hokumus.course.project.models.managementscreen;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
@@ -12,7 +13,14 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.Font;
-
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.beans.PropertyChangeEvent;
 
 public class GrupAcmaEkrani extends JFrame {
 	private JLabel lblKursAd;
@@ -26,9 +34,7 @@ public class GrupAcmaEkrani extends JFrame {
 	private JLabel lblSnf;
 	private JComboBox cmbSinif;
 	private JLabel lblBalamaTarihi;
-	private JTextField txtBaslamaTarihi;
 	private JLabel lblBitiTarihi;
-	private JTextField txtBitisTarihi;
 	private JPanel panel;
 	private JCheckBox chckbxPazartesi;
 	private JCheckBox chckbxSali;
@@ -41,6 +47,9 @@ public class GrupAcmaEkrani extends JFrame {
 	private JTextField txtMesaj;
 	private JPanel panel_1;
 	private JButton btnTemizle;
+	private JDateChooser dateBaslamaTrh;
+	private JDateChooser dateBitisTrh;
+
 	public GrupAcmaEkrani() {
 		initialize();
 	}
@@ -60,15 +69,16 @@ public class GrupAcmaEkrani extends JFrame {
 		getContentPane().add(getLblSnf());
 		getContentPane().add(getCmbSinif());
 		getContentPane().add(getLblBalamaTarihi());
-		getContentPane().add(getTxtBaslamaTarihi());
 		getContentPane().add(getLblBitiTarihi());
-		getContentPane().add(getTxtBitisTarihi());
 		getContentPane().add(getPanel());
 		getContentPane().add(getBtnKaydet());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getPanel_1());
 		getContentPane().add(getBtnTemizle());
+		getContentPane().add(getDateBaslamaTrh());
+		getContentPane().add(getDateBitisTrh());
 	}
+
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
 			lblKursAd = new JLabel("Kurs Ad\u0131:");
@@ -76,6 +86,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblKursAd;
 	}
+
 	private JComboBox getCmbKursAdi() {
 		if (cmbKursAdi == null) {
 			cmbKursAdi = new JComboBox();
@@ -84,6 +95,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return cmbKursAdi;
 	}
+
 	private JLabel getLblGrupAd() {
 		if (lblGrupAd == null) {
 			lblGrupAd = new JLabel("Grup Ad\u0131:");
@@ -91,6 +103,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblGrupAd;
 	}
+
 	private JTextField getTxtGrupAdi() {
 		if (txtGrupAdi == null) {
 			txtGrupAdi = new JTextField();
@@ -99,6 +112,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return txtGrupAdi;
 	}
+
 	private JLabel getLblretmen() {
 		if (lblretmen == null) {
 			lblretmen = new JLabel("\u00D6\u011Fretmen:");
@@ -106,6 +120,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblretmen;
 	}
+
 	private JComboBox getCmbOgretmen() {
 		if (cmbOgretmen == null) {
 			cmbOgretmen = new JComboBox();
@@ -113,6 +128,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return cmbOgretmen;
 	}
+
 	private JLabel getLblrenciSays() {
 		if (lblrenciSays == null) {
 			lblrenciSays = new JLabel("\u00D6\u011Frenci Say\u0131s\u0131:");
@@ -120,6 +136,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblrenciSays;
 	}
+
 	private JTextField getTxtOgrenciSayisi() {
 		if (txtOgrenciSayisi == null) {
 			txtOgrenciSayisi = new JTextField();
@@ -128,6 +145,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return txtOgrenciSayisi;
 	}
+
 	private JLabel getLblSnf() {
 		if (lblSnf == null) {
 			lblSnf = new JLabel("S\u0131n\u0131f:");
@@ -135,6 +153,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblSnf;
 	}
+
 	private JComboBox getCmbSinif() {
 		if (cmbSinif == null) {
 			cmbSinif = new JComboBox();
@@ -142,6 +161,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return cmbSinif;
 	}
+
 	private JLabel getLblBalamaTarihi() {
 		if (lblBalamaTarihi == null) {
 			lblBalamaTarihi = new JLabel("Ba\u015Flama Tarihi:");
@@ -149,14 +169,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblBalamaTarihi;
 	}
-	private JTextField getTxtBaslamaTarihi() {
-		if (txtBaslamaTarihi == null) {
-			txtBaslamaTarihi = new JTextField();
-			txtBaslamaTarihi.setColumns(10);
-			txtBaslamaTarihi.setBounds(41, 403, 116, 20);
-		}
-		return txtBaslamaTarihi;
-	}
+
 	private JLabel getLblBitiTarihi() {
 		if (lblBitiTarihi == null) {
 			lblBitiTarihi = new JLabel("Biti\u015F Tarihi:");
@@ -164,18 +177,12 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return lblBitiTarihi;
 	}
-	private JTextField getTxtBitisTarihi() {
-		if (txtBitisTarihi == null) {
-			txtBitisTarihi = new JTextField();
-			txtBitisTarihi.setColumns(10);
-			txtBitisTarihi.setBounds(199, 403, 116, 20);
-		}
-		return txtBitisTarihi;
-	}
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "G\u00FCn Se\u00E7imi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panel.setBorder(
+					new TitledBorder(null, "G\u00FCn Se\u00E7imi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			panel.setBounds(322, 58, 133, 199);
 			panel.setLayout(null);
 			panel.add(getChckbxPazartesi());
@@ -187,6 +194,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return panel;
 	}
+
 	private JCheckBox getChckbxPazartesi() {
 		if (chckbxPazartesi == null) {
 			chckbxPazartesi = new JCheckBox("Pazartesi");
@@ -194,6 +202,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxPazartesi;
 	}
+
 	private JCheckBox getChckbxSali() {
 		if (chckbxSali == null) {
 			chckbxSali = new JCheckBox("Sal\u0131");
@@ -201,6 +210,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxSali;
 	}
+
 	private JCheckBox getChckbxCarsamba() {
 		if (chckbxCarsamba == null) {
 			chckbxCarsamba = new JCheckBox("\u00C7ar\u015Famba");
@@ -208,6 +218,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxCarsamba;
 	}
+
 	private JCheckBox getChckbxPersembe() {
 		if (chckbxPersembe == null) {
 			chckbxPersembe = new JCheckBox("Per\u015Fembe");
@@ -215,6 +226,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxPersembe;
 	}
+
 	private JCheckBox getChckbxCuma() {
 		if (chckbxCuma == null) {
 			chckbxCuma = new JCheckBox("Cuma");
@@ -222,6 +234,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxCuma;
 	}
+
 	private JCheckBox getChckbxCumartesi() {
 		if (chckbxCumartesi == null) {
 			chckbxCumartesi = new JCheckBox("Cumartesi");
@@ -229,6 +242,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return chckbxCumartesi;
 	}
+
 	private JButton getBtnKaydet() {
 		if (btnKaydet == null) {
 			btnKaydet = new JButton("Kaydet");
@@ -236,6 +250,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return btnKaydet;
 	}
+
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
@@ -243,6 +258,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return btnIptal;
 	}
+
 	private JTextField getTxtMesaj() {
 		if (txtMesaj == null) {
 			txtMesaj = new JTextField();
@@ -253,6 +269,7 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return txtMesaj;
 	}
+
 	private JPanel getPanel_1() {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
@@ -263,11 +280,50 @@ public class GrupAcmaEkrani extends JFrame {
 		}
 		return panel_1;
 	}
+
 	private JButton getBtnTemizle() {
 		if (btnTemizle == null) {
 			btnTemizle = new JButton("Temizle");
 			btnTemizle.setBounds(537, 200, 108, 38);
 		}
 		return btnTemizle;
+	}
+
+	private JDateChooser getDateBaslamaTrh() {
+		if (dateBaslamaTrh == null) {
+			dateBaslamaTrh = new JDateChooser();
+			dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+			dateBaslamaTrh.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateBaslamaTrh.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+						String gun = sdf.format(dateBaslamaTrh.getDate());
+						JOptionPane.showMessageDialog(GrupAcmaEkrani.this, gun);
+
+					}
+
+				}
+			});
+			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(GrupAcmaEkrani.this, dateBaslamaTrh.getDateFormatString());
+				}
+			});
+			dateBaslamaTrh.setBounds(41, 403, 105, 22);
+		}
+		return dateBaslamaTrh;
+	}
+
+	private JDateChooser getDateBitisTrh() {
+		if (dateBitisTrh == null) {
+			dateBitisTrh = new JDateChooser();
+			dateBitisTrh.setBounds(197, 403, 105, 22);
+		}
+		return dateBitisTrh;
 	}
 }
