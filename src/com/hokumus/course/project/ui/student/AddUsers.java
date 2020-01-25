@@ -19,8 +19,8 @@ public class AddUsers extends JFrame { // ???????
 	private JTextField txtTelNo;
 	private JTextField txtAdress;
 	private JTextField txtMail;
-	private JPasswordField txtSoyadi;
 	private JDateChooser dateKayitTarihi;
+	private JTextField txtSoyadi;
 
 	public AddUsers() {
 		
@@ -113,13 +113,14 @@ public class AddUsers extends JFrame { // ???????
 		txtMail.setBounds(359, 125, 130, 20);
 		getContentPane().add(txtMail);
 
-		txtSoyadi = new JPasswordField();
-		txtSoyadi.setBounds(358, 21, 131, 20);
-		getContentPane().add(txtSoyadi);
-
 		dateKayitTarihi = new JDateChooser();
 		dateKayitTarihi.setBounds(359, 75, 130, 20);
 		getContentPane().add(dateKayitTarihi);
+		
+		txtSoyadi = new JTextField();
+		txtSoyadi.setColumns(10);
+		txtSoyadi.setBounds(359, 22, 130, 20);
+		getContentPane().add(txtSoyadi);
 
 	}
 }
