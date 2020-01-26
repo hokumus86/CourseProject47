@@ -110,6 +110,7 @@ public class MainFrameKatakulle extends JFrame {
 			btnYnetimModl = new JButton("Y\u00F6netim Mod\u00FCl\u00FC");
 			btnYnetimModl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					MainFrameKatakulle.this.dispose();
 					new ManagementScreen().setVisible(true);
 				}
 			});

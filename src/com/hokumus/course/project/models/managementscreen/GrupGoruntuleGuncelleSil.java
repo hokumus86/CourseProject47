@@ -15,6 +15,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.hokumus.course.project.utils.CourseUtils;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JLabel lblKursAd;
@@ -50,12 +55,13 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JTextField txtArama;
 	private JPanel panel_2;
 	private JButton btnTemizle;
+	private JCheckBox chckbxPazar;
 	public GrupGoruntuleGuncelleSil() {
 		initialize();
 	}
 
 	private void initialize() {
-		setTitle("Grup G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
+		setTitle("Grup G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil  -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		setBounds(300, 3, 940, 731);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblKursAd());
@@ -198,6 +204,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 			panel.add(getChckbxPersembe());
 			panel.add(getChckbxCuma());
 			panel.add(getChckbxCumartesi());
+			panel.add(getChckbxPazar());
 		}
 		return panel;
 	}
@@ -253,6 +260,11 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
+			btnIptal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					GrupGoruntuleGuncelleSil.this.dispose();
+				}
+			});
 			btnIptal.setBounds(785, 92, 108, 38);
 		}
 		return btnIptal;
@@ -359,5 +371,12 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 			btnTemizle.setBounds(785, 25, 103, 38);
 		}
 		return btnTemizle;
+	}
+	private JCheckBox getChckbxPazar() {
+		if (chckbxPazar == null) {
+			chckbxPazar = new JCheckBox("Pazar");
+			chckbxPazar.setBounds(18, 187, 97, 23);
+		}
+		return chckbxPazar;
 	}
 }

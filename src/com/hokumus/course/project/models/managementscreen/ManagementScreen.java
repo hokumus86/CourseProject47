@@ -4,8 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import com.hokumus.course.project.ui.MainFrameKatakulle;
+import com.hokumus.course.project.utils.CourseUtils;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 
 
 public class ManagementScreen extends JFrame{
@@ -19,22 +24,24 @@ public class ManagementScreen extends JFrame{
 	private JMenuItem mnýtmGrupGncellesil;
 	private JMenuItem mnýtmSnfAma;
 	private JMenuItem mnýtmSnfGncellesil;
+	private JButton btnGeri;
 	public ManagementScreen() {
 		
 		initialize();
 	}
 
 	private void initialize() {
-		setTitle("Y\u00F6netim Mod\u00FCl\u00FC");
+		setTitle("Y\u00F6netim Mod\u00FCl\u00FC -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		getContentPane().setLayout(null);
 		getContentPane().add(getMenuBar_1());
+		getContentPane().add(getBtnGeri());
 		setBounds(350, 70, 807, 586);
 		
 	}
 	private JMenuBar getMenuBar_1() {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-			menuBar.setBounds(0, 0, 768, 37);
+			menuBar.setBounds(0, 0, 691, 37);
 			menuBar.add(getMnKursIlemleri());
 			menuBar.add(getMnGrupIlemleri());
 			menuBar.add(getMnSnfIlemleri());
@@ -130,5 +137,18 @@ public class ManagementScreen extends JFrame{
 			});
 		}
 		return mnýtmSnfGncellesil;
+	}
+	private JButton getBtnGeri() {
+		if (btnGeri == null) {
+			btnGeri = new JButton("Geri");
+			btnGeri.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					new MainFrameKatakulle().setVisible(true);
+					ManagementScreen.this.dispose();
+				}
+			});
+			btnGeri.setBounds(692, 0, 99, 37);
+		}
+		return btnGeri;
 	}
 }

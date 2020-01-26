@@ -13,6 +13,13 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.Font;
+
+import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.models.management.Groups;
+import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.models.teacher.Teacher;
+import com.hokumus.course.project.utils.CourseUtils;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -20,7 +27,10 @@ import java.beans.PropertyChangeListener;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GrupAcmaEkrani extends JFrame {
 	private JLabel lblKursAd;
@@ -44,8 +54,6 @@ public class GrupAcmaEkrani extends JFrame {
 	private JCheckBox chckbxCumartesi;
 	private JButton btnKaydet;
 	private JButton btnIptal;
-	private JTextField txtMesaj;
-	private JPanel panel_1;
 	private JButton btnTemizle;
 	private JDateChooser dateBaslamaTrh;
 	private JDateChooser dateBitisTrh;
@@ -55,7 +63,7 @@ public class GrupAcmaEkrani extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("Grup A\u00E7ma");
+		setTitle("Grup A\u00E7ma -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		setBounds(400, 150, 715, 510);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblKursAd());
@@ -73,12 +81,27 @@ public class GrupAcmaEkrani extends JFrame {
 		getContentPane().add(getPanel());
 		getContentPane().add(getBtnKaydet());
 		getContentPane().add(getBtnIptal());
-		getContentPane().add(getPanel_1());
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getDateBaslamaTrh());
 		getContentPane().add(getDateBitisTrh());
+		getContentPane().add(getLblSaat());
+		getContentPane().add(getComboBox());
+		getContentPane().add(getLblMesaj());
 	}
-
+	DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+	DbServicessBase<LessonClass> dao1=new DbServicessBase<LessonClass>();
+	DbServicessBase<Teacher> dao2=new DbServicessBase<Teacher>();
+	Teacher ogretmen=new Teacher();
+	LessonClass sinif=new LessonClass();
+	Courses kurs=new Courses();
+	List<Teacher> ogretmenler=dao2.getAllRows(ogretmen);
+	List<LessonClass> siniflar=dao1.getAllRows(sinif);
+	List<Courses> kurslar=dao.getAllRows(kurs);
+	private JLabel lblSaat;
+	private JComboBox comboBox;
+	private JLabel lblMesaj;
+	private JCheckBox chckbxPazar;
+	
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
 			lblKursAd = new JLabel("Kurs Ad\u0131:");
@@ -90,8 +113,12 @@ public class GrupAcmaEkrani extends JFrame {
 	private JComboBox getCmbKursAdi() {
 		if (cmbKursAdi == null) {
 			cmbKursAdi = new JComboBox();
+			for (int i = 0; i < kurslar.size(); i++) {
+				cmbKursAdi.addItem(kurslar.get(i).getAdi());
+			}
+			
 			cmbKursAdi.setToolTipText("");
-			cmbKursAdi.setBounds(157, 62, 103, 20);
+			cmbKursAdi.setBounds(157, 62, 119, 20);
 		}
 		return cmbKursAdi;
 	}
@@ -124,7 +151,10 @@ public class GrupAcmaEkrani extends JFrame {
 	private JComboBox getCmbOgretmen() {
 		if (cmbOgretmen == null) {
 			cmbOgretmen = new JComboBox();
-			cmbOgretmen.setBounds(157, 171, 103, 20);
+			for (int i = 0; i <ogretmenler.size(); i++) {
+				cmbOgretmen.addItem(ogretmenler.get(i).getAd()+" "+ogretmenler.get(i).getSoyad());
+			}
+			cmbOgretmen.setBounds(157, 171, 119, 20);
 		}
 		return cmbOgretmen;
 	}
@@ -157,7 +187,11 @@ public class GrupAcmaEkrani extends JFrame {
 	private JComboBox getCmbSinif() {
 		if (cmbSinif == null) {
 			cmbSinif = new JComboBox();
-			cmbSinif.setBounds(157, 302, 103, 20);
+			for (int i = 0; i <siniflar.size(); i++) {
+				cmbSinif.addItem(siniflar.get(i).getAdi());
+			}
+			
+			cmbSinif.setBounds(157, 302, 119, 20);
 		}
 		return cmbSinif;
 	}
@@ -165,7 +199,7 @@ public class GrupAcmaEkrani extends JFrame {
 	private JLabel getLblBalamaTarihi() {
 		if (lblBalamaTarihi == null) {
 			lblBalamaTarihi = new JLabel("Ba\u015Flama Tarihi:");
-			lblBalamaTarihi.setBounds(41, 385, 103, 14);
+			lblBalamaTarihi.setBounds(352, 305, 103, 14);
 		}
 		return lblBalamaTarihi;
 	}
@@ -173,7 +207,7 @@ public class GrupAcmaEkrani extends JFrame {
 	private JLabel getLblBitiTarihi() {
 		if (lblBitiTarihi == null) {
 			lblBitiTarihi = new JLabel("Biti\u015F Tarihi:");
-			lblBitiTarihi.setBounds(199, 385, 103, 14);
+			lblBitiTarihi.setBounds(515, 305, 103, 14);
 		}
 		return lblBitiTarihi;
 	}
@@ -183,7 +217,7 @@ public class GrupAcmaEkrani extends JFrame {
 			panel = new JPanel();
 			panel.setBorder(
 					new TitledBorder(null, "G\u00FCn Se\u00E7imi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(322, 58, 133, 199);
+			panel.setBounds(322, 58, 133, 217);
 			panel.setLayout(null);
 			panel.add(getChckbxPazartesi());
 			panel.add(getChckbxSali());
@@ -191,6 +225,7 @@ public class GrupAcmaEkrani extends JFrame {
 			panel.add(getChckbxPersembe());
 			panel.add(getChckbxCuma());
 			panel.add(getChckbxCumartesi());
+			panel.add(getChckbxPazar());
 		}
 		return panel;
 	}
@@ -254,31 +289,14 @@ public class GrupAcmaEkrani extends JFrame {
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
+			btnIptal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					GrupAcmaEkrani.this.dispose();
+				}
+			});
 			btnIptal.setBounds(537, 130, 108, 38);
 		}
 		return btnIptal;
-	}
-
-	private JTextField getTxtMesaj() {
-		if (txtMesaj == null) {
-			txtMesaj = new JTextField();
-			txtMesaj.setBounds(10, 23, 283, 23);
-			txtMesaj.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			txtMesaj.setForeground(Color.RED);
-			txtMesaj.setColumns(10);
-		}
-		return txtMesaj;
-	}
-
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			panel_1.setBorder(new TitledBorder(null, "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_1.setBounds(367, 305, 303, 57);
-			panel_1.setLayout(null);
-			panel_1.add(getTxtMesaj());
-		}
-		return panel_1;
 	}
 
 	private JButton getBtnTemizle() {
@@ -314,7 +332,7 @@ public class GrupAcmaEkrani extends JFrame {
 					JOptionPane.showMessageDialog(GrupAcmaEkrani.this, dateBaslamaTrh.getDateFormatString());
 				}
 			});
-			dateBaslamaTrh.setBounds(41, 403, 105, 22);
+			dateBaslamaTrh.setBounds(350, 332, 105, 22);
 		}
 		return dateBaslamaTrh;
 	}
@@ -322,8 +340,37 @@ public class GrupAcmaEkrani extends JFrame {
 	private JDateChooser getDateBitisTrh() {
 		if (dateBitisTrh == null) {
 			dateBitisTrh = new JDateChooser();
-			dateBitisTrh.setBounds(197, 403, 105, 22);
+			dateBitisTrh.setBounds(513, 332, 105, 22);
 		}
 		return dateBitisTrh;
+	}
+	private JLabel getLblSaat() {
+		if (lblSaat == null) {
+			lblSaat = new JLabel("Saat:");
+			lblSaat.setBounds(46, 365, 46, 14);
+		}
+		return lblSaat;
+	}
+	private JComboBox getComboBox() {
+		if (comboBox == null) {
+			comboBox = new JComboBox();
+			comboBox.setBounds(157, 362, 119, 20);
+		}
+		return comboBox;
+	}
+	private JLabel getLblMesaj() {
+		if (lblMesaj == null) {
+			lblMesaj = new JLabel("");
+			lblMesaj.setForeground(Color.RED);
+			lblMesaj.setBounds(10, 432, 679, 28);
+		}
+		return lblMesaj;
+	}
+	private JCheckBox getChckbxPazar() {
+		if (chckbxPazar == null) {
+			chckbxPazar = new JCheckBox("Pazar");
+			chckbxPazar.setBounds(18, 187, 97, 23);
+		}
+		return chckbxPazar;
 	}
 }
