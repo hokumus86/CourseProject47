@@ -41,6 +41,7 @@ public class LoginFrame extends JFrame{
 				temp.setRole(UserRoleTypes.ADMIN);
 				CourseUtils.loginedUser = temp;
 				new MainFrameKatakulle().setVisible(true);
+				dispose();
 				
 			}
 		});
@@ -50,7 +51,7 @@ public class LoginFrame extends JFrame{
 	private void initialize() {
 		setTitle("Kullanýcý Giriþ Ekraný");
 		setSize(400,350);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
@@ -115,6 +116,7 @@ public class LoginFrame extends JFrame{
 						//JOptionPane.showMessageDialog(LoginFrame.this, "Giriþ Baþarýlý");
 						CourseUtils.loginedUser = liste.get(0);
 						new MainFrame().setVisible(true);
+						LoginFrame.this.dispose();
 					}
 						
 					else {
