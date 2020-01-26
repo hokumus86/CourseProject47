@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 
 import javax.swing.JButton;
@@ -24,14 +25,13 @@ public class SinifAcmaEkrani extends JFrame{
 	private JTextField txtKapasite;
 	private JButton btnKaydet;
 	private JButton btnIptal;
-	private JPanel panel;
-	private JTextField txtMesaj;
+	private JLabel lblMesaj;
 	public SinifAcmaEkrani() {
 		initialize();
 	}
 
 	private void initialize() {
-		setTitle("S\u0131n\u0131f A\u00E7ma");
+		setTitle("S\u0131n\u0131f A\u00E7ma  -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		setBounds(400, 200, 540, 335);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblAd());
@@ -42,7 +42,7 @@ public class SinifAcmaEkrani extends JFrame{
 		getContentPane().add(getTxtKapasite());
 		getContentPane().add(getBtnKaydet());
 		getContentPane().add(getBtnIptal());
-		getContentPane().add(getPanel());
+		getContentPane().add(getLblMesaj());
 	}
 	private JLabel getLblAd() {
 		if (lblAd == null) {
@@ -104,10 +104,10 @@ public class SinifAcmaEkrani extends JFrame{
 					temp.setKapasite((Integer.valueOf(getTxtKapasite().getText())));
 
 					if (dao.save(temp)) {
-						txtMesaj.setText("Sýnýf Baþarý ile Oluþturuldu");
+						lblMesaj.setText("Sýnýf Baþarý ile Oluþturuldu");
 					}
 					else {
-						txtMesaj.setText("Sýnýf  Oluþturulamadý");
+						lblMesaj.setText("Sýnýf  Oluþturulamadý");
 
 					}
 					
@@ -131,23 +131,11 @@ public class SinifAcmaEkrani extends JFrame{
 		}
 		return btnIptal;
 	}
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(210, 208, 304, 55);
-			panel.setLayout(null);
-			panel.add(getTxtMesaj());
+	private JLabel getLblMesaj() {
+		if (lblMesaj == null) {
+			lblMesaj = new JLabel("");
+			lblMesaj.setBounds(0, 270, 524, 26);
 		}
-		return panel;
-	}
-	private JTextField getTxtMesaj() {
-		if (txtMesaj == null) {
-			txtMesaj = new JTextField();
-			txtMesaj.setForeground(Color.RED);
-			txtMesaj.setBounds(10, 24, 284, 20);
-			txtMesaj.setColumns(10);
-		}
-		return txtMesaj;
+		return lblMesaj;
 	}
 }

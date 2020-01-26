@@ -9,6 +9,8 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.TableView.TableRow;
 
 import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 
 import javax.swing.JLabel;
@@ -43,9 +45,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JLabel lblDurum;
 	private JComboBox cmbDurum;
 	private JTextField txtArama;
-	private JTextField txtMesaj;
 	private JPanel panel;
-	private JPanel panel_1;
 	private JButton btnSil;
 	private JButton btnTemizle;
 	private JButton btnIptal;
@@ -54,7 +54,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("Kurs G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
+		setTitle("Kurs G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		setBounds(400, 130, 730, 603);
 		getContentPane().setLayout(null);
 		getContentPane().add(getScrollPane());
@@ -66,13 +66,14 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getLblDurum());
 		getContentPane().add(getCmbDurum());
 		getContentPane().add(getPanel());
-		getContentPane().add(getPanel_1());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getBtnIptal());
+		getContentPane().add(getLblMesaj());
 		kursTablosuGoster();
 	}
 	DefaultTableModel model=new DefaultTableModel();
+	private JLabel lblMesaj;
 
 	public void kursTablosuGoster() {
 		
@@ -120,7 +121,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 197, 682, 337);
+			scrollPane.setBounds(10, 167, 682, 359);
 			scrollPane.setViewportView(getTblKurslar());
 		}
 		return scrollPane;
@@ -139,11 +140,11 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					yenikurs.setDurum(cmbDurum.getSelectedItem().toString());
 					
 					if (dao.update(yenikurs)) {
-						txtMesaj.setText("Kurs Baþarý ile Güncellendi");
+						lblMesaj.setText("Kurs Baþarý ile Güncellendi");
 						kursTablosuGoster();
 					}
 					else {
-						txtMesaj.setText("Kurs  Güncellenemedi");
+						lblMesaj.setText("Kurs  Güncellenemedi");
 					}
 					
 					
@@ -248,38 +249,37 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		}
 		return txtArama;
 	}
-	private JTextField getTxtMesaj() {
-		if (txtMesaj == null) {
-			txtMesaj = new JTextField();
-			txtMesaj.setForeground(Color.RED);
-			txtMesaj.setBounds(10, 14, 300, 26);
-			txtMesaj.setColumns(10);
-		}
-		return txtMesaj;
-	}
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, "Arama", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(20, 141, 694, 56);
+			panel.setBounds(10, 112, 694, 56);
 			panel.setLayout(null);
 			panel.add(getTxtArama());
 		}
 		return panel;
 	}
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			panel_1.setBorder(new TitledBorder(null, "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_1.setBounds(20, 93, 320, 51);
-			panel_1.setLayout(null);
-			panel_1.add(getTxtMesaj());
-		}
-		return panel_1;
-	}
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
+			btnSil.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+					 Courses silinicek_kurs=new Courses();
+					int row=tblKurslar.getSelectedRow();
+					silinicek_kurs.setId(Long.valueOf(tblKurslar.getValueAt(row, 0).toString()));
+					silinicek_kurs.setAdi(tblKurslar.getValueAt(row, 1).toString());
+					silinicek_kurs.setFiyat(new BigDecimal(tblKurslar.getValueAt(row, 2).toString()));
+					silinicek_kurs.setDurum(tblKurslar.getValueAt(row, 3).toString());
+					if (dao.delete(silinicek_kurs)) {
+						lblMesaj.setText("Kurs Baþarý ile Silindi");
+						kursTablosuGoster();
+					}
+					else {
+						lblMesaj.setText("Kurs Baþarý ile Silinemedi");
+					}
+				}
+			});
 			btnSil.setBounds(443, 72, 103, 29);
 		}
 		return btnSil;
@@ -309,5 +309,13 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 			btnIptal.setBounds(579, 72, 103, 29);
 		}
 		return btnIptal;
+	}
+	private JLabel getLblMesaj() {
+		if (lblMesaj == null) {
+			lblMesaj = new JLabel("");
+			lblMesaj.setForeground(Color.RED);
+			lblMesaj.setBounds(10, 537, 682, 27);
+		}
+		return lblMesaj;
 	}
 }

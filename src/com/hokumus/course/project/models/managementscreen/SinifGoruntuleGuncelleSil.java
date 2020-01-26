@@ -17,9 +17,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class SinifGoruntuleGuncelleSil extends JFrame {
@@ -30,11 +35,9 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JLabel lblKapasite;
 	private JTextField txtKapasite;
 	private JButton btnGuncelle;
-	private JPanel panel;
-	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JPanel panelArama;
-	private JTextField textField_1;
+	private JTextField txtArama;
 	private JButton btnSil;
 	private JButton btnTemizle;
 	private JButton btnIptal;
@@ -44,7 +47,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("S\u0131n\u0131f G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
+		setTitle("S\u0131n\u0131f G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		setBounds(400, 150, 787, 528);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblAd());
@@ -54,12 +57,12 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getLblKapasite());
 		getContentPane().add(getTxtKapasite());
 		getContentPane().add(getBtnGuncelle());
-		getContentPane().add(getPanel());
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getPanelArama());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getBtnIptal());
+		getContentPane().add(getLblMesaj());
 		sinifTablosuGöster();
 	}
 	
@@ -67,6 +70,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	
 	
 	DefaultTableModel model=new DefaultTableModel();
+	private JLabel lblMesaj;
 	
 	public void sinifTablosuGöster() {
 		
@@ -92,7 +96,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		}
 
 		model=new DefaultTableModel(data,columnNames);
-		
+		tblSiniflar.setModel(model);
 		
 	}
 
@@ -155,35 +159,32 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton("G\u00FCncelle");
+			btnGuncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					DbServicessBase<LessonClass> dao=new DbServicessBase<LessonClass>();
+					LessonClass yenisinif=new LessonClass();
+					yenisinif.setAdi(txtSinifAdi.getText());
+					yenisinif.setKod(txtSinifKodu.getText());
+					yenisinif.setKapasite(Integer.valueOf(txtKapasite.getText()));
+					
+					if (dao.update(yenisinif)) {
+						lblMesaj.setText("Sýnýf baþarý ile Güncellendi");
+						sinifTablosuGöster();
+					}
+					else {
+						lblMesaj.setText("Sýnýf Güncellenemedi");
+					}
+				}
+			});
 			btnGuncelle.setBounds(414, 13, 89, 49);
 		}
 		return btnGuncelle;
 	}
-	
-	
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(304, 98, 293, 49);
-			panel.setLayout(null);
-			panel.add(getTextField());
-		}
-		return panel;
-	}
-	private JTextField getTextField() {
-		if (textField == null) {
-			textField = new JTextField();
-			textField.setForeground(Color.RED);
-			textField.setBounds(10, 18, 273, 20);
-			textField.setColumns(10);
-		}
-		return textField;
-	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 204, 751, 274);
+			scrollPane.setBounds(10, 184, 751, 266);
 			scrollPane.setViewportView(getTblSiniflar());
 		}
 		return scrollPane;
@@ -192,23 +193,48 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		if (panelArama == null) {
 			panelArama = new JPanel();
 			panelArama.setBorder(new TitledBorder(null, "Arama", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panelArama.setBounds(10, 150, 674, 56);
+			panelArama.setBounds(10, 128, 674, 45);
 			panelArama.setLayout(null);
-			panelArama.add(getTextField_1());
+			panelArama.add(getTxtArama());
 		}
 		return panelArama;
 	}
-	private JTextField getTextField_1() {
-		if (textField_1 == null) {
-			textField_1 = new JTextField();
-			textField_1.setBounds(10, 15, 654, 30);
-			textField_1.setColumns(10);
+	private JTextField getTxtArama() {
+		if (txtArama == null) {
+			txtArama = new JTextField();
+			txtArama.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyReleased(KeyEvent e) {
+					String ara=txtArama.getText().toString();
+					arama(ara);
+				}
+			});
+			txtArama.setBounds(10, 15, 654, 19);
+			txtArama.setColumns(10);
 		}
-		return textField_1;
+		return txtArama;
 	}
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
+			btnSil.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					DbServicessBase<LessonClass> dao=new DbServicessBase<LessonClass>();
+					LessonClass silinecek_sinif=new LessonClass();
+					int row=tblSiniflar.getSelectedRow();
+					silinecek_sinif.setId(Long.valueOf(tblSiniflar.getValueAt(row, 0).toString()));
+					silinecek_sinif.setAdi(tblSiniflar.getValueAt(row, 1).toString());
+					silinecek_sinif.setKapasite(Integer.valueOf(tblSiniflar.getValueAt(row, 3).toString()));
+					silinecek_sinif.setKod(tblSiniflar.getValueAt(row, 2).toString());
+					if (dao.delete(silinecek_sinif)) {
+						lblMesaj.setText("Sýnýf Baþarý ile Silindi");
+						sinifTablosuGöster();
+					}
+					else {
+						lblMesaj.setText("Sýnýf Baþarý ile Silinemedi");
+					}
+				}
+			});
 			btnSil.setBounds(537, 13, 89, 49);
 		}
 		return btnSil;
@@ -216,6 +242,15 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnTemizle() {
 		if (btnTemizle == null) {
 			btnTemizle = new JButton("Temizle");
+			btnTemizle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					txtSinifAdi.setText("");
+					txtSinifKodu.setText("");
+					txtKapasite.setText("");
+					txtArama.setText("");
+					lblMesaj.setText("");
+				}
+			});
 			btnTemizle.setBounds(659, 13, 89, 49);
 		}
 		return btnTemizle;
@@ -223,6 +258,11 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
+			btnIptal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					SinifGoruntuleGuncelleSil.this.dispose();
+				}
+			});
 			btnIptal.setBounds(659, 68, 89, 49);
 		}
 		return btnIptal;
@@ -245,5 +285,13 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 			});
 		}
 		return tblSiniflar;
+	}
+	private JLabel getLblMesaj() {
+		if (lblMesaj == null) {
+			lblMesaj = new JLabel("");
+			lblMesaj.setForeground(Color.RED);
+			lblMesaj.setBounds(10, 450, 751, 28);
+		}
+		return lblMesaj;
 	}
 }
