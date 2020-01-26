@@ -49,6 +49,8 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JButton btnSil;
 	private JButton btnTemizle;
 	private JButton btnIptal;
+	
+	private Long selectedeItemId;
 	public KursGoruntuleGuncelleSil() {
 		initialize();
 	}
@@ -138,7 +140,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					yenikurs.setAdi(txtKursAdi.getText());
 					yenikurs.setFiyat(new BigDecimal(txtFiyat.getText()));
 					yenikurs.setDurum(cmbDurum.getSelectedItem().toString());
-					
+					yenikurs.setId(selectedeItemId);
 					if (dao.update(yenikurs)) {
 						lblMesaj.setText("Kurs Baþarý ile Güncellendi");
 						kursTablosuGoster();
@@ -167,6 +169,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					txtKursAdi.setText(tblKurslar.getValueAt(row, 1).toString());
 					txtFiyat.setText(tblKurslar.getValueAt(row, 2).toString());
 					cmbDurum.setSelectedItem(tblKurslar.getValueAt(row, 3));
+					selectedeItemId = Long.valueOf(tblKurslar.getValueAt(row, 0).toString());
 					
 					
 					
