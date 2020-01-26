@@ -1,4 +1,4 @@
-package com.hokumus.course.project.models.managementscreen;
+package com.hokumus.course.project.ui.managementscreen;
 
 import java.awt.Color;
 import java.awt.Font;
