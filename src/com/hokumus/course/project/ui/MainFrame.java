@@ -1,11 +1,14 @@
 package com.hokumus.course.project.ui;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 	private JButton btnUserMngmt;
@@ -19,7 +22,22 @@ public class MainFrame extends JFrame {
 	private JButton button_7;
 
 	public MainFrame() {
+
 		initialize();
+		
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				JOptionPane.showMessageDialog(MainFrame.this, "Kapandý");
+			}
+		});
+		actionsListener();
+	}
+
+	private void actionsListener() {
+		
+
 	}
 
 	private void initialize() {
@@ -46,23 +64,23 @@ public class MainFrame extends JFrame {
 			btnUserMngmt.setEnabled(false);
 
 			break;
-			
+
 		case TEACHER:
 
 			break;
-			
+
 		case STUDENT:
 
 			break;
-			
+
 		case HUMAN_RESOURCES:
 
 			break;
-			
+
 		case ACCOUNTING:
 
 			break;
-			
+
 		case MANAGER:
 
 			break;
