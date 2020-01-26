@@ -10,6 +10,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JCheckBox;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+
+import java.awt.Checkbox;
 import java.awt.Color;
 
 import javax.swing.DefaultComboBoxModel;
@@ -17,6 +19,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 
 import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.models.management.Days;
 import com.hokumus.course.project.models.management.Groups;
 import com.hokumus.course.project.models.management.LessonClass;
 import com.hokumus.course.project.models.teacher.Teacher;
@@ -121,8 +124,55 @@ public class GrupAcmaEkrani extends JFrame {
 		System.out.println(3);
 	}
 	
+	public void gunSecimi() {
+		Days gun=new Days();
+
+		List<Days> gunler;
+		if (chckbxPazartesi.isSelected()) {
+			gun.setGun1(1);
+		}
+		else {
+			gun.setGun1(0);
+		}
+		if (chckbxSali.isSelected()) {
+			gun.setGun2(1);
+		}
+		else {
+			gun.setGun2(0);
+		}
+		if (chckbxCarsamba.isSelected()) {
+			gun.setGun3(1);
+		}
+		else {
+			gun.setGun3(0);
+		}
+		if (chckbxPersembe.isSelected()) {
+			gun.setGun4(1);
+		}
+		else {
+			gun.setGun4(0);
+		}
+		if (chckbxCuma.isSelected()) {
+			gun.setGun5(1);
+		}
+		else {
+			gun.setGun5(0);
+		}
+		if (chckbxCumartesi.isSelected()) {
+			gun.setGun6(1);
+		}
+		else {
+			gun.setGun6(0);
+		}
+		if (chckbxPazar.isSelected()) {
+			gun.setGun7(1);
+		}
+		else {
+			gun.setGun7(0);
+		}
 	
-	
+
+	}
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
 			lblKursAd = new JLabel("Kurs Ad\u0131:");
@@ -291,6 +341,14 @@ public class GrupAcmaEkrani extends JFrame {
 	private JButton getBtnKaydet() {
 		if (btnKaydet == null) {
 			btnKaydet = new JButton("Kaydet");
+			btnKaydet.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Groups yenigrup=new Groups();
+					
+					//yenigrup.setCourses(cmbKursAdi.getSelectedItem().toString());
+					yenigrup.setAdi(txtGrupAdi.getText());
+				}
+			});
 			btnKaydet.setBounds(537, 61, 108, 38);
 		}
 		return btnKaydet;
@@ -350,6 +408,28 @@ public class GrupAcmaEkrani extends JFrame {
 	private JDateChooser getDateBitisTrh() {
 		if (dateBitisTrh == null) {
 			dateBitisTrh = new JDateChooser();
+			dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+			dateBitisTrh.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateBitisTrh.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+						String gun = sdf.format(dateBitisTrh.getDate());
+						JOptionPane.showMessageDialog(GrupAcmaEkrani.this, gun);
+
+					}
+
+				}
+			});
+			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(GrupAcmaEkrani.this, dateBitisTrh.getDateFormatString());
+				}
+			});
 			dateBitisTrh.setBounds(513, 332, 105, 22);
 		}
 		return dateBitisTrh;
