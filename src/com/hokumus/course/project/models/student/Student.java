@@ -8,9 +8,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hokumus.course.project.models.CourseUsers;
 import com.hokumus.course.project.models.GenderEnums;
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.models.base.BaseEntity;
@@ -28,7 +31,7 @@ public class Student extends BaseEntity{
     private String mail;
     private Date kayitTarihi;
     private GenderEnums cinsiyet;
-    private UserRoleTypes rol;
+    private CourseUsers userId;
 
    
 
@@ -107,19 +110,17 @@ public class Student extends BaseEntity{
         this.cinsiyet = cinsiyet;
     }
     
-    @Enumerated
-	@Column(name="rol_id")
-    public UserRoleTypes getRol() {
-		return rol;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public CourseUsers getUserId() {
+		return userId;
 	}
 
-	public void setRol(UserRoleTypes rol) {
-		this.rol = rol;
+	public void setUserId(CourseUsers userId) {
+		this.userId = userId;
 	}
-    
-    
 
-    @Override
+	@Override
     public String toString() {
         return  "adi = "+ad+ " soyadý = "+soyad+ " id = "+id;
     }

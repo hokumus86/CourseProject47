@@ -11,6 +11,8 @@ import javax.swing.JCheckBox;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.Font;
 
@@ -57,6 +59,10 @@ public class GrupAcmaEkrani extends JFrame {
 	private JButton btnTemizle;
 	private JDateChooser dateBaslamaTrh;
 	private JDateChooser dateBitisTrh;
+	private JLabel lblSaat;
+	private JComboBox comboBox;
+	private JLabel lblMesaj;
+	private JCheckBox chckbxPazar;
 
 	public GrupAcmaEkrani() {
 		initialize();
@@ -87,20 +93,35 @@ public class GrupAcmaEkrani extends JFrame {
 		getContentPane().add(getLblSaat());
 		getContentPane().add(getComboBox());
 		getContentPane().add(getLblMesaj());
+		
+		
+		System.out.println(1);
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+				DbServicessBase<LessonClass> dao1=new DbServicessBase<LessonClass>();
+				DbServicessBase<Teacher> dao2=new DbServicessBase<Teacher>();
+				List<Teacher> ogretmenler=dao2.getAllRows(new Teacher());
+				List<LessonClass> siniflar=dao1.getAllRows(new LessonClass());
+				List<Courses> kurslar=dao.getAllRows(new Courses());
+				DefaultComboBoxModel model = new DefaultComboBoxModel(kurslar.toArray());		
+				cmbKursAdi.setModel(model);
+				model = new DefaultComboBoxModel(siniflar.toArray());		
+				cmbSinif.setModel(model);
+				model = new DefaultComboBoxModel(ogretmenler.toArray());		
+				cmbOgretmen.setModel(model);
+				System.out.println(2);
+				
+			}
+		});
+		t.start();
+		
+		System.out.println(3);
 	}
-	DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
-	DbServicessBase<LessonClass> dao1=new DbServicessBase<LessonClass>();
-	DbServicessBase<Teacher> dao2=new DbServicessBase<Teacher>();
-	Teacher ogretmen=new Teacher();
-	LessonClass sinif=new LessonClass();
-	Courses kurs=new Courses();
-	List<Teacher> ogretmenler=dao2.getAllRows(ogretmen);
-	List<LessonClass> siniflar=dao1.getAllRows(sinif);
-	List<Courses> kurslar=dao.getAllRows(kurs);
-	private JLabel lblSaat;
-	private JComboBox comboBox;
-	private JLabel lblMesaj;
-	private JCheckBox chckbxPazar;
+	
+	
 	
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
@@ -113,10 +134,6 @@ public class GrupAcmaEkrani extends JFrame {
 	private JComboBox getCmbKursAdi() {
 		if (cmbKursAdi == null) {
 			cmbKursAdi = new JComboBox();
-			for (int i = 0; i < kurslar.size(); i++) {
-				cmbKursAdi.addItem(kurslar.get(i).getAdi());
-			}
-			
 			cmbKursAdi.setToolTipText("");
 			cmbKursAdi.setBounds(157, 62, 119, 20);
 		}
@@ -151,9 +168,6 @@ public class GrupAcmaEkrani extends JFrame {
 	private JComboBox getCmbOgretmen() {
 		if (cmbOgretmen == null) {
 			cmbOgretmen = new JComboBox();
-			for (int i = 0; i <ogretmenler.size(); i++) {
-				cmbOgretmen.addItem(ogretmenler.get(i).getAd()+" "+ogretmenler.get(i).getSoyad());
-			}
 			cmbOgretmen.setBounds(157, 171, 119, 20);
 		}
 		return cmbOgretmen;
@@ -186,11 +200,7 @@ public class GrupAcmaEkrani extends JFrame {
 
 	private JComboBox getCmbSinif() {
 		if (cmbSinif == null) {
-			cmbSinif = new JComboBox();
-			for (int i = 0; i <siniflar.size(); i++) {
-				cmbSinif.addItem(siniflar.get(i).getAdi());
-			}
-			
+			cmbSinif = new JComboBox();			
 			cmbSinif.setBounds(157, 302, 119, 20);
 		}
 		return cmbSinif;
