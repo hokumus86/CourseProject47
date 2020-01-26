@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
 import com.hokumus.course.project.ui.accounting2.Main;
+import com.hokumus.course.project.ui.managementscreen.ManagementScreen;
 import com.hokumus.course.project.ui.student.AddUsers;
-import com.hokumus.course.project.models.managementscreen.ManagementScreen;
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
