@@ -1,6 +1,7 @@
 package com.hokumus.course.project.ui;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
@@ -11,7 +12,10 @@ import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowStateListener;
 
 public class MainFrameKatakulle extends JFrame {
 	private JButton btnUserMngmt;
@@ -23,8 +27,11 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton button_5;
 	private JButton btnMuhasebeMod2;
 	private JButton button_7;
+	
+	private boolean closingOpr=false;
 
 	public MainFrameKatakulle() {
+		
 		initialize();
 	}
 
@@ -82,6 +89,14 @@ public class MainFrameKatakulle extends JFrame {
 		}
 
 	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		if(!closingOpr)
+			new LoginFrame().setVisible(true);
+		
+	}
 
 	private JButton getBtnUserMngmt() {
 		if (btnUserMngmt == null) {
@@ -98,6 +113,8 @@ public class MainFrameKatakulle extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					AddUsers frame = new AddUsers();
 					frame.setVisible(true);
+					closingOpr=true;
+					dispose();
 				}
 			});
 			btnTanmlamaModl.setBounds(325, 13, 239, 128);
@@ -110,8 +127,10 @@ public class MainFrameKatakulle extends JFrame {
 			btnYnetimModl = new JButton("Y\u00F6netim Mod\u00FCl\u00FC");
 			btnYnetimModl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					MainFrameKatakulle.this.dispose();
 					new ManagementScreen().setVisible(true);
+					closingOpr= true;
+					MainFrameKatakulle.this.dispose();
+					
 				}
 			});
 			btnYnetimModl.setBounds(580, 13, 239, 128);
