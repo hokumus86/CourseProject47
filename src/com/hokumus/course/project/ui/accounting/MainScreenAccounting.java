@@ -25,15 +25,15 @@ public class MainScreenAccounting extends JFrame{
 		btnIncome.setBounds(10, 63, 171, 123);
 		getContentPane().add(btnIncome);
 		
-		JButton btnExpense = new JButton("Giderleri G\u00F6r!");
-		btnExpense.addActionListener(new ActionListener() {
+		JButton btnExpenses = new JButton("HARCAMALAR");
+		btnExpenses.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ExpenseScreen().setVisible(true);
 			}
 		});
-		btnExpense.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnExpense.setBounds(303, 63, 171, 123);
-		getContentPane().add(btnExpense);
+		btnExpenses.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnExpenses.setBounds(303, 63, 171, 123);
+		getContentPane().add(btnExpenses);
 		
 		JButton btnGenelAnaliz = new JButton("Genel Analiz!");
 		btnGenelAnaliz.setFont(new Font("Tahoma", Font.PLAIN, 16));

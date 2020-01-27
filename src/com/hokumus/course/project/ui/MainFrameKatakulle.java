@@ -181,6 +181,9 @@ public class MainFrameKatakulle extends JFrame {
 			btnMuhasebeMod2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new Main().setVisible(true);
+					
+					
+					
 				}
 			});
 			btnMuhasebeMod2.setBounds(325, 338, 239, 128);
