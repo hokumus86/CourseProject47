@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,14 +14,18 @@ import java.awt.event.InputMethodListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+
 import javax.swing.JButton;
-import com.hokumus.course.project.models.teacher.Teacher;
+import javax.swing.JPasswordField;
+import com.hokumus.course.project.models.student.Student;
+import com.hokumus.course.project.ui.managementscreen.GrupAcmaEkrani;
 import com.hokumus.course.project.utils.CourseUtils;
-import com.hokumus.course.project.utils.dao.TeacherDAO;
+import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
 
+import jdk.jfr.internal.PrivateAccess;
 
-public class AddTeacher extends JFrame {
+public class AddStudent extends JFrame {
 	
 	private JLabel lblAdi;
 	private JTextField txtAdi;
@@ -38,8 +43,9 @@ public class AddTeacher extends JFrame {
 	private JButton btnIptal;
 	private JLabel lblMesaj;
 	
+	
 
-	public AddTeacher() {
+	public AddStudent() {
 		
 		initialize();
 	}
@@ -66,6 +72,10 @@ public class AddTeacher extends JFrame {
 		getContentPane().add(getBtnKayit());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
+	
+		
+		
+		
 
 	}
 	private JLabel getLblAdi() {
@@ -109,19 +119,15 @@ public class AddTeacher extends JFrame {
 					if (dateKayýtTarihi.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						String gun = sdf.format(dateKayýtTarihi.getDate());
-						JOptionPane.showMessageDialog(AddTeacher.this, gun);
-
+						JOptionPane.showMessageDialog(AddStudent.this, gun);
 					}
-
 				}
 			});
-			dateKayýtTarihi.addInputMethodListener(new InputMethodListener() {
+			    dateKayýtTarihi.addInputMethodListener(new InputMethodListener() {
 				public void caretPositionChanged(InputMethodEvent event) {
 				}
-
 				public void inputMethodTextChanged(InputMethodEvent event) {
 					dateKayýtTarihi.setDateFormatString("dd/MM/yyyy");
-					
 				}
 			});
 			dateKayýtTarihi.setBounds(346, 90, 144, 22);
@@ -189,14 +195,14 @@ public class AddTeacher extends JFrame {
 			btnKayit = new JButton("Kaydet");
 			btnKayit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					TeacherDAO teacherdao = new TeacherDAO();
-					Teacher teacher = new Teacher();
-					teacher.setAd(txtAdi.getText());
-					teacher.setSoyad(txtSoyadi.getText());
-					teacher.setMail(txtEmail.getText());
-					teacher.setAdres(txtAdres.getText());
-					teacher.setTel(txtTelNo.getText());
-					if (teacherdao.save(teacher)) {
+					StudentDAO studentdao = new StudentDAO();
+					Student student = new Student();
+					student.setAd(txtAdi.getText());
+					student.setSoyad(txtSoyadi.getText());
+					student.setMail(txtEmail.getText());
+					student.setAdres(txtAdres.getText());
+					student.setTel(txtTelNo.getText());
+					if (studentdao.save(student)) {
 						lblMesaj.setText("Kayýt Baþarýlý..!");
 						
 					} else
@@ -213,7 +219,7 @@ public class AddTeacher extends JFrame {
 			btnIptal = new JButton("\u0130ptal");
 			btnIptal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddTeacher.this.dispose();
+					AddStudent.this.dispose();
 				}
 			});
 			btnIptal.setFont(new Font("Arial", Font.BOLD, 12));

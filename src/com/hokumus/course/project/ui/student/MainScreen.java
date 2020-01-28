@@ -77,7 +77,7 @@ public class MainScreen extends JFrame{
 			mnOgrenciEkle = new JMenuItem("\u00D6\u011Frenci Ekle");
 			mnOgrenciEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new AddUsers().setVisible(true);
+					new AddStudent().setVisible(true);
 				}
 			});
 		}
@@ -88,7 +88,7 @@ public class MainScreen extends JFrame{
 			mnýtmOgrenciGüncelleSil = new JMenuItem("\u00D6\u011Frenci G\u00FCncelle");
 			mnýtmOgrenciGüncelleSil.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new AddAction().setVisible(true);
+					new ActionStudent().setVisible(true);
 				}
 			});
 		}
@@ -110,7 +110,7 @@ public class MainScreen extends JFrame{
 			mnOgretmenGüncellesil = new JMenuItem("\u00D6\u011Fretmen G\u00FCncelle");
 			mnOgretmenGüncellesil.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new AddAction().setVisible(true);
+					new ActionTeacher().setVisible(true);
 				}
 			});
 		}
@@ -132,7 +132,7 @@ public class MainScreen extends JFrame{
 			mnGüncelle = new JMenuItem("G\u00FCncelle");
 			mnGüncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new AddAction().setVisible(true);
+					new ActionInventory().setVisible(true);
 				}
 			});
 		}

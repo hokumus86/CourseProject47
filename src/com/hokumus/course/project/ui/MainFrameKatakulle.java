@@ -7,7 +7,8 @@ import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
 import com.hokumus.course.project.ui.accounting2.Main;
 import com.hokumus.course.project.ui.managementscreen.ManagementScreen;
-import com.hokumus.course.project.ui.student.AddUsers;
+import com.hokumus.course.project.ui.student.AddStudent;
+import com.hokumus.course.project.ui.student.MainScreen;
 import com.hokumus.course.project.utils.CourseUtils;
 
 import javax.swing.JButton;
@@ -111,7 +112,7 @@ public class MainFrameKatakulle extends JFrame {
 			btnTanmlamaModl = new JButton("Tan\u0131mlama Mod\u00FCl\u00FC");
 			btnTanmlamaModl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddUsers frame = new AddUsers();
+					MainScreen frame = new MainScreen();
 					frame.setVisible(true);
 					closingOpr=true;
 					dispose();
