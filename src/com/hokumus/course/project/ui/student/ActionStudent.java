@@ -24,7 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ActionStudent extends JFrame { 
-
+  
 	private JTable table;
 	private JTextField txtEmail;
 	private JTextField txtAdi;

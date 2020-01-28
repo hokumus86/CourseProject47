@@ -19,7 +19,6 @@ import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.TeacherDAO;
 import com.toedter.calendar.JDateChooser;
 
-
 public class AddTeacher extends JFrame {
 	
 	private JLabel lblAdi;

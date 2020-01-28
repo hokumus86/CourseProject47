@@ -9,7 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import com.hokumus.course.project.ui.MainFrameKatakulle;
 import com.hokumus.course.project.utils.CourseUtils;
-
+  
 public class MainScreen extends JFrame{
 	private JMenuBar menuBar;
 	private JMenu mnOgrenciIslemleri;

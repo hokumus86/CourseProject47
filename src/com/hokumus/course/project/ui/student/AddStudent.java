@@ -26,7 +26,7 @@ import com.toedter.calendar.JDateChooser;
 import jdk.jfr.internal.PrivateAccess;
 
 public class AddStudent extends JFrame {
-	
+	  
 	private JLabel lblAdi;
 	private JTextField txtAdi;
 	private JLabel lblSoyadi;

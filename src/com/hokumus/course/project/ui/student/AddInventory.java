@@ -15,7 +15,7 @@ import com.hokumus.course.project.utils.dao.InventoryDAO;
 import com.toedter.calendar.JDateChooser;
 
 public class AddInventory extends JFrame {
-
+  
 	private JLabel lblTanim;
 	private JTextField txtTanim;
 	private JDateChooser dateBaslangýc;

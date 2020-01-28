@@ -5,3 +5,4 @@ import com.hokumus.course.project.models.student.Student;
 public class StudentDAO extends DbServicessBase<Student> {
 
 }
+  
