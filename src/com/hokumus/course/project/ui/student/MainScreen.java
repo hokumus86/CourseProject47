@@ -131,7 +131,7 @@ public class MainScreen extends JFrame{
 			mnGüncelle = new JMenuItem("G\u00FCncelle");
 			mnGüncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					new ActionInventory().setVisible(true);
+					
 				}
 			});
 		}
