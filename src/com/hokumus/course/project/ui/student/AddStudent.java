@@ -204,7 +204,6 @@ public class AddStudent extends JFrame {
 					student.setTel(txtTelNo.getText());
 					if (studentdao.save(student)) {
 						lblMesaj.setText("Kayýt Baþarýlý..!");
-						
 					} else
 						lblMesaj.setText("Kayýt Baþarýsýz..!");
 				}

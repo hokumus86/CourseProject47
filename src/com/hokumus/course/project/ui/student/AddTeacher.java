@@ -198,7 +198,6 @@ public class AddTeacher extends JFrame {
 					teacher.setTel(txtTelNo.getText());
 					if (teacherdao.save(teacher)) {
 						lblMesaj.setText("Kayýt Baþarýlý..!");
-						
 					} else
 						lblMesaj.setText("Kayýt Baþarýsýz..!");
 				}

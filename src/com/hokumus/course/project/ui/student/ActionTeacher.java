@@ -35,7 +35,6 @@ public class ActionTeacher extends JFrame {
 	public ActionTeacher() {
 		intialize();
 	}
-
 	private void intialize() {
 
 		setTitle("GÜNCELLE/SÝL " + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getRole());

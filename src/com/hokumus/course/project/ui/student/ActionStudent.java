@@ -33,7 +33,6 @@ public class ActionStudent extends JFrame {
 	private JLabel lblMesaj;
 	private JTextField txtTelNo;
 
-
 	public ActionStudent() {
 		intialize();
 	}
