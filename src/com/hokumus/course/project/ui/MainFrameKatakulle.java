@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowStateListener;
 
 public class MainFrameKatakulle extends JFrame {
+	
 	private JButton btnUserMngmt;
 	private JButton btnTanmlamaModl;
 	private JButton btnYnetimModl;

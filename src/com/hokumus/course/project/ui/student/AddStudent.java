@@ -42,6 +42,7 @@ public class AddStudent extends JFrame {
 	private JButton btnKayit;
 	private JButton btnIptal;
 	private JLabel lblMesaj;
+	private Long selectedItemId;
 	
 	
 
@@ -197,6 +198,7 @@ public class AddStudent extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					StudentDAO studentdao = new StudentDAO();
 					Student student = new Student();
+					student.setId(selectedItemId);
 					student.setAd(txtAdi.getText());
 					student.setSoyad(txtSoyadi.getText());
 					student.setMail(txtEmail.getText());

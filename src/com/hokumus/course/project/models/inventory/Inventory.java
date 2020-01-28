@@ -1,5 +1,6 @@
 package com.hokumus.course.project.models.inventory;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,13 +21,13 @@ public class Inventory {
 
     private Long id;
     private String tanim;
-    private String aciklama;
     private Boolean garanti;
     private Date garantiBaslamaTarihi;
     private Date garantiBitisTarihi;
-    private Expenses Expenses;
+    private BigDecimal fiyat;
 
-    @Id
+   
+	@Id
     @SequenceGenerator(name = "seq_inventory", allocationSize = 1, sequenceName = "seq_inventory")
     @GeneratedValue(generator = "seq_inventory", strategy = GenerationType.SEQUENCE)
     public Long getId() {
@@ -44,15 +45,6 @@ public class Inventory {
 
     public void setTanim(String tanim) {
         this.tanim = tanim;
-    }
-
-    @Column(name = "description", length = 400)
-    public String getAciklama() {
-        return aciklama;
-    }
-
-    public void setAciklama(String aciklama) {
-        this.aciklama = aciklama;
     }
 
     @Column(name = "warranty")
@@ -84,13 +76,13 @@ public class Inventory {
 
     @ManyToOne
     @JoinColumn(name = "exspense_id")
-    public Expenses getExpenses() {
-        return Expenses;
-    }
+    public BigDecimal getFiyat() {
+		return fiyat;
+	}
 
-    public void setExpenses(Expenses Expenses) {
-        this.Expenses = Expenses;
-    }
+	public void setFiyat(BigDecimal fiyat) {
+		this.fiyat = fiyat;
+	}
 
     @Override
     public String toString() {
