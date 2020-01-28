@@ -32,13 +32,13 @@ public class Purchasing extends JFrame {
 		getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblEsyaYadaMalzemelerin = new JLabel("E\u015Fya yada Malzemelerin fiyat\u0131n\u0131 giriniz.");
-		lblEsyaYadaMalzemelerin.setBounds(246, 34, 228, 21);
-		getContentPane().add(lblEsyaYadaMalzemelerin);
+		JLabel lblEsyamlzmfiyat = new JLabel("E\u015Fya yada Malzemelerin fiyat\u0131n\u0131 giriniz.");
+		lblEsyamlzmfiyat.setBounds(10, 131, 228, 21);
+		getContentPane().add(lblEsyamlzmfiyat);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(246, 88, 170, 20);
+		textField_1.setBounds(27, 188, 170, 20);
 		getContentPane().add(textField_1);
 		
 		JLabel lblMalzeme = new JLabel("Malzeme");
@@ -46,12 +46,24 @@ public class Purchasing extends JFrame {
 		getContentPane().add(lblMalzeme);
 		
 		JLabel lblFiyat = new JLabel("Fiyat");
-		lblFiyat.setBounds(309, 69, 46, 14);
+		lblFiyat.setBounds(85, 163, 46, 14);
 		getContentPane().add(lblFiyat);
 		
-		JButton btnEkle = new JButton("Ekle");
-		btnEkle.setBounds(172, 169, 89, 23);
-		getContentPane().add(btnEkle);
+		JButton btnKaydet = new JButton("Kaydet");
+		btnKaydet.setBounds(10, 351, 89, 23);
+		getContentPane().add(btnKaydet);
+		
+		JButton btnIptal = new JButton("\u0130ptal");
+		btnIptal.setBounds(108, 351, 89, 23);
+		getContentPane().add(btnIptal);
+		
+		JLabel lblEsyamlzmtarih = new JLabel("E\u015Fya yada Malzemenin Tarihini Giriniz.");
+		lblEsyamlzmtarih.setBounds(10, 235, 226, 14);
+		getContentPane().add(lblEsyamlzmtarih);
+		
+		JLabel lblTarih = new JLabel("Tarih");
+		lblTarih.setBounds(85, 269, 46, 14);
+		getContentPane().add(lblTarih);
 		
 	}
 }

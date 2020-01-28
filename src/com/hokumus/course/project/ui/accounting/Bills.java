@@ -32,11 +32,15 @@ public class Bills extends JFrame {
 		lblFaturaKaydet.setBounds(43, 36, 83, 14);
 		getContentPane().add(lblFaturaKaydet);
 		
-		JLabel lblFaturaGrntle = new JLabel("Fatura G\u00F6r\u00FCnt\u00FCle");
-		lblFaturaGrntle.setBounds(287, 36, 108, 14);
+		JLabel lblFaturaGrntle = new JLabel("Faturalar\u0131 G\u00F6r\u00FCnt\u00FCle");
+		lblFaturaGrntle.setBounds(287, 36, 128, 14);
 		getContentPane().add(lblFaturaGrntle);
 		getContentPane().add(getBtnDosyaSec());
 		getContentPane().add(getLblbos());
+		
+		JButton btnGoruntule = new JButton("G\u00F6r\u00FCnt\u00FCle");
+		btnGoruntule.setBounds(287, 88, 89, 23);
+		getContentPane().add(btnGoruntule);
 		
 	}
 	private JButton getBtnDosyaSec() {

@@ -9,6 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 
 
 public class Salary extends JFrame {
@@ -39,7 +40,7 @@ public class Salary extends JFrame {
 		getContentPane().add(lblAylar);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(348, 43, 115, 169);
+		panel.setBounds(348, 43, 115, 161);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -100,8 +101,12 @@ public class Salary extends JFrame {
 		getContentPane().add(comboBoxogrtmnsec);
 		
 		JButton btnHesapla = new JButton("Hesapla");
-		btnHesapla.setBounds(123, 275, 115, 39);
+		btnHesapla.setBounds(130, 164, 115, 39);
 		getContentPane().add(btnHesapla);
+		
+		JScrollPane scrlpnmaastablo = new JScrollPane();
+		scrlpnmaastablo.setBounds(10, 210, 464, 240);
+		getContentPane().add(scrlpnmaastablo);
 		
 	}
 }
