@@ -1,15 +1,24 @@
 package com.hokumus.course.project.ui.accounting;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
+
+import com.hokumus.course.project.models.accounting.Purchasings;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
+import com.toedter.calendar.JDateChooser;
 
 public class Purchasing extends JFrame {
-	private JTextField textField;
-	private JTextField textField_1;
-	
+	private JTextField txtmlzm;
+	private JTextField txtfiyat;
+	private JDateChooser tarih;
 	public Purchasing() {
 		
 	  initialize();
@@ -27,19 +36,19 @@ public class Purchasing extends JFrame {
 		lblSatnAlnanEsya.setBounds(10, 30, 226, 28);
 		getContentPane().add(lblSatnAlnanEsya);
 		
-		textField = new JTextField();
-		textField.setBounds(27, 88, 170, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		txtmlzm = new JTextField();
+		txtmlzm.setBounds(27, 88, 170, 20);
+		getContentPane().add(txtmlzm);
+		txtmlzm.setColumns(10);
 		
 		JLabel lblEsyamlzmfiyat = new JLabel("E\u015Fya yada Malzemelerin fiyat\u0131n\u0131 giriniz.");
 		lblEsyamlzmfiyat.setBounds(10, 131, 228, 21);
 		getContentPane().add(lblEsyamlzmfiyat);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(27, 188, 170, 20);
-		getContentPane().add(textField_1);
+		txtfiyat = new JTextField();
+		txtfiyat.setColumns(10);
+		txtfiyat.setBounds(27, 188, 170, 20);
+		getContentPane().add(txtfiyat);
 		
 		JLabel lblMalzeme = new JLabel("Malzeme");
 		lblMalzeme.setBounds(85, 69, 64, 14);
@@ -50,10 +59,32 @@ public class Purchasing extends JFrame {
 		getContentPane().add(lblFiyat);
 		
 		JButton btnKaydet = new JButton("Kaydet");
+		btnKaydet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DbServicessBase<Purchasings> dao = new DbServicessBase<Purchasings>();
+				Purchasings kaydet = new Purchasings();
+				
+				kaydet.setMalzeme(txtmlzm.getText());
+				kaydet.setFiyat(new BigDecimal(txtfiyat.getText()));
+				kaydet.setTarih(tarih.getDate());
+				
+				if (dao.save(kaydet)) {
+					JOptionPane.showMessageDialog(Purchasing.this, "Kayýt Baþarýlý");
+				}
+				else {
+					JOptionPane.showMessageDialog(Purchasing.this, "Kayýt Baþarýsýz");
+				}		
+			}
+		});
 		btnKaydet.setBounds(10, 351, 89, 23);
 		getContentPane().add(btnKaydet);
 		
 		JButton btnIptal = new JButton("\u0130ptal");
+		btnIptal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Purchasing.this.dispose();
+			}
+		});
 		btnIptal.setBounds(108, 351, 89, 23);
 		getContentPane().add(btnIptal);
 		
@@ -65,5 +96,9 @@ public class Purchasing extends JFrame {
 		lblTarih.setBounds(85, 269, 46, 14);
 		getContentPane().add(lblTarih);
 		
+		tarih = new JDateChooser();
+		tarih.setBounds(27, 294, 170, 20);
+		getContentPane().add(tarih);
+
 	}
 }

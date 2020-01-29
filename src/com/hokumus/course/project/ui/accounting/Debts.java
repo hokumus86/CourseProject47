@@ -1,15 +1,24 @@
 package com.hokumus.course.project.ui.accounting;
 
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import java.awt.Font;
-import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+import com.hokumus.course.project.models.accounting.Debt;
+import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
+import com.hokumus.course.project.utils.dao.DebtsDAO;
 
 public class Debts extends JFrame {
 	private JTextField txtisim;
@@ -127,15 +136,47 @@ public class Debts extends JFrame {
 		txtkalan.setColumns(10);
 		
 		JButton btnKaydet = new JButton("Kaydet");
+		btnKaydet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DbServicessBase<Debt> dao=new DbServicessBase<Debt>();
+				Debt kaydet=new Debt();
+			
+				kaydet.setAd(txtisim.getText());
+				kaydet.setSoyad(txtsoyad.getText());
+				kaydet.setAlinan(new BigDecimal(txtalinan.getText()));
+				kaydet.setKalan(new BigDecimal(txtkalan.getText()));
+				
+				if (dao.save(kaydet)) {
+					JOptionPane.showMessageDialog(Debts.this, "Kaydetme Baþarýlý");
+				}
+				else {
+					JOptionPane.showMessageDialog(Debts.this, "Kaydetme Baþarýsýz");
+				}
+			}
+		});
 		btnKaydet.setBounds(342, 26, 89, 23);
 		getContentPane().add(btnKaydet);
 		
-		JButton btnDzelt = new JButton("D\u00FCzelt");
-		btnDzelt.setBounds(342, 75, 89, 23);
-		getContentPane().add(btnDzelt);
+		JButton btntemizle = new JButton("Temizle");
+		btntemizle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtisim.setText("");
+				txtsoyad.setText("");
+				txtalinan.setText("");
+				txtkalan.setText("");
+			}
+		});
+		btntemizle.setBounds(342, 70, 89, 23);
+		getContentPane().add(btntemizle);
 		
 		JButton btnIptal = new JButton("\u0130ptal");
-		btnIptal.setBounds(342, 125, 89, 23);
+		btnIptal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Debts.this.dispose();
+			}
+		});
+		btnIptal.setBounds(342, 113, 89, 23);
 		getContentPane().add(btnIptal);
 		
 		JScrollPane scrollPaneborc = new JScrollPane();
@@ -145,6 +186,29 @@ public class Debts extends JFrame {
 		
 		tableborclar = new JTable();
 		scrollPaneborc.setViewportView(tableborclar);
+		
+		JButton btnGuncelle = new JButton("G\u00FCncelle");
+		btnGuncelle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DbServicessBase<Debt> dao=new DbServicessBase<Debt>();
+				Debt guncelle=new Debt();
+				
+				guncelle.setAd(txtisim.getText());
+				guncelle.setSoyad(txtsoyad.getText());
+				guncelle.setAlinan(new BigDecimal(txtalinan.getText()));
+				guncelle.setKalan(new BigDecimal(txtkalan.getText()));
+				
+				if (dao.update(guncelle)) {
+					JOptionPane.showMessageDialog(Debts.this, "Baþarýyla Güncellendi");
+				}
+				else {
+					JOptionPane.showMessageDialog(Debts.this, "Güncelleme Baþarýz");
+				}
+			}
+		});
+		btnGuncelle.setBounds(342, 155, 89, 23);
+		getContentPane().add(btnGuncelle);
 		
 	}
 }
