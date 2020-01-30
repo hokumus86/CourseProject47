@@ -74,9 +74,24 @@ public class Incomings extends BaseEntity{
 
 
     @Override
-    public String toString() {
-        return  "Gelir id = "+id;
-    }
+	public String toString() {
+		return "Incomings [id=" + id + ", tanim=" + tanim + ", miktar=" + miktar + ", tarih=" + tarih + "]";
+	}
+
+	public void setMiktar(int parseInt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTanim(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTarih(String text) {
+		// TODO Auto-generated method stub
+		
+	}
     
 
     
