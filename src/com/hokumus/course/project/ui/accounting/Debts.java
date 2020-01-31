@@ -4,12 +4,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.hokumus.course.project.models.accounting.Debt;
@@ -22,6 +24,7 @@ public class Debts extends JFrame {
 	private JTextField txtalinan;
 	private JTextField txtkalan;
 	private JDateChooser tarih1;
+	private JButton btnGrntle;
 	
 	public Debts() {
 		
@@ -82,6 +85,8 @@ public class Debts extends JFrame {
 		tarih1 = new JDateChooser();
 		tarih1.setBounds(70, 149, 137, 20);
 		getContentPane().add(tarih1);
+		
+		
 		
 		
 		
@@ -154,10 +159,24 @@ public class Debts extends JFrame {
 		});
 		btnGuncelle.setBounds(279, 324, 85, 23);
 		getContentPane().add(btnGuncelle);
+		getContentPane().add(getBtnGrntle());
 		
 		
 		
 	}
-	
-	
+	private JButton getBtnGrntle() {
+		if (btnGrntle == null) {
+			btnGrntle = new JButton("G\u00F6r\u00FCnt\u00FCle");
+			btnGrntle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					new Viewdebt().setVisible(true);
+					
+					
+				}
+			});
+			btnGrntle.setBounds(170, 274, 89, 23);
+		}
+		return btnGrntle;
+	}
 }

@@ -3,21 +3,52 @@ package com.hokumus.course.project.ui.accounting;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.hokumus.course.project.utils.dao.DbServicessBase;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Bills extends JFrame {
 	private JButton btnDosyaSec;
 	private JLabel lblbos;
-
+	private ArrayList<Integer> faturalar = new ArrayList<Integer>();
+	private JTable table;
+	private void goruntule() {
+		
+		
+	}
+	public static void oku() {
+		
+		try {
+			FileInputStream fis = new FileInputStream("file.pdf");
+					
+			
+			int oku;
+			while ((oku = fis.read()) !=-1) {
+			
+			
+				
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("dosya bulunamadý.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	      
 	public Bills() {
 		
@@ -26,23 +57,7 @@ public class Bills extends JFrame {
 		
 	}
 
-	private void insertpdf() {
-		
-		DbServicessBase<Bills> bil = new DbServicessBase<Bills>();
-		Bills kaydet = new Bills();
-			
-		kaydet.getBtnDosyaSec().getText();
-		
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("dosya.txt");
-		} catch (FileNotFoundException e) {
-			System.out.println("dosya bulunamadý.");
-			e.printStackTrace();
-		}
-		
-		
-	}
+
 
 	private void initialize() {
 		setTitle("FATURALAR");
@@ -53,28 +68,39 @@ public class Bills extends JFrame {
 		JLabel lblFaturaKaydet = new JLabel("Fatura Se\u00E7iniz");
 		lblFaturaKaydet.setBounds(43, 36, 83, 14);
 		getContentPane().add(lblFaturaKaydet);
-		
-		JLabel lblFaturaGrntle = new JLabel("Faturalar\u0131 G\u00F6r\u00FCnt\u00FCle");
-		lblFaturaGrntle.setBounds(287, 36, 128, 14);
-		getContentPane().add(lblFaturaGrntle);
 		getContentPane().add(getBtnDosyaSec());
 		getContentPane().add(getLblbos());
 		
-		JButton btnGoruntule = new JButton("G\u00F6r\u00FCnt\u00FCle");
+		JButton btnGoruntule = new JButton("G\u00FCncelle");
+		btnGoruntule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
 		btnGoruntule.setBounds(287, 88, 89, 23);
 		getContentPane().add(btnGoruntule);
 		
-		JButton btnKaydet = new JButton("kaydet");
+		JButton btnKaydet = new JButton("Kaydet");
 		btnKaydet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				
-				insertpdf();
+				
+				
 			}
 		});
-		btnKaydet.setBounds(43, 167, 89, 23);
+		btnKaydet.setBounds(174, 88, 89, 23);
 		getContentPane().add(btnKaydet);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 122, 464, 328);
+		getContentPane().add(scrollPane);
+		scrollPane.setViewportView(getTable());
+		
 	}
+	
 	private JButton getBtnDosyaSec() {
 		if (btnDosyaSec == null) {
 			btnDosyaSec = new JButton("Dosya Se\u00E7");
@@ -114,5 +140,24 @@ public class Bills extends JFrame {
 			lblbos.setBounds(43, 61, 152, 14);
 		}
 		return lblbos;
+	}
+	private JTable getTable() {
+		if (table == null) {
+			table = new JTable();
+			table.setModel(new DefaultTableModel(new Object[][] {}, 
+					new String[] { "ID", "FATURALAR", }) {
+			});
+
+			
+
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.addRow(new Object[] {  });
+
+			table.getColumnModel().getColumn(1).setPreferredWidth(100);
+			table.getColumnModel().getColumn(2).setPreferredWidth(100);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+		return table;
+		}
+		return table;
 	}
 }

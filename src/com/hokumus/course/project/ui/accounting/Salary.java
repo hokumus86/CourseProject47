@@ -1,11 +1,15 @@
 package com.hokumus.course.project.ui.accounting;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import com.hokumus.course.project.utils.dao.DbServicessBase;
 import com.toedter.calendar.JDateChooser;
 
 
@@ -41,13 +45,21 @@ public class Salary extends JFrame {
 		comboBoxogrtmnsec.setBounds(10, 53, 147, 31);
 		getContentPane().add(comboBoxogrtmnsec);
 		
-		JButton btnHesapla = new JButton("Hesapla");
-		btnHesapla.setBounds(180, 160, 115, 39);
-		getContentPane().add(btnHesapla);
+		JButton btnKaydet = new JButton("Kaydet");
+		btnKaydet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
+		btnKaydet.setBounds(180, 160, 115, 39);
+		getContentPane().add(btnKaydet);
 		
 		JScrollPane scrlpnmaastablo = new JScrollPane();
 		scrlpnmaastablo.setBounds(10, 210, 464, 240);
 		getContentPane().add(scrlpnmaastablo);
+		scrlpnmaastablo.setLayout(null);
 		
 		tarih2 = new JDateChooser();
 		tarih2.setBounds(344, 53, 130, 20);
