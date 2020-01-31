@@ -3,11 +3,13 @@ package com.hokumus.course.project.ui.managementscreen;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -15,13 +17,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.hokumus.course.project.models.management.Courses;
+import com.hokumus.course.project.models.management.Days;
+import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
 
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 
-public class GrupGoruntuleGuncelleSil extends JFrame{
+public class GrupIslemleri extends JFrame{
 	private JLabel lblKursAd;
 	private JComboBox cmbKursAdi;
 	private JLabel lblGrupAd;
@@ -33,10 +47,8 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JLabel lblSnf;
 	private JComboBox cmbSinif;
 	private JLabel lblBalamaTarihi;
-	private JTextField txtBaslamaTarihi;
 	private JLabel lblBitiTarihi;
-	private JTextField txtBitisTarihi;
-	private JPanel panel;
+	private JPanel panelGun;
 	private JCheckBox chckbxPazartesi;
 	private JCheckBox chckbxSali;
 	private JCheckBox chckbxCarsamba;
@@ -45,8 +57,6 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JCheckBox chckbxCumartesi;
 	private JButton btnGuncelle;
 	private JButton btnIptal;
-	private JTextField txtMesaj;
-	private JPanel panel_1;
 	private JButton btnSil;
 	private JLabel lblSaat;
 	private JComboBox cmbSaat;
@@ -56,14 +66,19 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JPanel panel_2;
 	private JButton btnTemizle;
 	private JCheckBox chckbxPazar;
-	public GrupGoruntuleGuncelleSil() {
+	private JLabel txtMesaj;
+	private JDateChooser dateBaslamaTrh;
+	private JDateChooser dateBitisTrh;
+	private JButton btnYeniGrupA;
+	public GrupIslemleri() {
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("Grup G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil  -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
-		setBounds(300, 3, 940, 731);
+		setBounds(300, 3, 940, 673);
 		getContentPane().setLayout(null);
+		getContentPane().setName("Grup Ýþlemleri");
 		getContentPane().add(getLblKursAd());
 		getContentPane().add(getCmbKursAdi());
 		getContentPane().add(getLblGrupAd());
@@ -75,19 +90,89 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 		getContentPane().add(getLblSnf());
 		getContentPane().add(getCmbSinif());
 		getContentPane().add(getLblBalamaTarihi());
-		getContentPane().add(getTxtBaslamaTarihi());
 		getContentPane().add(getLblBitiTarihi());
-		getContentPane().add(getTxtBitisTarihi());
-		getContentPane().add(getPanel());
+		getContentPane().add(getPanelGun());
 		getContentPane().add(getBtnGuncelle());
 		getContentPane().add(getBtnIptal());
-		getContentPane().add(getPanel_1());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getLblSaat());
 		getContentPane().add(getCmbSaat());
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getPanel_2());
 		getContentPane().add(getBtnTemizle());
+		getContentPane().add(getTxtMesaj());
+		getContentPane().add(getDateBaslamaTrh());
+		getContentPane().add(getDateBitisTrh());
+		getContentPane().add(getBtnYeniGrupA());
+		
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+				DbServicessBase<LessonClass> dao1=new DbServicessBase<LessonClass>();
+				DbServicessBase<Teacher> dao2=new DbServicessBase<Teacher>();
+				List<Teacher> ogretmenler=dao2.getAllRows(new Teacher());
+				List<LessonClass> siniflar=dao1.getAllRows(new LessonClass());
+				List<Courses> kurslar=dao.getAllRows(new Courses());
+				DefaultComboBoxModel model = new DefaultComboBoxModel(kurslar.toArray());		
+				cmbKursAdi.setModel(model);
+				model = new DefaultComboBoxModel(siniflar.toArray());		
+				cmbSinif.setModel(model);
+				model = new DefaultComboBoxModel(ogretmenler.toArray());		
+				cmbOgretmen.setModel(model);
+				
+				
+			}
+		});
+		t.start();
+	}
+	public void gunSecimi() {
+		Days gun=new Days();
+
+		List<Days> gunler;
+		if (chckbxPazartesi.isSelected()) {
+			gun.setGun1(1);
+		}
+		else {
+			gun.setGun1(0);
+		}
+		if (chckbxSali.isSelected()) {
+			gun.setGun2(1);
+		}
+		else {
+			gun.setGun2(0);
+		}
+		if (chckbxCarsamba.isSelected()) {
+			gun.setGun3(1);
+		}
+		else {
+			gun.setGun3(0);
+		}
+		if (chckbxPersembe.isSelected()) {
+			gun.setGun4(1);
+		}
+		else {
+			gun.setGun4(0);
+		}
+		if (chckbxCuma.isSelected()) {
+			gun.setGun5(1);
+		}
+		else {
+			gun.setGun5(0);
+		}
+		if (chckbxCumartesi.isSelected()) {
+			gun.setGun6(1);
+		}
+		else {
+			gun.setGun6(0);
+		}
+		if (chckbxPazar.isSelected()) {
+			gun.setGun7(1);
+		}
+		else {
+			gun.setGun7(0);
+		}
 	}
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
@@ -169,14 +254,6 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 		}
 		return lblBalamaTarihi;
 	}
-	private JTextField getTxtBaslamaTarihi() {
-		if (txtBaslamaTarihi == null) {
-			txtBaslamaTarihi = new JTextField();
-			txtBaslamaTarihi.setColumns(10);
-			txtBaslamaTarihi.setBounds(286, 62, 116, 20);
-		}
-		return txtBaslamaTarihi;
-	}
 	private JLabel getLblBitiTarihi() {
 		if (lblBitiTarihi == null) {
 			lblBitiTarihi = new JLabel("Biti\u015F Tarihi:");
@@ -184,29 +261,21 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 		}
 		return lblBitiTarihi;
 	}
-	private JTextField getTxtBitisTarihi() {
-		if (txtBitisTarihi == null) {
-			txtBitisTarihi = new JTextField();
-			txtBitisTarihi.setColumns(10);
-			txtBitisTarihi.setBounds(289, 137, 116, 20);
+	private JPanel getPanelGun() {
+		if (panelGun == null) {
+			panelGun = new JPanel();
+			panelGun.setBorder(new TitledBorder(null, "G\u00FCn Se\u00E7imi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			panelGun.setBounds(402, 37, 168, 217);
+			panelGun.setLayout(null);
+			panelGun.add(getChckbxPazartesi());
+			panelGun.add(getChckbxSali());
+			panelGun.add(getChckbxCarsamba());
+			panelGun.add(getChckbxPersembe());
+			panelGun.add(getChckbxCuma());
+			panelGun.add(getChckbxCumartesi());
+			panelGun.add(getChckbxPazar());
 		}
-		return txtBitisTarihi;
-	}
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "G\u00FCn Se\u00E7imi", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(426, 27, 168, 217);
-			panel.setLayout(null);
-			panel.add(getChckbxPazartesi());
-			panel.add(getChckbxSali());
-			panel.add(getChckbxCarsamba());
-			panel.add(getChckbxPersembe());
-			panel.add(getChckbxCuma());
-			panel.add(getChckbxCumartesi());
-			panel.add(getChckbxPazar());
-		}
-		return panel;
+		return panelGun;
 	}
 	private JCheckBox getChckbxPazartesi() {
 		if (chckbxPazartesi == null) {
@@ -253,7 +322,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton("G\u00FCncelle");
-			btnGuncelle.setBounds(657, 25, 108, 38);
+			btnGuncelle.setBounds(594, 25, 108, 38);
 		}
 		return btnGuncelle;
 	}
@@ -262,37 +331,19 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 			btnIptal = new JButton("\u0130ptal");
 			btnIptal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					GrupGoruntuleGuncelleSil.this.dispose();
+					GrupIslemleri grup=new GrupIslemleri();
+					ManagementScreen manager=new ManagementScreen();
+					manager.getPanelAna().remove(grup);
 				}
 			});
-			btnIptal.setBounds(785, 92, 108, 38);
+			btnIptal.setBounds(734, 95, 108, 38);
 		}
 		return btnIptal;
-	}
-	private JTextField getTxtMesaj() {
-		if (txtMesaj == null) {
-			txtMesaj = new JTextField();
-			txtMesaj.setBounds(10, 23, 283, 23);
-			txtMesaj.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			txtMesaj.setForeground(Color.RED);
-			txtMesaj.setColumns(10);
-		}
-		return txtMesaj;
-	}
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			panel_1.setBorder(new TitledBorder(null, "Mesaj", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_1.setBounds(611, 171, 303, 57);
-			panel_1.setLayout(null);
-			panel_1.add(getTxtMesaj());
-		}
-		return panel_1;
 	}
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
-			btnSil.setBounds(657, 92, 108, 38);
+			btnSil.setBounds(594, 95, 108, 38);
 		}
 		return btnSil;
 	}
@@ -313,7 +364,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 356, 904, 325);
+			scrollPane.setBounds(10, 301, 832, 284);
 			scrollPane.setViewportView(getTable_1());
 		}
 		return scrollPane;
@@ -350,7 +401,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JTextField getTxtArama() {
 		if (txtArama == null) {
 			txtArama = new JTextField();
-			txtArama.setBounds(10, 19, 841, 33);
+			txtArama.setBounds(10, 24, 801, 20);
 			txtArama.setColumns(10);
 		}
 		return txtArama;
@@ -359,7 +410,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 		if (panel_2 == null) {
 			panel_2 = new JPanel();
 			panel_2.setBorder(new TitledBorder(null, "Arama", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_2.setBounds(10, 287, 872, 63);
+			panel_2.setBounds(17, 252, 825, 55);
 			panel_2.setLayout(null);
 			panel_2.add(getTxtArama());
 		}
@@ -368,7 +419,7 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 	private JButton getBtnTemizle() {
 		if (btnTemizle == null) {
 			btnTemizle = new JButton("Temizle");
-			btnTemizle.setBounds(785, 25, 103, 38);
+			btnTemizle.setBounds(734, 25, 103, 38);
 		}
 		return btnTemizle;
 	}
@@ -378,5 +429,77 @@ public class GrupGoruntuleGuncelleSil extends JFrame{
 			chckbxPazar.setBounds(18, 187, 97, 23);
 		}
 		return chckbxPazar;
+	}
+	private JLabel getTxtMesaj() {
+		if (txtMesaj == null) {
+			txtMesaj = new JLabel("");
+			txtMesaj.setBounds(10, 609, 521, 21);
+		}
+		return txtMesaj;
+	}
+	private JDateChooser getDateBaslamaTrh() {
+		if (dateBaslamaTrh == null) {
+			dateBaslamaTrh = new JDateChooser();
+			dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+			dateBaslamaTrh.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateBaslamaTrh.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+						String gun = sdf.format(dateBaslamaTrh.getDate());
+						JOptionPane.showMessageDialog(GrupIslemleri.this, gun);
+
+					}
+
+				}
+			});
+			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(GrupIslemleri.this, dateBaslamaTrh.getDateFormatString());
+				}
+			});
+			dateBaslamaTrh.setBounds(281, 67, 95, 20);
+		}
+		return dateBaslamaTrh;
+	}
+	private JDateChooser getDateBitisTrh() {
+		if (dateBitisTrh == null) {
+			dateBitisTrh = new JDateChooser();
+			dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+			dateBitisTrh.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateBitisTrh.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+						String gun = sdf.format(dateBitisTrh.getDate());
+						JOptionPane.showMessageDialog(GrupIslemleri.this, gun);
+
+					}
+
+				}
+			});
+			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(GrupIslemleri.this, dateBitisTrh.getDateFormatString());
+				}
+			});
+			dateBitisTrh.setBounds(281, 140, 95, 20);
+		}
+		return dateBitisTrh;
+	}
+	private JButton getBtnYeniGrupA() {
+		if (btnYeniGrupA == null) {
+			btnYeniGrupA = new JButton("Yeni Grup A\u00E7");
+			btnYeniGrupA.setBounds(661, 154, 133, 48);
+		}
+		return btnYeniGrupA;
 	}
 }

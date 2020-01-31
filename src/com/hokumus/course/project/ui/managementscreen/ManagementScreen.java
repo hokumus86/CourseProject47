@@ -11,6 +11,9 @@ import com.hokumus.course.project.utils.CourseUtils;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+import javax.swing.JTabbedPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class ManagementScreen extends JFrame{
@@ -18,13 +21,9 @@ public class ManagementScreen extends JFrame{
 	private JMenu mnKursIlemleri;
 	private JMenu mnGrupIlemleri;
 	private JMenu mnSnfIlemleri;
-	private JMenuItem mnýtmKursAma;
-	private JMenuItem mnýtmKursGncellesil;
-	private JMenuItem mnýtmGrupAma;
-	private JMenuItem mnýtmGrupGncellesil;
-	private JMenuItem mnýtmSnfAma;
-	private JMenuItem mnýtmSnfGncellesil;
 	private JButton btnGeri;
+	private JTabbedPane panelAna;
+	private JMenu mnrenciIlemleri;
 	public ManagementScreen() {
 		
 		initialize();
@@ -35,108 +34,64 @@ public class ManagementScreen extends JFrame{
 		getContentPane().setLayout(null);
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getBtnGeri());
-		setBounds(350, 70, 807, 586);
+		getContentPane().add(getPanelAna());
+		setBounds(350, 70, 904, 725);
 		
 	}
 	private JMenuBar getMenuBar_1() {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
-			menuBar.setBounds(0, 0, 691, 37);
+			menuBar.setBounds(0, 0, 769, 37);
 			menuBar.add(getMnKursIlemleri());
 			menuBar.add(getMnGrupIlemleri());
 			menuBar.add(getMnSnfIlemleri());
+			menuBar.add(getMnrenciIlemleri());
 		}
 		return menuBar;
 	}
 	private JMenu getMnKursIlemleri() {
 		if (mnKursIlemleri == null) {
 			mnKursIlemleri = new JMenu("Kurs \u0130\u015Flemleri");
-			mnKursIlemleri.add(getMnýtmKursAma());
-			mnKursIlemleri.add(getMnýtmKursGncellesil());
+			mnKursIlemleri.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+					panelAna.removeAll();
+					KursIslemleri kurs=new KursIslemleri();
+					panelAna.add(kurs.getContentPane());
+					
+				}
+			});
 		}
 		return mnKursIlemleri;
 	}
 	private JMenu getMnGrupIlemleri() {
 		if (mnGrupIlemleri == null) {
 			mnGrupIlemleri = new JMenu("Grup \u0130\u015Flemleri");
-			mnGrupIlemleri.add(getMnýtmGrupAma());
-			mnGrupIlemleri.add(getMnýtmGrupGncellesil());
+			mnGrupIlemleri.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					panelAna.removeAll();
+					GrupIslemleri grup=new GrupIslemleri();
+					panelAna.add(grup.getContentPane());
+				}
+			});
 		}
 		return mnGrupIlemleri;
 	}
 	private JMenu getMnSnfIlemleri() {
 		if (mnSnfIlemleri == null) {
 			mnSnfIlemleri = new JMenu("S\u0131n\u0131f \u0130\u015Flemleri");
-			mnSnfIlemleri.add(getMnýtmSnfAma());
-			mnSnfIlemleri.add(getMnýtmSnfGncellesil());
+			mnSnfIlemleri.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					panelAna.removeAll();
+					SinifIslemleri sinif=new SinifIslemleri();
+					panelAna.add(sinif.getContentPane());
+				}
+			});
 		}
 		return mnSnfIlemleri;
-	}
-	private JMenuItem getMnýtmKursAma() {
-		if (mnýtmKursAma == null) {
-			mnýtmKursAma = new JMenuItem("Kurs A\u00E7ma");
-			mnýtmKursAma.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new KursAcmaEkrani().setVisible(true);
-				}
-			});
-		}
-		return mnýtmKursAma;
-	}
-	private JMenuItem getMnýtmKursGncellesil() {
-		if (mnýtmKursGncellesil == null) {
-			mnýtmKursGncellesil = new JMenuItem("Kurs G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
-			mnýtmKursGncellesil.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new KursGoruntuleGuncelleSil().setVisible(true);
-				}
-			});
-		}
-		return mnýtmKursGncellesil;
-	}
-	private JMenuItem getMnýtmGrupAma() {
-		if (mnýtmGrupAma == null) {
-			mnýtmGrupAma = new JMenuItem("Grup A\u00E7ma");
-			mnýtmGrupAma.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new GrupAcmaEkrani().setVisible(true);
-				}
-			});
-		}
-		return mnýtmGrupAma;
-	}
-	private JMenuItem getMnýtmGrupGncellesil() {
-		if (mnýtmGrupGncellesil == null) {
-			mnýtmGrupGncellesil = new JMenuItem("Grup G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
-			mnýtmGrupGncellesil.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new GrupGoruntuleGuncelleSil().setVisible(true);
-				}
-			});
-		}
-		return mnýtmGrupGncellesil;
-	}
-	private JMenuItem getMnýtmSnfAma() {
-		if (mnýtmSnfAma == null) {
-			mnýtmSnfAma = new JMenuItem("S\u0131n\u0131f A\u00E7ma");
-			mnýtmSnfAma.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new SinifAcmaEkrani().setVisible(true);
-				}
-			});
-		}
-		return mnýtmSnfAma;
-	}
-	private JMenuItem getMnýtmSnfGncellesil() {
-		if (mnýtmSnfGncellesil == null) {
-			mnýtmSnfGncellesil = new JMenuItem("S\u0131n\u0131f G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil");
-			mnýtmSnfGncellesil.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					new SinifGoruntuleGuncelleSil().setVisible(true);
-				}
-			});
-		}
-		return mnýtmSnfGncellesil;
 	}
 	private JButton getBtnGeri() {
 		if (btnGeri == null) {
@@ -147,8 +102,21 @@ public class ManagementScreen extends JFrame{
 					ManagementScreen.this.dispose();
 				}
 			});
-			btnGeri.setBounds(692, 0, 99, 37);
+			btnGeri.setBounds(779, 0, 99, 37);
 		}
 		return btnGeri;
+	}
+	public  JTabbedPane getPanelAna() {
+		if (panelAna == null) {
+			panelAna = new JTabbedPane(JTabbedPane.TOP);
+			panelAna.setBounds(10, 37, 868, 638);
+		}
+		return panelAna;
+	}
+	private JMenu getMnrenciIlemleri() {
+		if (mnrenciIlemleri == null) {
+			mnrenciIlemleri = new JMenu("\u00D6\u011Frenci \u0130\u015Flemleri");
+		}
+		return mnrenciIlemleri;
 	}
 }

@@ -115,7 +115,7 @@ public class GrupAcmaEkrani extends JFrame {
 				cmbSinif.setModel(model);
 				model = new DefaultComboBoxModel(ogretmenler.toArray());		
 				cmbOgretmen.setModel(model);
-				System.out.println(2);
+				
 				
 			}
 		});
