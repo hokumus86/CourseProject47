@@ -1,24 +1,46 @@
 package com.hokumus.course.project.ui.accounting;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
+import com.hokumus.course.project.utils.dao.DbServicessBase;
 
 public class Bills extends JFrame {
 	private JButton btnDosyaSec;
 	private JLabel lblbos;
-	
+
+	      
 	public Bills() {
 		
 		initialize();
+		
+		
+	}
+
+	private void insertpdf() {
+		
+		DbServicessBase<Bills> bil = new DbServicessBase<Bills>();
+		Bills kaydet = new Bills();
+			
+		kaydet.getBtnDosyaSec().getText();
+		
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("dosya.txt");
+		} catch (FileNotFoundException e) {
+			System.out.println("dosya bulunamadý.");
+			e.printStackTrace();
+		}
+		
 		
 	}
 
@@ -42,6 +64,16 @@ public class Bills extends JFrame {
 		btnGoruntule.setBounds(287, 88, 89, 23);
 		getContentPane().add(btnGoruntule);
 		
+		JButton btnKaydet = new JButton("kaydet");
+		btnKaydet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				insertpdf();
+			}
+		});
+		btnKaydet.setBounds(43, 167, 89, 23);
+		getContentPane().add(btnKaydet);
+		
 	}
 	private JButton getBtnDosyaSec() {
 		if (btnDosyaSec == null) {
@@ -52,16 +84,22 @@ public class Bills extends JFrame {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle("Fatura Seçme Ekraný");
 					fc.setApproveButtonText("Seç");
+					
 					fc.addChoosableFileFilter(new FileNameExtensionFilter("Pdf Belgesi", "pdf"));
+					
 					
 					int result = fc.showOpenDialog(null);
 					if (result == JFileChooser.APPROVE_OPTION) {
 						
 						lblbos.setText(fc.getSelectedFile().getName());
 					}
+				
+				
 					else if (result == JFileChooser.CANCEL_OPTION) {
 						lblbos.setText("Fatura Seçilmedi.");
 					}
+				
+					
 					
 				}
 			});

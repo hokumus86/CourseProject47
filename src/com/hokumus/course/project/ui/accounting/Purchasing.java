@@ -3,7 +3,6 @@ package com.hokumus.course.project.ui.accounting;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +18,7 @@ public class Purchasing extends JFrame {
 	private JTextField txtmlzm;
 	private JTextField txtfiyat;
 	private JDateChooser tarih;
+	
 	public Purchasing() {
 		
 	  initialize();
@@ -31,6 +31,14 @@ public class Purchasing extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(300, 300, 500, 500);
 		getContentPane().setLayout(null);
+		
+		JLabel lblTarih = new JLabel("Tarih");
+		lblTarih.setBounds(85, 269, 46, 14);
+		getContentPane().add(lblTarih);
+		
+		tarih = new JDateChooser();
+		tarih.setBounds(27, 294, 170, 20);
+		getContentPane().add(tarih);
 		
 		JLabel lblSatnAlnanEsya = new JLabel("Sat\u0131n al\u0131nan e\u015Fya ve malzemeleri giriniz.");
 		lblSatnAlnanEsya.setBounds(10, 30, 226, 28);
@@ -92,13 +100,7 @@ public class Purchasing extends JFrame {
 		lblEsyamlzmtarih.setBounds(10, 235, 226, 14);
 		getContentPane().add(lblEsyamlzmtarih);
 		
-		JLabel lblTarih = new JLabel("Tarih");
-		lblTarih.setBounds(85, 269, 46, 14);
-		getContentPane().add(lblTarih);
-		
-		tarih = new JDateChooser();
-		tarih.setBounds(27, 294, 170, 20);
-		getContentPane().add(tarih);
+	
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.hokumus.course.project.models.accounting;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ public class Debt extends BaseEntity{
 	private String soyad;
 	private BigDecimal alinan;
 	private BigDecimal kalan;
+	private Date tarih1;
 	
 	@Id
 	@SequenceGenerator(name = "seq_debt",allocationSize = 1,sequenceName = "seq_debt")
@@ -59,10 +61,21 @@ public class Debt extends BaseEntity{
 	public void setKalan(BigDecimal kalan) {
 		this.kalan = kalan;
 	}
+	public Date getTarih1() {
+		return tarih1;
+	}
+	public void setTarih1(Date tarih1) {
+		this.tarih1 = tarih1;
+	}
 	@Override
 	public String toString() {
-		return "Debts [id=" + id + ", ad=" + ad + ", soyad=" + soyad + ", alinan=" + alinan + ", kalan=" + kalan + "]";
+		return "Debt [id=" + id + ", ad=" + ad + ", soyad=" + soyad + ", alinan=" + alinan + ", kalan=" + kalan
+				+ ", tarih1=" + tarih1 + "]";
 	}
+	
+	
+	
+
 	
 	
 	
