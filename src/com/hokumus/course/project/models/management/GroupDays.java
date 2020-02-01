@@ -40,7 +40,7 @@ public class GroupDays extends BaseEntity{
         this.Groups = Groups;
     }
 
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name = "days_id")
     public Days getDays() {
         return Days;

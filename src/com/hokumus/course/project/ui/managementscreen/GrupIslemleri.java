@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.project.models.management.Courses;
 import com.hokumus.course.project.models.management.Days;
+import com.hokumus.course.project.models.management.Groups;
+import com.hokumus.course.project.models.management.KursSaatleri;
 import com.hokumus.course.project.models.management.LessonClass;
 import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
@@ -30,9 +32,12 @@ import java.awt.event.InputMethodListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class GrupIslemleri extends JFrame{
@@ -61,7 +66,6 @@ public class GrupIslemleri extends JFrame{
 	private JLabel lblSaat;
 	private JComboBox cmbSaat;
 	private JScrollPane scrollPane;
-	private JTable table;
 	private JTextField txtArama;
 	private JPanel panel_2;
 	private JButton btnTemizle;
@@ -70,6 +74,8 @@ public class GrupIslemleri extends JFrame{
 	private JDateChooser dateBaslamaTrh;
 	private JDateChooser dateBitisTrh;
 	private JButton btnYeniGrupA;
+	private JTable tblGruplar;
+	private Long selectedItemId;
 	public GrupIslemleri() {
 		initialize();
 	}
@@ -104,6 +110,7 @@ public class GrupIslemleri extends JFrame{
 		getContentPane().add(getDateBaslamaTrh());
 		getContentPane().add(getDateBitisTrh());
 		getContentPane().add(getBtnYeniGrupA());
+		grupTablosuGoster();
 		
 		Thread t = new Thread(new Runnable() {
 			
@@ -127,12 +134,49 @@ public class GrupIslemleri extends JFrame{
 		});
 		t.start();
 	}
-	public void gunSecimi() {
+	DefaultTableModel model=new DefaultTableModel();
+
+		public void grupTablosuGoster() {
+		
+		
+		DbServicessBase<Groups> dao=new DbServicessBase<Groups>(); 
+		Groups temp=new Groups();
+		
+		List<Groups> grup_listesi=dao.getAllRows(temp);
+		
+		
+		String [] columnNames= {"ID","KURS ADI","GRUP ADI","ÖÐRETMEN","ÖÐ. SAY.","SINIF","GÜN","BAÞ.TAR.","BÝT. TAR."};
+		Object [][] data=new Object [grup_listesi.size()][columnNames.length];
+		
+		
+		for (int i = 0; i < grup_listesi.size(); i++) {
+			
+			data[i][0]=grup_listesi.get(i).getId().toString();
+			data[i][1]=grup_listesi.get(i).getCourses().toString();
+			data[i][2]=grup_listesi.get(i).getAdi().toString();
+			data[i][3]=grup_listesi.get(i).getTeacher();
+			data[i][4]=String.valueOf(grup_listesi.get(i).getOgrenciSayisi());
+			data[i][5]=grup_listesi.get(i).getLessonClass().toString();
+			data[i][6]=grup_listesi.get(i).getDays().getName();
+			data[i][7]=grup_listesi.get(i).getBaslamaTarihi().toString();
+			data[i][8]=grup_listesi.get(i).getBitisTarihi().toString();
+			
+			
+		}
+		
+		model=new DefaultTableModel(data,columnNames);
+		tblGruplar.setModel(model);
+		
+		
+		
+	}
+	public  Days gunSecimi() {
 		Days gun=new Days();
 
 		List<Days> gunler;
 		if (chckbxPazartesi.isSelected()) {
 			gun.setGun1(1);
+			gun.setName("Pazartesi");
 		}
 		else {
 			gun.setGun1(0);
@@ -173,6 +217,7 @@ public class GrupIslemleri extends JFrame{
 		else {
 			gun.setGun7(0);
 		}
+		return gun;
 	}
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
@@ -365,38 +410,9 @@ public class GrupIslemleri extends JFrame{
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
 			scrollPane.setBounds(10, 301, 832, 284);
-			scrollPane.setViewportView(getTable_1());
+			scrollPane.setViewportView(getTblGruplar());
 		}
 		return scrollPane;
-	}
-	private JTable getTable_1() {
-		if (table == null) {
-			table = new JTable();
-			table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"ID", "KURS ADI", "GRUP ADI", "\u00D6\u011ERETMEN", "\u00D6\u011ERENC\u0130 SAYISI", "SINIF", "G\u00DCN", "SAAT", "BA\u015ELANGI\u00C7 TAR\u0130H\u0130", "B\u0130T\u0130\u015E TAR\u0130H\u0130"
-				}
-			) {
-				boolean[] columnEditables = new boolean[] {
-					true, true, true, true, true, true, true, true, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
-			table.getColumnModel().getColumn(1).setPreferredWidth(80);
-			table.getColumnModel().getColumn(2).setPreferredWidth(84);
-			table.getColumnModel().getColumn(3).setPreferredWidth(78);
-			table.getColumnModel().getColumn(4).setPreferredWidth(103);
-			table.getColumnModel().getColumn(5).setPreferredWidth(98);
-			table.getColumnModel().getColumn(6).setPreferredWidth(73);
-			table.getColumnModel().getColumn(7).setPreferredWidth(85);
-			table.getColumnModel().getColumn(8).setPreferredWidth(105);
-			table.getColumnModel().getColumn(9).setPreferredWidth(80);
-		}
-		return table;
 	}
 	private JTextField getTxtArama() {
 		if (txtArama == null) {
@@ -498,8 +514,65 @@ public class GrupIslemleri extends JFrame{
 	private JButton getBtnYeniGrupA() {
 		if (btnYeniGrupA == null) {
 			btnYeniGrupA = new JButton("Yeni Grup A\u00E7");
+			btnYeniGrupA.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					DbServicessBase<Groups> dao=new DbServicessBase<Groups>();
+					Groups yenigrup=new Groups();
+					yenigrup.setCourses((Courses) cmbKursAdi.getSelectedItem());
+					yenigrup.setAdi(txtGrupAdi.getText());
+					yenigrup.setTeacher((Teacher) getCmbOgretmen().getSelectedItem());
+					yenigrup.setLessonClass((LessonClass) cmbSinif.getSelectedItem());
+					yenigrup.setOgrenciSayisi(Integer.valueOf(txtOgrenciSayisi.getText()));
+					yenigrup.setBaslamaTarihi(dateBaslamaTrh.getDate());
+					yenigrup.setBitisTarihi(dateBitisTrh.getDate());
+					//yenigrup.setDays(gunSecimi());
+					
+					if (dao.save(yenigrup)) {
+						txtMesaj.setText("Grup Baþarý ile Oluþturuldu");
+						grupTablosuGoster();
+						
+					}
+					else {
+						txtMesaj.setText("Grup Oluþturulamadý");
+					}
+					
+				}
+			});
 			btnYeniGrupA.setBounds(661, 154, 133, 48);
 		}
 		return btnYeniGrupA;
+	}
+	private JTable getTblGruplar() {
+		if (tblGruplar == null) {
+			tblGruplar = new JTable();
+			tblGruplar.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+					int row=tblGruplar.getSelectedRow();
+					
+					selectedItemId = Long.valueOf(tblGruplar.getValueAt(row, 0).toString());
+					cmbKursAdi.setSelectedItem(tblGruplar.getValueAt(row, 1));
+					txtGrupAdi.setText(tblGruplar.getValueAt(row, 2).toString());
+					cmbOgretmen.setSelectedItem(tblGruplar.getValueAt(row, 3));
+					txtOgrenciSayisi.setText(tblGruplar.getValueAt(row, 4).toString());
+					cmbSinif.setSelectedItem(tblGruplar.getValueAt(row, 5));
+					dateBaslamaTrh.setDate(new Date((long) tblGruplar.getValueAt(row, 7)));
+					dateBitisTrh.setDate(new Date((long) tblGruplar.getValueAt(row, 8)));
+					
+					
+				}
+			});
+			tblGruplar.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						
+					}
+				));
+			
+		}
+		return tblGruplar;
 	}
 }
