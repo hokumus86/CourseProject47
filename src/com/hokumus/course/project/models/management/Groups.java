@@ -58,7 +58,7 @@ public class Groups extends BaseEntity {
 	public void setCourses(Courses Courses) {
 		this.Courses = Courses;
 	}
-
+	
 	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	public Teacher getTeacher() {

@@ -27,7 +27,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class SinifGoruntuleGuncelleSil extends JFrame {
+public class SinifIslemleri extends JFrame {
 	private JLabel lblAd;
 	private JTextField txtSinifAdi;
 	private JLabel lblSinifKodu;
@@ -42,14 +42,16 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	private JButton btnTemizle;
 	private JButton btnIptal;
 	private JTable tblSiniflar;
-	public SinifGoruntuleGuncelleSil() {
+	private Long selectedItemId;
+	public SinifIslemleri() {
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("S\u0131n\u0131f G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
-		setBounds(400, 150, 787, 528);
+		setBounds(400, 150, 880, 528);
 		getContentPane().setLayout(null);
+		getContentPane().setName("Sýnýf Ýþlemleri");
 		getContentPane().add(getLblAd());
 		getContentPane().add(getTxtSinifAdi());
 		getContentPane().add(getLblSinifKodu());
@@ -63,6 +65,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
+		getContentPane().add(getBtnYeniSnfA());
 		sinifTablosuGöster();
 	}
 	
@@ -71,6 +74,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 	
 	DefaultTableModel model=new DefaultTableModel();
 	private JLabel lblMesaj;
+	private JButton btnYeniSnfA;
 	
 	public void sinifTablosuGöster() {
 		
@@ -164,6 +168,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 					
 					DbServicessBase<LessonClass> dao=new DbServicessBase<LessonClass>();
 					LessonClass yenisinif=new LessonClass();
+					yenisinif.setId(selectedItemId);
 					yenisinif.setAdi(txtSinifAdi.getText());
 					yenisinif.setKod(txtSinifKodu.getText());
 					yenisinif.setKapasite(Integer.valueOf(txtKapasite.getText()));
@@ -177,14 +182,14 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 					}
 				}
 			});
-			btnGuncelle.setBounds(414, 13, 89, 49);
+			btnGuncelle.setBounds(333, 13, 89, 49);
 		}
 		return btnGuncelle;
 	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 184, 751, 266);
+			scrollPane.setBounds(10, 184, 844, 266);
 			scrollPane.setViewportView(getTblSiniflar());
 		}
 		return scrollPane;
@@ -235,7 +240,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 					}
 				}
 			});
-			btnSil.setBounds(537, 13, 89, 49);
+			btnSil.setBounds(333, 73, 89, 49);
 		}
 		return btnSil;
 	}
@@ -251,7 +256,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 					lblMesaj.setText("");
 				}
 			});
-			btnTemizle.setBounds(659, 13, 89, 49);
+			btnTemizle.setBounds(508, 13, 89, 49);
 		}
 		return btnTemizle;
 	}
@@ -260,10 +265,10 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 			btnIptal = new JButton("\u0130ptal");
 			btnIptal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					SinifGoruntuleGuncelleSil.this.dispose();
+					SinifIslemleri.this.dispose();
 				}
 			});
-			btnIptal.setBounds(659, 68, 89, 49);
+			btnIptal.setBounds(508, 73, 89, 49);
 		}
 		return btnIptal;
 	}
@@ -276,7 +281,7 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 					
 					int row=tblSiniflar.getSelectedRow();
 					
-					
+					selectedItemId=Long.valueOf(tblSiniflar.getValueAt(row, 0).toString());
 					txtSinifAdi.setText(tblSiniflar.getValueAt(row, 1).toString());
 					txtSinifKodu.setText(tblSiniflar.getValueAt(row, 2).toString());
 					txtKapasite.setText((String.valueOf(tblSiniflar.getValueAt(row, 3))));
@@ -293,5 +298,32 @@ public class SinifGoruntuleGuncelleSil extends JFrame {
 			lblMesaj.setBounds(10, 450, 751, 28);
 		}
 		return lblMesaj;
+	}
+	private JButton getBtnYeniSnfA() {
+		if (btnYeniSnfA == null) {
+			btnYeniSnfA = new JButton("Yeni S\u0131n\u0131f A\u00E7");
+			btnYeniSnfA.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					DbServicessBase<LessonClass> dao=new DbServicessBase<LessonClass>();
+					LessonClass temp=new LessonClass();
+					
+					
+					temp.setAdi(txtSinifAdi.getText());
+					temp.setKod(txtSinifKodu.getText());
+					temp.setKapasite((Integer.valueOf(getTxtKapasite().getText())));
+
+					if (dao.save(temp)) {
+						lblMesaj.setText("Sýnýf Baþarý ile Oluþturuldu");
+						sinifTablosuGöster();
+					}
+					else {
+						lblMesaj.setText("Sýnýf  Oluþturulamadý");
+
+					}
+				}
+			});
+			btnYeniSnfA.setBounds(665, 47, 125, 56);
+		}
+		return btnYeniSnfA;
 	}
 }

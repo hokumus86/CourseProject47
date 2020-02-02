@@ -27,6 +27,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -34,7 +35,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class KursGoruntuleGuncelleSil extends JFrame {
+public class KursIslemleri extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btnGuncelle;
 	private JTable tblKurslar;
@@ -51,14 +52,15 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JButton btnIptal;
 	
 	private Long selectedeItemId;
-	public KursGoruntuleGuncelleSil() {
+	public KursIslemleri() {
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("Kurs G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
-		setBounds(400, 130, 730, 603);
+		setBounds(400, 130, 871, 603);
 		getContentPane().setLayout(null);
+		getContentPane().setName("Kurs Ýþlemleri");
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getBtnGuncelle());
 		getContentPane().add(getLblKursAd());
@@ -72,10 +74,12 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
+		getContentPane().add(getBtnYeniKursAc());
 		kursTablosuGoster();
 	}
 	DefaultTableModel model=new DefaultTableModel();
 	private JLabel lblMesaj;
+	private JButton btnYeniKursAc;
 
 	public void kursTablosuGoster() {
 		
@@ -123,7 +127,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 167, 682, 359);
+			scrollPane.setBounds(10, 167, 817, 315);
 			scrollPane.setViewportView(getTblKurslar());
 		}
 		return scrollPane;
@@ -153,7 +157,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					
 				}
 			});
-			btnGuncelle.setBounds(443, 20, 103, 29);
+			btnGuncelle.setBounds(565, 17, 103, 29);
 		}
 		return btnGuncelle;
 	}
@@ -206,7 +210,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		if (txtFiyat == null) {
 			txtFiyat = new JTextField();
 			txtFiyat.setColumns(10);
-			txtFiyat.setBounds(327, 24, 86, 20);
+			txtFiyat.setBounds(283, 24, 86, 20);
 		}
 		return txtFiyat;
 	}
@@ -214,7 +218,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		if (lblFiyat == null) {
 			lblFiyat = new JLabel("Fiyat:");
 			lblFiyat.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblFiyat.setBounds(254, 24, 46, 14);
+			lblFiyat.setBounds(227, 27, 46, 14);
 		}
 		return lblFiyat;
 	}
@@ -246,7 +250,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					arama(ara);
 				}
 			});
-			txtArama.setBounds(10, 19, 714, 26);
+			txtArama.setBounds(10, 19, 776, 26);
 			txtArama.setToolTipText("Arama");
 			txtArama.setColumns(10);
 		}
@@ -256,7 +260,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, "Arama", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 112, 694, 56);
+			panel.setBounds(10, 112, 817, 56);
 			panel.setLayout(null);
 			panel.add(getTxtArama());
 		}
@@ -283,7 +287,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					}
 				}
 			});
-			btnSil.setBounds(443, 72, 103, 29);
+			btnSil.setBounds(575, 72, 103, 29);
 		}
 		return btnSil;
 	}
@@ -297,7 +301,7 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 					cmbDurum.addItem("");
 				}
 			});
-			btnTemizle.setBounds(579, 20, 103, 29);
+			btnTemizle.setBounds(702, 20, 103, 29);
 		}
 		return btnTemizle;
 	}
@@ -306,10 +310,10 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 			btnIptal = new JButton("\u0130ptal");
 			btnIptal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					KursGoruntuleGuncelleSil.this.dispose();
+					KursIslemleri.this.dispose();
 				}
 			});
-			btnIptal.setBounds(579, 72, 103, 29);
+			btnIptal.setBounds(702, 72, 103, 29);
 		}
 		return btnIptal;
 	}
@@ -317,8 +321,36 @@ public class KursGoruntuleGuncelleSil extends JFrame {
 		if (lblMesaj == null) {
 			lblMesaj = new JLabel("");
 			lblMesaj.setForeground(Color.RED);
-			lblMesaj.setBounds(10, 537, 682, 27);
+			lblMesaj.setBounds(20, 493, 682, 27);
 		}
 		return lblMesaj;
+	}
+	private JButton getBtnYeniKursAc() {
+		if (btnYeniKursAc == null) {
+			btnYeniKursAc = new JButton("Yeni Kurs A\u00E7");
+			btnYeniKursAc.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+					DateTimeFormatter format=DateTimeFormatter.ofPattern("d/M/yyyy");
+					
+					Courses temp=new Courses();
+					temp.setAdi(txtKursAdi.getText());
+					temp.setDurum(cmbDurum.getSelectedItem().toString());
+					temp.setFiyat(new BigDecimal(txtFiyat.getText()));
+					
+					if (dao.save(temp)) {
+						lblMesaj.setText("Kurs Baþarlý Ýle Oluþturuldu");
+						kursTablosuGoster();
+					}
+					else {
+						lblMesaj.setText("Kurs Baþarlý Ýle Oluþturulamadý");
+					}
+
+					
+				}
+			});
+			btnYeniKursAc.setBounds(396, 41, 125, 43);
+		}
+		return btnYeniKursAc;
 	}
 }
