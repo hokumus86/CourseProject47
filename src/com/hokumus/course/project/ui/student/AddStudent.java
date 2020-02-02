@@ -23,8 +23,6 @@ import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
 
-import jdk.jfr.internal.PrivateAccess;
-
 public class AddStudent extends JFrame {
 	  
 	private JLabel lblAdi;

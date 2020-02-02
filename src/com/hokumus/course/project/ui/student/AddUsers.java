@@ -1,16 +1,17 @@
 package com.hokumus.course.project.ui.student;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JPasswordField;
+
 import com.hokumus.course.project.models.student.Student;
-import com.hokumus.course.project.utils.dao.StudentDao;
+import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
 
 public class AddUsers extends JFrame { // ???????
@@ -95,7 +96,7 @@ public class AddUsers extends JFrame { // ???????
 		getContentPane().add(btnKaydet);
 		btnKaydet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StudentDao studentDao = new StudentDao();
+				StudentDAO studentDao = new StudentDAO();
 				Student student = new Student();
 				student.setAd(txtAdi.getText());
 				student.setSoyad(txtSoyadi.getText()); // ?????????
