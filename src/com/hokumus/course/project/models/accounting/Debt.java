@@ -61,6 +61,7 @@ public class Debt extends BaseEntity{
 	public void setKalan(BigDecimal kalan) {
 		this.kalan = kalan;
 	}
+	@Column(name = "date")
 	public Date getTarih1() {
 		return tarih1;
 	}
@@ -72,6 +73,7 @@ public class Debt extends BaseEntity{
 		return "Debt [id=" + id + ", ad=" + ad + ", soyad=" + soyad + ", alinan=" + alinan + ", kalan=" + kalan
 				+ ", tarih1=" + tarih1 + "]";
 	}
+	
 	
 	
 	
