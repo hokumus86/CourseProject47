@@ -1,10 +1,5 @@
 package com.hokumus.course.project.ui.student;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,9 +11,12 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
-import javax.swing.JPasswordField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 import com.hokumus.course.project.models.student.Student;
-import com.hokumus.course.project.ui.managementscreen.GrupAcmaEkrani;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;

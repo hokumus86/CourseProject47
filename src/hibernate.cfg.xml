@@ -21,8 +21,6 @@
 		<mapping class="com.hokumus.course.project.models.CourseUsers"/>
 		<mapping class="com.hokumus.course.project.models.management.Courses"/>
 		<mapping class="com.hokumus.course.project.models.management.LessonClass"/>
-		<mapping class="com.hokumus.course.project.ui.student;"/>
-		<mapping class="com.hokumus.course.project.ui.accounting.IncomeScreen;"/>
 		
 	</session-factory>
 </hibernate-configuration>
