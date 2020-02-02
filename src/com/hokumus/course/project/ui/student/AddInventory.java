@@ -2,23 +2,31 @@ package com.hokumus.course.project.ui.student;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+
 import javax.swing.JButton;
 import com.hokumus.course.project.models.inventory.Inventory;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.InventoryDAO;
 import com.toedter.calendar.JDateChooser;
 
+@SuppressWarnings("serial")
 public class AddInventory extends JFrame {
   
-	private JLabel lblTanim;
+
+	private JLabel lblTanim;  
 	private JTextField txtTanim;
-	private JDateChooser dateBaslangýc;
+	private JDateChooser dateBaslamaTrh;
 	private JLabel lblBaslangýcTarihi;
 	private JLabel lblAdres;
 	private JTextField txtAdres;
@@ -26,8 +34,8 @@ public class AddInventory extends JFrame {
 	private JButton btnIptal;
 	private JLabel lblMesaj;
 	private JLabel lblGarantiBitisi;
-	private JDateChooser dateBitis;
-	private JLabel lblFiyat;
+	private JDateChooser dateBitisTrh;
+	private JLabel lblExpenses;
 	private JTextField txtExpenses;
 	private Long selectedItemId;
 	
@@ -46,7 +54,7 @@ public class AddInventory extends JFrame {
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblTanim());
 		getContentPane().add(getTxtTanim());
-		getContentPane().add(getDateBaslangýc());
+		getContentPane().add(getDateBaslamaTrh());
 		getContentPane().add(getLblBaslangýcTarihi());
 		getContentPane().add(getLblAdres());
 		getContentPane().add(getTxtAdres());
@@ -54,8 +62,8 @@ public class AddInventory extends JFrame {
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
 		getContentPane().add(getLblGarantiBitisi());
-		getContentPane().add(getDateBitis());
-		getContentPane().add(getLblFiyat());
+		getContentPane().add(getDateBitisTrh());
+		getContentPane().add(getLblExpenses());
 		getContentPane().add(getTxtExpenses());
 		
 		
@@ -78,12 +86,34 @@ public class AddInventory extends JFrame {
 		}
 		return txtTanim;
 	}
-	private JDateChooser getDateBaslangýc() {
-		if (dateBaslangýc == null) {
-			dateBaslangýc = new JDateChooser();
-			dateBaslangýc.setBounds(470, 55, 130, 20);
+	private JDateChooser getDateBaslamaTrh() {
+		if (dateBaslamaTrh == null) {
+			dateBaslamaTrh = new JDateChooser();
+					dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+					dateBaslamaTrh.addPropertyChangeListener(new PropertyChangeListener() {
+						public void propertyChange(PropertyChangeEvent evt) {
+							if (dateBaslamaTrh.getDate() != null) {
+								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+								String gun = sdf.format(dateBaslamaTrh.getDate());
+								JOptionPane.showMessageDialog(AddInventory.this, gun);
+
+							}
+
+						}
+					});
+					dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+						public void caretPositionChanged(InputMethodEvent event) {
+						}
+
+						public void inputMethodTextChanged(InputMethodEvent event) {
+							dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
+							JOptionPane.showMessageDialog(AddInventory.this, dateBaslamaTrh.getDateFormatString());
+						}
+					});
+			dateBaslamaTrh.setBounds(470, 55, 130, 20);
 		}
-		return dateBaslangýc;
+		return dateBaslamaTrh;
 	}
 	private JLabel getLblBaslangýcTarihi() {
 		if (lblBaslangýcTarihi == null) {
@@ -118,7 +148,7 @@ public class AddInventory extends JFrame {
 					Inventory ýnventory = new Inventory();
 					ýnventory.setId(selectedItemId);
 					ýnventory.setTanim(txtTanim.getText());
-				    ýnventory.setFiyat(new BigDecimal(txtExpenses.getText()));
+				    ýnventory.setExpenses(txtExpenses.getText());
 				    
 					if (Inventorydao.save(ýnventory)) {
 						lblMesaj.setText("Baþarýlý..!");
@@ -160,20 +190,42 @@ public class AddInventory extends JFrame {
 		}
 		return lblGarantiBitisi;
 	}
-	private JDateChooser getDateBitis() {
-		if (dateBitis == null) {
-			dateBitis = new JDateChooser();
-			dateBitis.setBounds(470, 129, 130, 20);
+	private JDateChooser getDateBitisTrh() {
+		if (dateBitisTrh == null) {
+			dateBitisTrh = new JDateChooser();
+			dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+			dateBitisTrh.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateBitisTrh.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+						String gun = sdf.format(dateBitisTrh.getDate());
+						JOptionPane.showMessageDialog(AddInventory.this, gun);
+
+					}
+
+				}
+			});
+			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateBitisTrh.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(AddInventory.this, dateBitisTrh.getDateFormatString());
+				}
+			});
+			dateBitisTrh.setBounds(470, 129, 130, 20);
 		}
-		return dateBitis;
+		return dateBitisTrh;
 	}
-	private JLabel getLblFiyat() {
-		if (lblFiyat == null) {
-			lblFiyat = new JLabel("Fiyat:");
-			lblFiyat.setFont(new Font("Arial", Font.BOLD, 12));
-			lblFiyat.setBounds(40, 190, 67, 14);
+	private JLabel getLblExpenses() {
+		if (lblExpenses == null) {
+			lblExpenses = new JLabel("Fiyat:");
+			lblExpenses.setFont(new Font("Arial", Font.BOLD, 12));
+			lblExpenses.setBounds(40, 190, 67, 14);
 		}
-		return lblFiyat;
+		return lblExpenses;
 	}
 	private JTextField getTxtExpenses() {
 		if (txtExpenses == null) {

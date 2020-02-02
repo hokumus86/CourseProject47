@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.hokumus.course.project.models.accounting.Expenses;
 
 @Entity
 @Table(name = "inventory")
@@ -21,12 +20,17 @@ public class Inventory {
 
     private Long id;
     private String tanim;
-    private Boolean garanti;
+    private BigDecimal garanti;
     private Date garantiBaslamaTarihi;
     private Date garantiBitisTarihi;
-    private BigDecimal fiyat;
+    private String expenses;
+    private String Kullaným;
 
    
+	
+
+	
+
 	@Id
     @SequenceGenerator(name = "seq_inventory", allocationSize = 1, sequenceName = "seq_inventory")
     @GeneratedValue(generator = "seq_inventory", strategy = GenerationType.SEQUENCE)
@@ -48,11 +52,11 @@ public class Inventory {
     }
 
     @Column(name = "warranty")
-    public Boolean getGaranti() {
+    public BigDecimal getGaranti() {
         return garanti;
     }
 
-    public void setGaranti(Boolean garanti) {
+    public void setGaranti(BigDecimal garanti) {
         this.garanti = garanti;
     }
 
@@ -73,16 +77,26 @@ public class Inventory {
     public void setGarantiBitisTarihi(Date garantiBitisTarihi) {
         this.garantiBitisTarihi = garantiBitisTarihi;
     }
+    
+    @Column(name = "Place Of Use")
+    public String getKullaným() {
+		return Kullaným;
+	}
+
+	public void setKullaným(String kullaným) {
+		Kullaným = kullaným;
+	}
 
     @ManyToOne
     @JoinColumn(name = "exspense_id")
-    public BigDecimal getFiyat() {
-		return fiyat;
+    public String getExpenses() {
+		return expenses;
 	}
 
-	public void setFiyat(BigDecimal fiyat) {
-		this.fiyat = fiyat;
+	public void setExpenses(String expenses) {
+		this.expenses = expenses;
 	}
+  
 
     @Override
     public String toString() {

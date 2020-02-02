@@ -1,5 +1,8 @@
 package com.hokumus.course.project.ui.student;
-
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,22 +12,21 @@ import java.awt.event.InputMethodListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import com.hokumus.course.project.models.student.Student;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
-
+@SuppressWarnings("serial")
 public class AddStudent extends JFrame {
-	  
+  
+	
 	private JLabel lblAdi;
-	private JTextField txtAdi;
+	private JTextField txtAdi; 
 	private JLabel lblSoyadi;
 	private JTextField txtSoyadi;
 	private JDateChooser dateKayýtTarihi;
@@ -201,9 +203,9 @@ public class AddStudent extends JFrame {
 					student.setAdres(txtAdres.getText());
 					student.setTel(txtTelNo.getText());
 					if (studentdao.save(student)) {
-						lblMesaj.setText("Kayýt Baþarýlý..!");
+						lblMesaj.setText("Baþarýlý..!");
 					} else
-						lblMesaj.setText("Kayýt Baþarýsýz..!");
+						lblMesaj.setText("Baþarýsýz..!");
 				}
 			});
 			btnKayit.setFont(new Font("Arial", Font.BOLD, 12));

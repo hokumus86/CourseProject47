@@ -2,7 +2,6 @@ package com.hokumus.course.project.ui.student;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
@@ -19,9 +18,11 @@ import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.TeacherDAO;
 import com.toedter.calendar.JDateChooser;
 
+@SuppressWarnings("serial")
 public class AddTeacher extends JFrame {
 	
-	private JLabel lblAdi;
+
+	private JLabel lblAdi; 
 	private JTextField txtAdi;
 	private JLabel lblSoyadi;
 	private JTextField txtSoyadi;
@@ -36,6 +37,7 @@ public class AddTeacher extends JFrame {
 	private JButton btnKayit;
 	private JButton btnIptal;
 	private JLabel lblMesaj;
+	private Long selectedItemId;
 	
 
 	public AddTeacher() {
@@ -107,11 +109,9 @@ public class AddTeacher extends JFrame {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (dateKayýtTarihi.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						@SuppressWarnings("unused")
 						String gun = sdf.format(dateKayýtTarihi.getDate());
-						JOptionPane.showMessageDialog(AddTeacher.this, gun);
-
 					}
-
 				}
 			});
 			dateKayýtTarihi.addInputMethodListener(new InputMethodListener() {
@@ -190,15 +190,16 @@ public class AddTeacher extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					TeacherDAO teacherdao = new TeacherDAO();
 					Teacher teacher = new Teacher();
+					teacher.setId(selectedItemId);
 					teacher.setAd(txtAdi.getText());
 					teacher.setSoyad(txtSoyadi.getText());
 					teacher.setMail(txtEmail.getText());
 					teacher.setAdres(txtAdres.getText());
 					teacher.setTel(txtTelNo.getText());
 					if (teacherdao.save(teacher)) {
-						lblMesaj.setText("Kayýt Baþarýlý..!");
+						lblMesaj.setText("Baþarýlý..!");
 					} else
-						lblMesaj.setText("Kayýt Baþarýsýz..!");
+						lblMesaj.setText("Baþarýsýz..!");
 				}
 			});
 			btnKayit.setFont(new Font("Arial", Font.BOLD, 12));

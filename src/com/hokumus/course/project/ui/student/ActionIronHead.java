@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import com.hokumus.course.project.models.teacher.Teacher;
+import com.hokumus.course.project.models.inventory.IronHead;
 import com.hokumus.course.project.utils.CourseUtils;
-import com.hokumus.course.project.utils.dao.TeacherDAO;
+import com.hokumus.course.project.utils.dao.IronHeadDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,20 +20,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class ActionTeacher extends JFrame {
- 
-
+public class ActionIronHead extends JFrame {
+	
+	
 	private JTable table; 
-	private JTextField txtEmail;
-	private JTextField txtAdi;
-	private JTextField txtSoyadi;
+	private JTextField txtTanim;
 	private Long selectedItemId;
 	private JLabel lblMesaj;
-	private JTextField txtTelNo;
+	private JTextField txtpersonel;
+	private JLabel lblPersonel;
+	private JTextField txtSüre;
+	private JDateChooser dateZimmetTarihi;
+	private JLabel label;
 
-	public ActionTeacher() {
+	public ActionIronHead() {
 		intialize();
 	}
 	private void intialize() {
@@ -53,61 +57,45 @@ public class ActionTeacher extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int row = table.getSelectedRow();
 				selectedItemId = Long.valueOf(table.getValueAt(row, 0).toString());
-				txtEmail.setText(table.getValueAt(row, 2).toString());
-				txtAdi.setText(table.getValueAt(row, 3).toString());
-				txtSoyadi.setText(table.getValueAt(row, 4).toString());
-				txtTelNo.setText(table.getValueAt(row, 1).toString());
+				txtTanim.setText(table.getValueAt(row, 1).toString());
+			    txtSüre.setText(table.getValueAt(row, 2).toString());
+			    txtpersonel.setText(table.getValueAt(row, 3).toString());
 			}
 		});
 		scrollPane.setViewportView(table);
 		tabloDoldur();
 
-		JButton btnKullaniciGetir = new JButton("Kullan\u0131c\u0131lar\u0131 Getir");
+		JButton btnKullaniciGetir = new JButton("KAYITLI VER\u0130LER");
 		btnKullaniciGetir.setBounds(10, 352, 572, 23);
 		btnKullaniciGetir.setFont(new Font("Arial", Font.BOLD, 14));
 		getContentPane().add(btnKullaniciGetir);
 
-		JLabel lblEmail = new JLabel("Email   ");
-		lblEmail.setFont(new Font("Arial", Font.BOLD, 12));
-		lblEmail.setBounds(10, 76, 78, 14);
-		getContentPane().add(lblEmail);
+		JLabel lblSüre = new JLabel("S\u00FCre");
+		lblSüre.setFont(new Font("Arial", Font.BOLD, 12));
+		lblSüre.setBounds(10, 76, 78, 14);
+		getContentPane().add(lblSüre);
 
-		txtEmail = new JTextField();
-		txtEmail.setBounds(84, 73, 163, 20);
-		txtEmail.setColumns(10);
-		getContentPane().add(txtEmail);
+		JLabel lblTanim = new JLabel("Tan\u0131m");
+		lblTanim.setFont(new Font("Arial", Font.BOLD, 12));
+		lblTanim.setBounds(10, 24, 78, 14);
+		getContentPane().add(lblTanim);
 
-		JLabel lblAdi = new JLabel("Ad\u0131");
-		lblAdi.setFont(new Font("Arial", Font.BOLD, 12));
-		lblAdi.setBounds(10, 24, 78, 14);
-		getContentPane().add(lblAdi);
-
-		txtAdi = new JTextField();
-		txtAdi.setBounds(84, 21, 163, 20);
-		txtAdi.setColumns(10);
-		getContentPane().add(txtAdi);
-
-		JLabel lblSoyadi = new JLabel("Soyad\u0131");
-		lblSoyadi.setFont(new Font("Arial", Font.BOLD, 12));
-		lblSoyadi.setBounds(285, 24, 78, 14);
-		getContentPane().add(lblSoyadi);
-
-		txtSoyadi = new JTextField();
-		txtSoyadi.setBounds(373, 21, 163, 20);
-		txtSoyadi.setColumns(10);
-		getContentPane().add(txtSoyadi);
+		txtTanim = new JTextField();
+		txtTanim.setBounds(84, 21, 163, 20);
+		txtTanim.setColumns(10);
+		getContentPane().add(txtTanim);
 
 		JButton btnGuncelle = new JButton("G\u00FCncelle");
 		btnGuncelle.setBounds(454, 112, 110, 23);
 		btnGuncelle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TeacherDAO teacherdao = new TeacherDAO();
-				Teacher teacher = new Teacher();
-				teacher.setAd(txtAdi.getText());
-				teacher.setSoyad(txtSoyadi.getText());
-				teacher.setMail(txtEmail.getText());
-				teacher.setId(selectedItemId);
-				if (teacherdao.update(teacher)) {
+				IronHeadDAO ýronheaddao = new IronHeadDAO();
+				IronHead ýronhead = new IronHead();
+				ýronhead.setId(selectedItemId);
+				ýronhead.setAciklama(txtTanim.getText());
+				ýronhead.setTeacher(txtpersonel.getText());
+				ýronhead.setZaman(new BigDecimal(txtSüre.getText()));
+			    if (ýronheaddao.update(ýronhead)) {
 					lblMesaj.setText("Baþarýlý..!");
 					tabloDoldur();
 				} else
@@ -120,13 +108,13 @@ public class ActionTeacher extends JFrame {
 		JButton btnSil = new JButton("Sil");
 		btnSil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TeacherDAO teacherdao = new TeacherDAO();
-				Teacher teacher = new Teacher();
-				teacher.setId(selectedItemId);
-				teacher.setAd(txtAdi.getText());
-				teacher.setSoyad(txtSoyadi.getText());
-				teacher.setMail(txtEmail.getText());
-				if (teacherdao.delete(teacher)) {
+				IronHeadDAO ýronheaddao = new IronHeadDAO();
+				IronHead ýronhead = new IronHead();
+				ýronhead.setId(selectedItemId);
+				ýronhead.setAciklama(txtTanim.getText());
+				ýronhead.setTeacher(txtpersonel.getText());
+				ýronhead.setZaman(new BigDecimal(txtSüre.getText()));
+				if (ýronheaddao.delete(ýronhead)) {
 					lblMesaj.setText("Baþarýlý..!");
 					tabloDoldur();
 				} else
@@ -137,12 +125,15 @@ public class ActionTeacher extends JFrame {
 		btnSil.setBounds(330, 113, 110, 23);
 		getContentPane().add(btnSil);
 		getContentPane().add(getLblMesaj());
+		getContentPane().add(getTxtpersonel());
+		getContentPane().add(getLblPersonel());
 		
-		JLabel lblTelNo = new JLabel("Tel No");
-		lblTelNo.setFont(new Font("Arial", Font.BOLD, 12));
-		lblTelNo.setBounds(285, 76, 78, 14);
-		getContentPane().add(lblTelNo);
-		getContentPane().add(getTxtTelNo());
+		txtSüre = new JTextField();
+		txtSüre.setColumns(10);
+		txtSüre.setBounds(84, 73, 163, 20);
+		getContentPane().add(txtSüre);
+		getContentPane().add(getDateZimmetTarihi());
+		getContentPane().add(getLabel());
 		setTitle("Dershane Uygulamasý ");
 
 		JMenuBar menuBarKullaniciIslem = new JMenuBar();
@@ -154,7 +145,7 @@ public class ActionTeacher extends JFrame {
 		JMenuItem menuItemKEkle = new JMenuItem("Kullan\u0131c\u0131 Ekle");
 		menuItemKEkle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddTeacher frm = new AddTeacher();
+				AddIronHead frm = new AddIronHead();
 				frm.setVisible(true);
 			}
 		});
@@ -168,18 +159,17 @@ public class ActionTeacher extends JFrame {
 	}
 
 	private void tabloDoldur() {
-		TeacherDAO teacherdao = new TeacherDAO();
-		List<Teacher> liste = teacherdao.getAllRows(new Teacher());
-		String[][] data = new String[liste.size()][7];
-		String[] columns = { "Id", "Adý", "Soyadý", "Tel No", "Kayýt Tarihi", "E-Mail", "Adres" };
+		IronHeadDAO ýnventorydao = new IronHeadDAO();
+		List<IronHead> liste = ýnventorydao.getAllRows(new IronHead());
+		String[][] data = new String[liste.size()][4];
+		String[] columns = { "Id", "Açýklama", "Personel", "Süresi",  };
 		for (int i = 0; i < liste.size(); i++) {
 			data[i][0] = String.valueOf(liste.get(i).getId());
-			data[i][1] = liste.get(i).getAd();
-			data[i][2] = liste.get(i).getSoyad();
-			data[i][3] = liste.get(i).getTel();
-			data[i][4] = String.valueOf(liste.get(i).getKayitTarihi());
-			data[i][5] = liste.get(i).getMail();
-			data[i][6] = liste.get(i).getAdres();
+			data[i][1] = liste.get(i).getAciklama();
+			data[i][2] = liste.get(i).getTeacher();
+			data[i][3] = liste.get(i).getZaman().toString();
+			
+			
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);
 		table.setModel(model);
@@ -193,12 +183,35 @@ public class ActionTeacher extends JFrame {
 		}
 		return lblMesaj;
 	}
-	private JTextField getTxtTelNo() {
-		if (txtTelNo == null) {
-			txtTelNo = new JTextField();
-			txtTelNo.setColumns(10);
-			txtTelNo.setBounds(373, 73, 163, 20);
+	private JTextField getTxtpersonel() {
+		if (txtpersonel == null) {
+			txtpersonel = new JTextField();
+			txtpersonel.setColumns(10);
+			txtpersonel.setBounds(401, 73, 153, 20);
 		}
-		return txtTelNo;
+		return txtpersonel;
+	}
+	private JLabel getLblPersonel() {
+		if (lblPersonel == null) {
+			lblPersonel = new JLabel("Personel");
+			lblPersonel.setFont(new Font("Arial", Font.BOLD, 12));
+			lblPersonel.setBounds(285, 76, 106, 14);
+		}
+		return lblPersonel;
+	}
+	private JDateChooser getDateZimmetTarihi() {
+		if (dateZimmetTarihi == null) {
+			dateZimmetTarihi = new JDateChooser();
+			dateZimmetTarihi.setBounds(403, 21, 153, 20);
+		}
+		return dateZimmetTarihi;
+	}
+	private JLabel getLabel() {
+		if (label == null) {
+			label = new JLabel("Zimmet Tarihi");
+			label.setFont(new Font("Arial", Font.BOLD, 12));
+			label.setBounds(285, 27, 108, 14);
+		}
+		return label;
 	}
 }

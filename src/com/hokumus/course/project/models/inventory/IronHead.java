@@ -1,5 +1,6 @@
 package com.hokumus.course.project.models.inventory;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -24,9 +25,11 @@ public class IronHead {
     private Date tarih;
     private Inventory Iventory;
     private Employee Employee;
-    private Teacher Teacher;
+    private String Teacher;
+    private BigDecimal Zaman;
 
-    @Id
+  
+	@Id
     @SequenceGenerator(name = "seq_fixture", allocationSize = 1, sequenceName = "seq_fixture")
     @GeneratedValue(generator = "seq_fixture", strategy = GenerationType.SEQUENCE)
     public Long getId() {
@@ -64,6 +67,16 @@ public class IronHead {
     public void setIventory(Inventory Iventory) {
         this.Iventory = Iventory;
     }
+    
+    @Column(name = "Zaman")
+    public BigDecimal getZaman() {
+  		return Zaman;
+  	}
+
+  	public void setZaman(BigDecimal zaman) {
+  		Zaman = zaman;
+  	}
+
 
     @ManyToOne
     @JoinColumn(name = "emplooye_id")
@@ -77,11 +90,11 @@ public class IronHead {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    public Teacher getTeacher() {
+    public String getTeacher() {
         return Teacher;
     }
 
-    public void setTeacher(Teacher Teacher) {
+    public void setTeacher(String Teacher) {
         this.Teacher = Teacher;
     }
 

@@ -9,6 +9,7 @@ import com.hokumus.course.project.models.accounting.Incomings;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -33,9 +34,7 @@ public class IncomeScreen extends JFrame {
 		JButton btnYeniGelirEkle = new JButton("Yeni Gelir Ekle");
 		btnYeniGelirEkle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				temp.setMiktar(Integer.parseInt(txtUcret.getText()));
-				temp.setTanim(txtTanim.getText());
-				temp.setTarih(txtTarih.getText());
+				temp.setMiktar(new BigDecimal(Integer.parseInt(txtUcret.getText())));
 				dao.save(temp);
 				
 			}

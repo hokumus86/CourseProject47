@@ -23,8 +23,10 @@ import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public class ActionStudent extends JFrame { 
   
+	
 	private JTable table;
 	private JTextField txtEmail;
 	private JTextField txtAdi;
@@ -177,16 +179,14 @@ public class ActionStudent extends JFrame {
 	private void tabloDoldur() {
 		StudentDAO studentdao = new StudentDAO();
 		List<Student> liste = studentdao.getAllRows(new Student());
-		String[][] data = new String[liste.size()][7];
-		String[] columns = { "Id", "Adý", "Soyadý", "Tel No", "Kayýt Tarihi", "E-Mail", "Adres" };
+		String[][] data = new String[liste.size()][5];
+		String[] columns = { "Id", "Adý", "Soyadý", "Tel No", "E-Mail" };
 		for (int i = 0; i < liste.size(); i++) {
 			data[i][0] = String.valueOf(liste.get(i).getId());
 			data[i][1] = liste.get(i).getAd();
 			data[i][2] = liste.get(i).getSoyad();
 			data[i][3] = liste.get(i).getTel();
-			data[i][4] = String.valueOf(liste.get(i).getKayitTarihi());
-			data[i][5] = liste.get(i).getMail();
-			data[i][6] = liste.get(i).getAdres();
+			data[i][4] = liste.get(i).getAdres();
 
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);

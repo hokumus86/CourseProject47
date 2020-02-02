@@ -10,7 +10,9 @@ import javax.swing.JMenuItem;
 import com.hokumus.course.project.ui.MainFrameKatakulle;
 import com.hokumus.course.project.utils.CourseUtils;
   
-public class MainScreen extends JFrame{
+@SuppressWarnings("serial")
+public class MainScreen extends JFrame{ 
+	
 	private JMenuBar menuBar;
 	private JMenu mnOgrenciIslemleri;
 	private JMenu mnOgretmenIslemleri;
@@ -19,9 +21,12 @@ public class MainScreen extends JFrame{
 	private JMenuItem mnýtmOgrenciGüncelleSil;
 	private JMenuItem mnOgretmenEkle;
 	private JMenuItem mnOgretmenGüncellesil;
-	private JMenuItem mnEkleSil;
-	private JMenuItem mnGüncelle;
+	private JMenuItem mnInventoryEkle;
+	private JMenuItem mnStokGüncelle;
 	private JButton btnGeri;
+	private JMenuItem mnýtmDemirBaþEkle;
+	private JMenuItem menuItemDemirbaþGüncelle;
+
 	
 	
 	public MainScreen() {
@@ -35,6 +40,9 @@ public class MainScreen extends JFrame{
 		getContentPane().add(getMenuBar_1());
 		getContentPane().add(getBtnGeri());
 		setBounds(350, 70, 807, 586);
+		
+	
+
 		
 	}
 	private JMenuBar getMenuBar_1() {
@@ -66,8 +74,10 @@ public class MainScreen extends JFrame{
 	private JMenu getMnItem() {
 		if (mnItem == null) {
 			mnItem = new JMenu("Demirba\u015F \u0130\u015Flemleri");
-			mnItem.add(getMnEkleSil());
-			mnItem.add(getMnGüncelle());
+			mnItem.add(getMnInventoryEkle());
+			mnItem.add(getMnStokGüncelle());
+			mnItem.add(getMnýtmDemirBaþEkle());
+			mnItem.add(getMenuItemDemirbaþGüncelle());
 		}
 		return mnItem;
 	}
@@ -115,27 +125,28 @@ public class MainScreen extends JFrame{
 		}
 		return mnOgretmenGüncellesil;
 	}
-	private JMenuItem getMnEkleSil() {
-		if (mnEkleSil == null) {
-			mnEkleSil = new JMenuItem("Ekle/Sil");
-			mnEkleSil.addActionListener(new ActionListener() {
+	private JMenuItem getMnInventoryEkle() {
+		if (mnInventoryEkle == null) {
+			mnInventoryEkle = new JMenuItem("Stok Ekle/Sil");
+			mnInventoryEkle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					new AddInventory().setVisible(true);
 				}
 			});
 		}
-		return mnEkleSil;
+		return mnInventoryEkle;
 	}
-	private JMenuItem getMnGüncelle() {
-		if (mnGüncelle == null) {
-			mnGüncelle = new JMenuItem("G\u00FCncelle");
-			mnGüncelle.addActionListener(new ActionListener() {
+	private JMenuItem getMnStokGüncelle() {
+		if (mnStokGüncelle == null) {
+			mnStokGüncelle = new JMenuItem("Stok G\u00FCncelle");
+			mnStokGüncelle.setSelected(true);
+			mnStokGüncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					
+				   new ActionInventory().setVisible(true);
 				}
 			});
 		}
-		return mnGüncelle;
+		return mnStokGüncelle;
 	}
 	private JButton getBtnGeri() {
 		if (btnGeri == null) {
@@ -149,5 +160,28 @@ public class MainScreen extends JFrame{
 			btnGeri.setBounds(692, 0, 99, 37);
 		}
 		return btnGeri;
+	}
+
+	private JMenuItem getMnýtmDemirBaþEkle() {
+		if (mnýtmDemirBaþEkle == null) {
+			mnýtmDemirBaþEkle = new JMenuItem("Demirba\u015F Ekle");
+			mnýtmDemirBaþEkle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					   new AddIronHead().setVisible(true);
+					}
+				});
+		}
+		return mnýtmDemirBaþEkle;
+	}
+	private JMenuItem getMenuItemDemirbaþGüncelle() {
+		if (menuItemDemirbaþGüncelle == null) {
+			menuItemDemirbaþGüncelle = new JMenuItem("Demirba\u015F G\u00FCncelle");
+			menuItemDemirbaþGüncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					   new ActionIronHead().setVisible(true);
+					}
+				});
+		}
+		return menuItemDemirbaþGüncelle;
 	}
 }
