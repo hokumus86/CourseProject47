@@ -24,9 +24,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
-public class ActionStudent extends JFrame { 
-  
-	
+public class ActionStudent extends JFrame {
+
 	private JTable table;
 	private JTextField txtEmail;
 	private JTextField txtAdi;
@@ -40,12 +39,12 @@ public class ActionStudent extends JFrame {
 	}
 
 	private void intialize() {
-		setTitle("GÜNCELLE " + CourseUtils.loginedUser.getUserName()+ " - " + CourseUtils.loginedUser.getRole());
+		setTitle("GÜNCELLE " + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getRole());
 		setBounds(100, 100, 609, 477);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setBackground(Color.BLACK);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 162, 572, 179);
 		getContentPane().add(scrollPane);
@@ -54,10 +53,11 @@ public class ActionStudent extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				selectedItemId = Long.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
-				txtEmail.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-				txtAdi.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-				txtSoyadi.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-				txtTelNo.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+				txtEmail.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 4)));
+				txtAdi.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 1)));
+				txtSoyadi.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 2)));
+				txtTelNo.setText(table.getValueAt(table.getSelectedRow(), 3) == null ? ""
+						: table.getValueAt(table.getSelectedRow(), 3).toString());
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -115,11 +115,14 @@ public class ActionStudent extends JFrame {
 		});
 		getContentPane().add(btnGuncelle);
 		btnGuncelle.setFont(new Font("Arial", Font.BOLD, 14));
-		
+
+		lblMesaj = new JLabel("");
+		lblMesaj.setBounds(10, 397, 573, 23);
+		getContentPane().add(lblMesaj);
 		JButton btnSil = new JButton("Sil");
 		btnSil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DbServicessBase<Student> studentdao=new DbServicessBase<Student>();
+				DbServicessBase<Student> studentdao = new DbServicessBase<Student>();
 				Student student = new Student();
 				student.setId(selectedItemId);
 				student.setAd(txtAdi.getText());
@@ -131,22 +134,20 @@ public class ActionStudent extends JFrame {
 					tabloDoldur();
 				} else
 					lblMesaj.setText("Baþarýsýz..!");
-				
+
 			}
 		});
 		btnSil.setFont(new Font("Arial", Font.BOLD, 14));
 		btnSil.setBounds(330, 113, 110, 23);
 		getContentPane().add(btnSil);
+
 		
-		JLabel lblMesaj = new JLabel("");
-		lblMesaj.setBounds(10, 397, 573, 23);
-		getContentPane().add(lblMesaj);
-		
+
 		JLabel lblTelNo = new JLabel("Tel No");
 		lblTelNo.setFont(new Font("Arial", Font.BOLD, 12));
 		lblTelNo.setBounds(300, 70, 78, 14);
 		getContentPane().add(lblTelNo);
-		
+
 		txtTelNo = new JTextField();
 		txtTelNo.setColumns(10);
 		txtTelNo.setBounds(374, 67, 154, 20);
@@ -186,7 +187,7 @@ public class ActionStudent extends JFrame {
 			data[i][1] = liste.get(i).getAd();
 			data[i][2] = liste.get(i).getSoyad();
 			data[i][3] = liste.get(i).getTel();
-			data[i][4] = liste.get(i).getAdres();
+			data[i][4] = liste.get(i).getMail();
 
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);
