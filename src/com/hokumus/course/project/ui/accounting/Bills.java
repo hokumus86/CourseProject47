@@ -145,7 +145,7 @@ public class Bills extends JFrame {
 		if (table == null) {
 			table = new JTable();
 			table.setModel(new DefaultTableModel(new Object[][] {}, 
-					new String[] { "ID", "FATURALAR", }) {
+					new String[] { "ID", "FATURALAR","Deneme" }) {
 			});
 
 			
@@ -153,9 +153,9 @@ public class Bills extends JFrame {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.addRow(new Object[] {  });
 
+			table.getColumnModel().getColumn(0).setPreferredWidth(100);
 			table.getColumnModel().getColumn(1).setPreferredWidth(100);
 			table.getColumnModel().getColumn(2).setPreferredWidth(100);
-			table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		return table;
 		}
 		return table;

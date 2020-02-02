@@ -44,6 +44,7 @@ public class DbServicessBase<T> implements IDbServicess<T>{
 			return true;
 		} catch (Exception e) {
 			closeSessionAndRollback();
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -105,6 +106,7 @@ public class DbServicessBase<T> implements IDbServicess<T>{
 			return results;	
 		} catch (Exception e) {
 			closeSessionAndRollback();
+			e.printStackTrace();
 			return null;
 		}
 	}

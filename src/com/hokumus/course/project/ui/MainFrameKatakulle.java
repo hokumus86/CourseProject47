@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
 import com.hokumus.course.project.ui.accounting2.Main;
+import com.hokumus.course.project.ui.homework.screen.HomeworkMainScreen;
 import com.hokumus.course.project.ui.managementscreen.ManagementScreen;
 import com.hokumus.course.project.ui.student.AddStudent;
 import com.hokumus.course.project.ui.student.MainScreen;
@@ -143,6 +144,11 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton getBtndevGrev() {
 		if (btndevGrev == null) {
 			btndevGrev = new JButton("\u00D6dev G\u00F6rev");
+			btndevGrev.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new HomeworkMainScreen().setVisible(true);
+				}
+			});
 			btndevGrev.setBounds(580, 175, 239, 128);
 		}
 		return btndevGrev;

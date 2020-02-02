@@ -118,9 +118,7 @@ public class Groups extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Grup{" + "id=" + id + ", adi=" + adi + ", Courses=" + Courses + ", Teacher=" + Teacher
-				+ ", ogrenciSayisi=" + ogrenciSayisi + ", LessonClass=" + LessonClass + ", baslamaTarihi="
-				+ baslamaTarihi + ", bitisTarihi=" + bitisTarihi + '}';
+		return  id +" "+ adi;
 	}
 
 	public Groups getByUsernameAndPassword(String kullaniciAdi, String sifre) {
@@ -130,5 +128,7 @@ public class Groups extends BaseEntity {
 //        return (Grup) criteria.uniqueResult();
 		return null;
 	}
+	
+	
 
 }

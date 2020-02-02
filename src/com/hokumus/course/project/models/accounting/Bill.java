@@ -15,7 +15,7 @@ import com.hokumus.course.project.models.base.BaseEntity;
 public class Bill extends BaseEntity {
 	
 	private long id;
-	private byte faturalar;
+	private byte[] faturalar;
 	
 	@Id
 	@SequenceGenerator(name = "seq_bill",allocationSize = 1,sequenceName = "seq_bill")
@@ -27,10 +27,10 @@ public class Bill extends BaseEntity {
 		this.id = id;
 	}
 	@Column(name = "bills")
-	public byte getFaturalar() {
+	public byte[] getFaturalar() {
 		return faturalar;
 	}
-	public void setFaturalar(byte faturalar) {
+	public void setFaturalar(byte[] faturalar) {
 		this.faturalar = faturalar;
 	}
 	@Override

@@ -157,7 +157,7 @@ public class GrupIslemleri extends JFrame{
 			data[i][3]=grup_listesi.get(i).getTeacher();
 			data[i][4]=String.valueOf(grup_listesi.get(i).getOgrenciSayisi());
 			data[i][5]=grup_listesi.get(i).getLessonClass().toString();
-			data[i][6]=grup_listesi.get(i).getDays().getName();
+			//data[i][6]=grup_listesi.get(i).getDays().getName();
 			data[i][7]=grup_listesi.get(i).getBaslamaTarihi().toString();
 			data[i][8]=grup_listesi.get(i).getBitisTarihi().toString();
 			
@@ -166,6 +166,9 @@ public class GrupIslemleri extends JFrame{
 		
 		model=new DefaultTableModel(data,columnNames);
 		tblGruplar.setModel(model);
+		
+		DefaultComboBoxModel modelHours = new  DefaultComboBoxModel(KursSaatleri.values());
+		cmbSaat.setModel(modelHours);
 		
 		
 		
@@ -526,7 +529,15 @@ public class GrupIslemleri extends JFrame{
 					yenigrup.setOgrenciSayisi(Integer.valueOf(txtOgrenciSayisi.getText()));
 					yenigrup.setBaslamaTarihi(dateBaslamaTrh.getDate());
 					yenigrup.setBitisTarihi(dateBitisTrh.getDate());
-					//yenigrup.setDays(gunSecimi());
+					
+					DbServicessBase<Days> dao1=new DbServicessBase<Days>();
+					yenigrup.setDays(gunSecimi());
+					Days d = yenigrup.getDays();
+					d.setName("Deneme");
+					dao1.save(d);
+					Days d1 = new Days();
+					d1.setName("Deneme");
+					yenigrup.setDays(dao1.search(d1).get(0));
 					
 					if (dao.save(yenigrup)) {
 						txtMesaj.setText("Grup Baþarý ile Oluþturuldu");
