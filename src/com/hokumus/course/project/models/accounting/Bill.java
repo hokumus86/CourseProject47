@@ -1,5 +1,8 @@
 package com.hokumus.course.project.models.accounting;
 
+import java.util.Arrays;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,16 +17,17 @@ import com.hokumus.course.project.models.base.BaseEntity;
 @Table(name = "bill")
 public class Bill extends BaseEntity {
 	
-	private long id;
+	private Long id;
 	private byte[] faturalar;
+	private Date tarih;
 	
 	@Id
 	@SequenceGenerator(name = "seq_bill",allocationSize = 1,sequenceName = "seq_bill")
 	@GeneratedValue(generator = "seq_bill",strategy = GenerationType.SEQUENCE)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	@Column(name = "bills")
@@ -33,9 +37,18 @@ public class Bill extends BaseEntity {
 	public void setFaturalar(byte[] faturalar) {
 		this.faturalar = faturalar;
 	}
+	@Column(name = "date")
+	public Date getTarih() {
+		return tarih;
+	}
+	public void setTarih(Date tarih) {
+		this.tarih = tarih;
+	}
 	@Override
 	public String toString() {
-		return "Bill [id=" + id + ", faturalar=" + faturalar + "]";
+		return "Bill [id=" + id + ", faturalar=" + Arrays.toString(faturalar) + ", tarih=" + tarih + "]";
 	}
+	
+	
 
 }
