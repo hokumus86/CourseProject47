@@ -21,6 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import com.hokumus.course.project.models.accounting.Bill;
 import com.hokumus.course.project.ui.student.AddStudent;
+import com.hokumus.course.project.utils.dao.BillDAO;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 import com.toedter.calendar.JDateChooser;
 
@@ -51,12 +52,12 @@ public class Bills extends JFrame {
 		JButton btnGoruntule = new JButton("G\u00FCncelle");
 		btnGoruntule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DbServicessBase<Bill> dao = new DbServicessBase<Bill>();
+				BillDAO billdao = new BillDAO();
 				Bill guncelle = new Bill();				
 				guncelle.setId(selecteditemid);
 				guncelle.setFaturalar(getName().getBytes());
 				guncelle.setTarih(dateTarih.getDate());				
-				if (dao.update(guncelle)) {
+				if (billdao.update(guncelle)) {
 					JOptionPane.showMessageDialog(Bills.this, "güncelleme baþarýlý.");
 					faturatablosu();					
 				}
@@ -102,15 +103,15 @@ public class Bills extends JFrame {
 	
 	
 	private void faturatablosu() {	
-		DbServicessBase<Bill> dao=new DbServicessBase<Bill>(); 
+		BillDAO billdao = new BillDAO(); 
 		Bill temp = new Bill();
-		List<Bill> fatura_tablosu = dao.getAllRows(temp);	
+		List<Bill> fatura_tablosu = billdao.getAllRows(temp);	
 		String [][] data=new String [fatura_tablosu.size()][3];	
 		String [] columnNames= {"ID","FATURALAR","TARÝH"};
 		for (int i = 0; i < fatura_tablosu.size(); i++) {			
-			data[i][0]=fatura_tablosu.get(i).getId().toString();
+			data[i][0]=String.valueOf(fatura_tablosu.get(i).getId());
 			data[i][1]=fatura_tablosu.get(i).getFaturalar().toString();
-			data[i][2]=fatura_tablosu.get(i).getTarih().toString();	
+			data[i][2]=String.valueOf(fatura_tablosu.get(i).getTarih());
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		table.setModel(model);

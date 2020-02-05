@@ -36,7 +36,7 @@ public class Debts extends JFrame {
 	
 		setTitle("BOR\u00C7LAR");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(300, 300, 500, 500);
+		setBounds(300, 300, 500, 400);
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 13));
 		getContentPane().setLayout(null);
 		
@@ -111,7 +111,7 @@ public class Debts extends JFrame {
 				}
 			}
 		});
-		btnKaydet.setBounds(70, 222, 85, 23);
+		btnKaydet.setBounds(70, 200, 85, 23);
 		getContentPane().add(btnKaydet);
 		
 		JButton btntemizle = new JButton("Temizle");
@@ -123,7 +123,7 @@ public class Debts extends JFrame {
 				txtkalan.setText("");
 			}
 		});
-		btntemizle.setBounds(279, 222, 85, 23);
+		btntemizle.setBounds(327, 200, 85, 23);
 		getContentPane().add(btntemizle);
 		
 		JButton btnIptal = new JButton("\u0130ptal");
@@ -132,33 +132,8 @@ public class Debts extends JFrame {
 				Debts.this.dispose();
 			}
 		});
-		btnIptal.setBounds(70, 324, 85, 23);
+		btnIptal.setBounds(200, 200, 85, 23);
 		getContentPane().add(btnIptal);
-		
-		
-		
-		JButton btnGuncelle = new JButton("G\u00FCncelle");
-		btnGuncelle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				DbServicessBase<Debt> dao=new DbServicessBase<Debt>();
-				Debt guncelle=new Debt();
-				
-				guncelle.setAd(txtisim.getText());
-				guncelle.setSoyad(txtsoyad.getText());
-				guncelle.setAlinan(new BigDecimal(txtalinan.getText()));
-				guncelle.setKalan(new BigDecimal(txtkalan.getText()));
-				
-				if (dao.update(guncelle)) {
-					JOptionPane.showMessageDialog(Debts.this, "Baþarýyla Güncellendi");
-				}
-				else {
-					JOptionPane.showMessageDialog(Debts.this, "Güncelleme Baþarýz");
-				}
-			}
-		});
-		btnGuncelle.setBounds(279, 324, 85, 23);
-		getContentPane().add(btnGuncelle);
 		getContentPane().add(getBtnGrntle());
 		
 		
@@ -166,7 +141,7 @@ public class Debts extends JFrame {
 	}
 	private JButton getBtnGrntle() {
 		if (btnGrntle == null) {
-			btnGrntle = new JButton("G\u00F6r\u00FCnt\u00FCle");
+			btnGrntle = new JButton("Bor\u00E7lular\u0131 G\u00F6r\u00FCnt\u00FCle");
 			btnGrntle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
@@ -175,7 +150,7 @@ public class Debts extends JFrame {
 					
 				}
 			});
-			btnGrntle.setBounds(170, 274, 89, 23);
+			btnGrntle.setBounds(175, 267, 154, 23);
 		}
 		return btnGrntle;
 	}
