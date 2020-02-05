@@ -119,6 +119,7 @@ public class ActionStudent extends JFrame {
 		lblMesaj = new JLabel("");
 		lblMesaj.setBounds(10, 397, 573, 23);
 		getContentPane().add(lblMesaj);
+		
 		JButton btnSil = new JButton("Sil");
 		btnSil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -188,7 +189,6 @@ public class ActionStudent extends JFrame {
 			data[i][2] = liste.get(i).getSoyad();
 			data[i][3] = liste.get(i).getTel();
 			data[i][4] = liste.get(i).getMail();
-
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);
 		table.setModel(model);

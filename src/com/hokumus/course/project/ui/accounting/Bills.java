@@ -3,9 +3,13 @@ package com.hokumus.course.project.ui.accounting;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -15,10 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
 import com.hokumus.course.project.models.accounting.Bill;
+import com.hokumus.course.project.ui.student.AddStudent;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
-import com.sun.xml.bind.v2.model.core.ID;
 import com.toedter.calendar.JDateChooser;
 
 public class Bills extends JFrame {
@@ -26,18 +29,12 @@ public class Bills extends JFrame {
 	private JLabel lblbos;
 	private byte[] faturalar;
 	private JTable table;
-	private JDateChooser tarih;
+	private JDateChooser dateTarih;
 	private Long selecteditemid;
 	
-	public Bills() {
-		
-		initialize();
-		
-		
+	public Bills() {		
+		initialize();		
 	}
-
-
-
 	private void initialize() {
 		setTitle("FATURALAR");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -50,28 +47,22 @@ public class Bills extends JFrame {
 		getContentPane().add(getBtnDosyaSec());
 		getContentPane().add(getLblbos());
 		
-		tarih = new JDateChooser();
-		tarih.setBounds(337, 36, 137, 20);
-		getContentPane().add(tarih);
 		
 		JButton btnGoruntule = new JButton("G\u00FCncelle");
 		btnGoruntule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DbServicessBase<Bill> dao = new DbServicessBase<Bill>();
-				Bill guncelle = new Bill();
-				
+				Bill guncelle = new Bill();				
 				guncelle.setId(selecteditemid);
 				guncelle.setFaturalar(getName().getBytes());
-				guncelle.setTarih(tarih.getDate());
-				
+				guncelle.setTarih(dateTarih.getDate());				
 				if (dao.update(guncelle)) {
 					JOptionPane.showMessageDialog(Bills.this, "güncelleme baþarýlý.");
-					
+					faturatablosu();					
 				}
 				else {
 					JOptionPane.showMessageDialog(Bills.this, "güncelleme baþarýsýz.");
-				}
-				
+				}	
 			}
 		});
 		btnGoruntule.setBounds(276, 88, 89, 23);
@@ -81,88 +72,67 @@ public class Bills extends JFrame {
 		btnKaydet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DbServicessBase<Bill> dao = new DbServicessBase<Bill>();
-				Bill kaydet = new Bill();
-					
-				
-				kaydet.setTarih(tarih.getDate());
+				Bill kaydet = new Bill();	
+				kaydet.setId(selecteditemid);
+				kaydet.setTarih(dateTarih.getDate());
 				kaydet.setFaturalar(getName().getBytes());
 				if (dao.save(kaydet)) {
 					JOptionPane.showMessageDialog(Bills.this, "kaydetme baþarýlý");
+					faturatablosu();
 				}
-				
 				else {
 					JOptionPane.showMessageDialog(Bills.this, "kaydetme baþarýsýz");
 				}
-				
 			}
 		});
 		btnKaydet.setBounds(177, 88, 89, 23);
 		getContentPane().add(btnKaydet);
-		
+	
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 122, 464, 328);
 		getContentPane().add(scrollPane);
 		scrollPane.setViewportView(getTable());
 		getContentPane().add(getBtnsil());
-		faturatablosu();
-		
+		getContentPane().add(getDateTarih());
+		faturatablosu();	
 	}
-	
 	DefaultTableModel model=new DefaultTableModel();
 	private JButton btnsil;
 	
-	private void faturatablosu() {
-		
+	
+	
+	private void faturatablosu() {	
 		DbServicessBase<Bill> dao=new DbServicessBase<Bill>(); 
 		Bill temp = new Bill();
-		List<Bill> fatura_tablosu = dao.getAllRows(temp);
-		
+		List<Bill> fatura_tablosu = dao.getAllRows(temp);	
+		String [][] data=new String [fatura_tablosu.size()][3];	
 		String [] columnNames= {"ID","FATURALAR","TARÝH"};
-		String [][] data=new String [fatura_tablosu.size()][columnNames.length];
-		
-		
-		for (int i = 0; i < fatura_tablosu.size(); i++) {
-			
-			
-			
-			data[i][0]=fatura_tablosu.get(i).getFaturalar().toString();
-			data[i][1]=fatura_tablosu.get(i).getTarih().toString();
-			data[i][2]=fatura_tablosu.get(i).getId().toString();
-			
+		for (int i = 0; i < fatura_tablosu.size(); i++) {			
+			data[i][0]=fatura_tablosu.get(i).getId().toString();
+			data[i][1]=fatura_tablosu.get(i).getFaturalar().toString();
+			data[i][2]=fatura_tablosu.get(i).getTarih().toString();	
 		}
-		model=new DefaultTableModel(data,columnNames);
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
 		table.setModel(model);
-		
 	}
-
-
 
 	private JButton getBtnDosyaSec() {
 		if (btnDosyaSec == null) {
 			btnDosyaSec = new JButton("Dosya Se\u00E7");
 			btnDosyaSec.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					
 					final JFileChooser fc = new JFileChooser();
 					int result = fc.showOpenDialog(null);
 					File file = fc.getSelectedFile();
 					fc.setDialogTitle("Fatura Seçme Ekraný");
 					fc.setApproveButtonText("Seç");
-					fc.addChoosableFileFilter(new FileNameExtensionFilter("Pdf Belgesi", "pdf"));
-					
-					
-					
+					fc.addChoosableFileFilter(new FileNameExtensionFilter("Pdf Belgesi", "pdf"));	
 					if (result == JFileChooser.APPROVE_OPTION) {
-						
 						lblbos.setText(fc.getSelectedFile().getName());
-					}
-								
+					}		
 					else if (result == JFileChooser.CANCEL_OPTION) {
 						lblbos.setText("Fatura Seçilmedi.");
-					}
-				
-					
-					
+					}					
 				}
 			});
 			btnDosyaSec.setBounds(43, 88, 108, 23);
@@ -183,12 +153,8 @@ public class Bills extends JFrame {
 			table.setModel(new DefaultTableModel(new Object[][] {}, 
 					new String[] { "ID", "FATURALAR","TARÝH" }) {
 			});
-
-			
-
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
+      		DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.addRow(new Object[] {  });
-
 			table.getColumnModel().getColumn(0).setPreferredWidth(100);
 			table.getColumnModel().getColumn(1).setPreferredWidth(100);
 			table.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -200,16 +166,13 @@ public class Bills extends JFrame {
 		if (btnsil == null) {
 			btnsil = new JButton("Sil");
 			btnsil.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
+				public void actionPerformed(ActionEvent e) {	
 					DbServicessBase<Bill> dao=new DbServicessBase<Bill>();
-					 Bill sil=new Bill();
+					Bill sil=new Bill();
 					int row = table.getSelectedRow();
 					sil.setId(selecteditemid);
-					sil.setTarih(table.getValueAt(row, 1).toString());
-					sil.setFaturalar(table.getValueAt(row, 2).toString());
-					
-					
+					sil.setTarih(dateTarih.getDate());
+					sil.setFaturalar(getName().getBytes());
 					if (dao.delete(sil)) {
 						JOptionPane.showMessageDialog(Bills.this, "silme baþarýlý");
 						faturatablosu();
@@ -222,5 +185,29 @@ public class Bills extends JFrame {
 			btnsil.setBounds(385, 88, 89, 23);
 		}
 		return btnsil;
+	}
+	private JDateChooser getDateTarih() {
+		if (dateTarih == null) {
+			dateTarih = new JDateChooser();
+			dateTarih.setDateFormatString("dd/MM/yyyy");
+			dateTarih.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateTarih.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+						String gun = sdf.format(dateTarih.getDate());
+						JOptionPane.showMessageDialog(Bills.this, gun);
+					}
+				}
+			});
+			dateTarih.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateTarih.setDateFormatString("dd/MM/yyyy");
+				}
+			});
+			dateTarih.setBounds(286, 36, 144, 22);
+		}
+		return dateTarih;
 	}
 }
