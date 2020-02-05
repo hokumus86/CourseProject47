@@ -60,7 +60,7 @@ public class Bills extends JFrame {
 				DbServicessBase<Bill> dao = new DbServicessBase<Bill>();
 				Bill guncelle = new Bill();
 				
-				guncelle.setId(ID.valueOf(enumType, name));
+				guncelle.setId(selecteditemid);
 				guncelle.setFaturalar(getName().getBytes());
 				guncelle.setTarih(tarih.getDate());
 				
@@ -205,7 +205,7 @@ public class Bills extends JFrame {
 					DbServicessBase<Bill> dao=new DbServicessBase<Bill>();
 					 Bill sil=new Bill();
 					int row = table.getSelectedRow();
-					sil.setId(Long.valueOf(table.getValueAt(row, 0).toString()));
+					sil.setId(selecteditemid);
 					sil.setTarih(table.getValueAt(row, 1).toString());
 					sil.setFaturalar(table.getValueAt(row, 2).toString());
 					
