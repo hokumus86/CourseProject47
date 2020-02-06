@@ -2,6 +2,7 @@ package com.hokumus.course.project.models.accounting;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import com.hokumus.course.project.models.base.BaseEntity;
 public class Incomings extends BaseEntity{
 
     private Long id;
-    private IncomeType tanim;
+    private String tanim;
     private BigDecimal miktar;
     private Date tarih;
 //    private StudentPayments StudentPayments;
@@ -35,19 +36,20 @@ public class Incomings extends BaseEntity{
     }
 
     @Column(name = "subject",length = 100)
-    public IncomeType getTanim() {
+    public String getTanim() {
 		return tanim;
 	}
 
-	public void setTanim(IncomeType tanim) {
+	public void setTanim(String tanim) {
 		this.tanim = tanim;
 	}
-    
     
     @Column(name = "quantity",precision = 14,scale = 2)
     public BigDecimal getMiktar() {
         return miktar;
     }
+
+	
 
 	public void setMiktar(BigDecimal miktar) {
         this.miktar = miktar;
@@ -76,6 +78,11 @@ public class Incomings extends BaseEntity{
     @Override
 	public String toString() {
 		return "Incomings [id=" + id + ", tanim=" + tanim + ", miktar=" + miktar + ", tarih=" + tarih + "]";
+	}
+
+	public List<Incomings> getAllRows(Incomings incomings) {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 
