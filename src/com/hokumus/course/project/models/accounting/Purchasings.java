@@ -21,6 +21,8 @@ public class Purchasings extends BaseEntity {
 	private String malzeme;
 	private BigDecimal fiyat;
 	private Date tarih;
+	private BigDecimal adet;
+	
 	
 	@Id
 	@SequenceGenerator(name = "seq_purchasing",allocationSize = 1,sequenceName = "seq_purchasing")
@@ -52,11 +54,20 @@ public class Purchasings extends BaseEntity {
 	public void setTarih(Date tarih) {
 		this.tarih = tarih;
 	}
-	
+	@Column(name = "quantity")
+	public BigDecimal getAdet() {
+		return adet;
+	}
+	public void setAdet(BigDecimal adet) {
+		this.adet = adet;
+	}
 	@Override
 	public String toString() {
-		return "Purchasing [id=" + id + ", malzeme=" + malzeme + ", fiyat=" + fiyat + ", tarih=" + tarih + "]";
+		return "Purchasings [id=" + id + ", malzeme=" + malzeme + ", fiyat=" + fiyat + ", tarih=" + tarih + ", adet="
+				+ adet + "]";
 	}
+	
+	
 	
 	
 	
