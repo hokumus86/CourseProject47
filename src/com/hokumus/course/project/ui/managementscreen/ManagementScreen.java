@@ -23,7 +23,7 @@ public class ManagementScreen extends JFrame{
 	private JMenu mnSnfIlemleri;
 	private JButton btnGeri;
 	private JTabbedPane panelAna;
-	private JMenu mnrenciIlemleri;
+	private JMenu mnOgrenciIlemleri;
 	public ManagementScreen() {
 		
 		initialize();
@@ -45,7 +45,7 @@ public class ManagementScreen extends JFrame{
 			menuBar.add(getMnKursIlemleri());
 			menuBar.add(getMnGrupIlemleri());
 			menuBar.add(getMnSnfIlemleri());
-			menuBar.add(getMnrenciIlemleri());
+			menuBar.add(getMnOgrenciIlemleri());
 		}
 		return menuBar;
 	}
@@ -113,10 +113,17 @@ public class ManagementScreen extends JFrame{
 		}
 		return panelAna;
 	}
-	private JMenu getMnrenciIlemleri() {
-		if (mnrenciIlemleri == null) {
-			mnrenciIlemleri = new JMenu("\u00D6\u011Frenci \u0130\u015Flemleri");
+	private JMenu getMnOgrenciIlemleri() {
+		if (mnOgrenciIlemleri == null) {
+			mnOgrenciIlemleri = new JMenu("\u00D6\u011Frenci \u0130\u015Flemleri");
+			mnOgrenciIlemleri.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					panelAna.removeAll();
+					panelAna.add(new OgrenciIslemleri().getContentPane());
+				}
+			});
 		}
-		return mnrenciIlemleri;
+		return mnOgrenciIlemleri;
 	}
 }
