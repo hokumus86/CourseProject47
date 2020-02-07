@@ -60,6 +60,6 @@ public class Courses extends BaseEntity {
 	@Override
 	public String toString() {
 
-		return id + " - " +adi;
+		return id + "-" +adi;
 	}
 }

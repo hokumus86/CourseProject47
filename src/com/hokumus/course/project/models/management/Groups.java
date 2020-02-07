@@ -125,7 +125,7 @@ public class Groups extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return  id +" "+ adi;
+		return  id +"-"+ adi;
 	}
 
 	public Groups getByUsernameAndPassword(String kullaniciAdi, String sifre) {
