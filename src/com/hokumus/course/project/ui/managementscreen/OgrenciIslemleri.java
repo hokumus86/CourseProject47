@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.management.Query;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,153 +24,168 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.Session;
+
 import com.hokumus.course.project.models.management.Courses;
 import com.hokumus.course.project.models.management.Days;
+import com.hokumus.course.project.models.management.Groups;
 import com.hokumus.course.project.models.management.LessonClass;
+import com.hokumus.course.project.models.student.Student;
 import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
+import com.hokumus.course.project.utils.MyHBUtil;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
 
 public class OgrenciIslemleri extends JFrame{
 	private JLabel lblKursAd;
-	private JComboBox cmbKursAdi;
 	private JLabel lblGrupAd;
-	private JTextField txtGrupAdi;
-	private JLabel lblretmen;
-	private JComboBox cmbOgretmen;
-	private JLabel lblrenciSays;
-	private JTextField txtOgrenciSayisi;
-	private JLabel lblSnf;
-	private JComboBox cmbSinif;
-	private JLabel lblBalamaTarihi;
 	private JButton btnGuncelle;
 	private JButton btnIptal;
 	private JButton btnSil;
-	private JLabel lblSaat;
-	private JComboBox cmbSaat;
 	private JScrollPane scrollPane;
-	private JTable table;
 	private JTextField txtArama;
 	private JPanel panel_2;
 	private JButton btnTemizle;
 	private JLabel txtMesaj;
-	private JDateChooser dateBaslamaTrh;
 	private JDateChooser dateBitisTrh;
-	private JButton btnYeniGrupA;
+	private JButton btnOgrenciKaydet;
+	private JScrollPane scrollPane_1;
+	private JTable tblOgrenciKayitTablosu;
+	private JLabel lblrencininSoyad;
+	private JTextField txtOgrenciAdi;
+	private JTextField txtOgrenciSoyadi;
+	private JPanel pnlOgrenciBilgileri;
+	private JTable tblOgrenciTablosu;
+	private Long selectedStudentId;
+	private String selectedStudentAdres;
+	private String selectedStudentMail;
+	private JLabel lblKursAd_1;
+	private JComboBox cmbKursAdi;
+	private JComboBox cmbGrupAdi;
+	
+
 	public OgrenciIslemleri() {
 		initialize();
 	}
 
 	private void initialize() {
 		setTitle("Grup G\u00F6r\u00FCnt\u00FCle/G\u00FCncelle/Sil  -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
-		setBounds(300, 3, 940, 673);
+		setBounds(300, 3, 940, 622);
 		getContentPane().setLayout(null);
 		getContentPane().setName("Öðrenci Ýþlemleri");
-		getContentPane().add(getLblKursAd());
-		getContentPane().add(getCmbKursAdi());
 		getContentPane().add(getLblGrupAd());
-		getContentPane().add(getTxtGrupAdi());
-		getContentPane().add(getLblretmen());
-		getContentPane().add(getCmbOgretmen());
-		getContentPane().add(getLblrenciSays());
-		getContentPane().add(getTxtOgrenciSayisi());
-		getContentPane().add(getLblSnf());
-		getContentPane().add(getCmbSinif());
-		getContentPane().add(getLblBalamaTarihi());
 		getContentPane().add(getBtnGuncelle());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getBtnSil());
-		getContentPane().add(getLblSaat());
-		getContentPane().add(getCmbSaat());
 		getContentPane().add(getScrollPane());
 		getContentPane().add(getPanel_2());
 		getContentPane().add(getBtnTemizle());
 		getContentPane().add(getTxtMesaj());
-		getContentPane().add(getDateBaslamaTrh());
-		getContentPane().add(getBtnYeniGrupA());
+		getContentPane().add(getBtnOgrenciKaydet());
+		getContentPane().add(getScrollPane_1());
+		getContentPane().add(getPnlOgrenciBilgileri());
+		getContentPane().add(getLblKursAd_1());
+		getContentPane().add(getCmbKursAdi());
+		getContentPane().add(getCmbGrupAdi());
+		ogrenciTablosuGoster();
+		
+		
+		DbServicessBase<Courses> dao=new DbServicessBase<Courses>();
+		List<Courses> kurslar=dao.getAllRows(new Courses());
+		DefaultComboBoxModel model = new DefaultComboBoxModel(kurslar.toArray());	
+		cmbKursAdi.setModel(model);
+		DbServicessBase<Groups> dao1=new DbServicessBase<Groups>();
+		List<Groups> gruplar=dao1.getAllRows(new Groups());
+		 model = new DefaultComboBoxModel(gruplar.toArray());	
+		cmbGrupAdi.setModel(model);
+		getContentPane().add(getLblMesaj());
+	}
+	
+	
+	DefaultTableModel model=new DefaultTableModel();
+	private JLabel lblTelno;
+	private JTextField txtTelno;
+	private JLabel lblMesaj;
+	
+	public void ogrenciTablosuGoster() {
+		
+		
+		DbServicessBase<Student> dao=new DbServicessBase<Student>(); 
+		Student temp=new Student();
+		List<Student> ogrenci_listesi=dao.getAllRows(temp);
+		
+		
+		String [] columnNames= {"ID","AD","SOYAD","TEL.NO","ADRES","E-MAÝL","GRUP"};
+		String [][] data=new String [ogrenci_listesi.size()][columnNames.length];
+		
+		
+		for (int i = 0; i < ogrenci_listesi.size(); i++) {
+			
+			data[i][0]=CourseUtils.getValue(ogrenci_listesi.get(i).getId().toString());
+			data[i][1]=CourseUtils.getValue(ogrenci_listesi.get(i).getAd());
+			data[i][2]=CourseUtils.getValue(ogrenci_listesi.get(i).getSoyad());
+			data[i][3]=CourseUtils.getValue(ogrenci_listesi.get(i).getTel());
+			data[i][4]=CourseUtils.getValue(ogrenci_listesi.get(i).getAdres());
+			data[i][5]=CourseUtils.getValue(ogrenci_listesi.get(i).getMail());
+			data[i][6]=CourseUtils.getValue(ogrenci_listesi.get(i).getGroups().getAdi().toString());
+		
+			
+			
+		}
+		
+		model=new DefaultTableModel(data,columnNames);
+		tblOgrenciTablosu.setModel(model);
+		
+		
 		
 	}
 	
+	public void ogrenciKayitTablosuGoster() {
+		
+		
+		DbServicessBase<Student> dao=new DbServicessBase<Student>(); 
+		Student temp=new Student();
+		List<Student> kayitlistesi=dao.getAllRows(temp);
+		
+		
+		String [] columnNames= {"ID","KURS ADI","GRUP ADI","ÖÐ. ADI","ÖÐ. SOYADI","ÖÐ. TEL.NO"};
+		String [][] data=new String [kayitlistesi.size()][columnNames.length];
+		
+		
+		for (int i = 0; i < kayitlistesi.size(); i++) {
+			
+			data[i][0]=CourseUtils.getValue(kayitlistesi.get(i).getId().toString());
+			data[i][1]=CourseUtils.getValue(kayitlistesi.get(i).getGroups().getCourses().getAdi().toString());
+			data[i][2]=CourseUtils.getValue(kayitlistesi.get(i).getGroups().getAdi().toString());
+			data[i][3]=CourseUtils.getValue(kayitlistesi.get(i).getAd().toString());
+			data[i][4]=CourseUtils.getValue(kayitlistesi.get(i).getSoyad().toString());
+			data[i][5]=CourseUtils.getValue(kayitlistesi.get(i).getTel().toString());
+			
+		}
+		
+		model=new DefaultTableModel(data,columnNames);
+		tblOgrenciKayitTablosu.setModel(model);
+		
+		
+		
+	}
 	private JLabel getLblKursAd() {
 		if (lblKursAd == null) {
-			lblKursAd = new JLabel("\u00D6\u011Frenci Ad\u0131: ");
-			lblKursAd.setBounds(21, 37, 76, 14);
+			lblKursAd = new JLabel(" Ad\u0131: ");
+			lblKursAd.setBounds(10, 32, 76, 14);
 		}
 		return lblKursAd;
-	}
-	private JComboBox getCmbKursAdi() {
-		if (cmbKursAdi == null) {
-			cmbKursAdi = new JComboBox();
-			cmbKursAdi.setToolTipText("");
-			cmbKursAdi.setBounds(129, 34, 103, 20);
-		}
-		return cmbKursAdi;
 	}
 	private JLabel getLblGrupAd() {
 		if (lblGrupAd == null) {
 			lblGrupAd = new JLabel("Grup Ad\u0131:");
-			lblGrupAd.setBounds(21, 73, 76, 14);
+			lblGrupAd.setBounds(259, 62, 76, 14);
 		}
 		return lblGrupAd;
-	}
-	private JTextField getTxtGrupAdi() {
-		if (txtGrupAdi == null) {
-			txtGrupAdi = new JTextField();
-			txtGrupAdi.setBounds(129, 70, 103, 20);
-			txtGrupAdi.setColumns(10);
-		}
-		return txtGrupAdi;
-	}
-	private JLabel getLblretmen() {
-		if (lblretmen == null) {
-			lblretmen = new JLabel("\u00D6\u011Fretmen:");
-			lblretmen.setBounds(21, 107, 76, 14);
-		}
-		return lblretmen;
-	}
-	private JComboBox getCmbOgretmen() {
-		if (cmbOgretmen == null) {
-			cmbOgretmen = new JComboBox();
-			cmbOgretmen.setBounds(129, 101, 103, 20);
-		}
-		return cmbOgretmen;
-	}
-	private JLabel getLblrenciSays() {
-		if (lblrenciSays == null) {
-			lblrenciSays = new JLabel("\u00D6\u011Frenci Say\u0131s\u0131:");
-			lblrenciSays.setBounds(21, 140, 101, 14);
-		}
-		return lblrenciSays;
-	}
-	private JTextField getTxtOgrenciSayisi() {
-		if (txtOgrenciSayisi == null) {
-			txtOgrenciSayisi = new JTextField();
-			txtOgrenciSayisi.setColumns(10);
-			txtOgrenciSayisi.setBounds(129, 137, 103, 20);
-		}
-		return txtOgrenciSayisi;
-	}
-	private JLabel getLblSnf() {
-		if (lblSnf == null) {
-			lblSnf = new JLabel("S\u0131n\u0131f:");
-			lblSnf.setBounds(21, 171, 76, 14);
-		}
-		return lblSnf;
-	}
-	private JComboBox getCmbSinif() {
-		if (cmbSinif == null) {
-			cmbSinif = new JComboBox();
-			cmbSinif.setBounds(129, 168, 103, 20);
-		}
-		return cmbSinif;
-	}
-	private JLabel getLblBalamaTarihi() {
-		if (lblBalamaTarihi == null) {
-			lblBalamaTarihi = new JLabel("Ba\u015Flama Tarihi:");
-			lblBalamaTarihi.setBounds(289, 37, 103, 14);
-		}
-		return lblBalamaTarihi;
 	}
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
@@ -199,61 +215,18 @@ public class OgrenciIslemleri extends JFrame{
 		}
 		return btnSil;
 	}
-	private JLabel getLblSaat() {
-		if (lblSaat == null) {
-			lblSaat = new JLabel("Saat:");
-			lblSaat.setBounds(21, 212, 46, 14);
-		}
-		return lblSaat;
-	}
-	private JComboBox getCmbSaat() {
-		if (cmbSaat == null) {
-			cmbSaat = new JComboBox();
-			cmbSaat.setBounds(129, 209, 103, 20);
-		}
-		return cmbSaat;
-	}
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 301, 832, 284);
-			scrollPane.setViewportView(getTable_1());
+			scrollPane.setBounds(10, 207, 832, 164);
+			scrollPane.setViewportView(getTblOgrenciTablosu());
 		}
 		return scrollPane;
-	}
-	private JTable getTable_1() {
-		if (table == null) {
-			table = new JTable();
-			table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"ID", "KURS ADI", "GRUP ADI", "\u00D6\u011ERETMEN", "\u00D6\u011ERENC\u0130 SAYISI", "SINIF", "G\u00DCN", "SAAT", "BA\u015ELANGI\u00C7 TAR\u0130H\u0130", "B\u0130T\u0130\u015E TAR\u0130H\u0130"
-				}
-			) {
-				boolean[] columnEditables = new boolean[] {
-					true, true, true, true, true, true, true, true, false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
-			table.getColumnModel().getColumn(1).setPreferredWidth(80);
-			table.getColumnModel().getColumn(2).setPreferredWidth(84);
-			table.getColumnModel().getColumn(3).setPreferredWidth(78);
-			table.getColumnModel().getColumn(4).setPreferredWidth(103);
-			table.getColumnModel().getColumn(5).setPreferredWidth(98);
-			table.getColumnModel().getColumn(6).setPreferredWidth(73);
-			table.getColumnModel().getColumn(7).setPreferredWidth(85);
-			table.getColumnModel().getColumn(8).setPreferredWidth(105);
-			table.getColumnModel().getColumn(9).setPreferredWidth(80);
-		}
-		return table;
 	}
 	private JTextField getTxtArama() {
 		if (txtArama == null) {
 			txtArama = new JTextField();
-			txtArama.setBounds(10, 24, 801, 20);
+			txtArama.setBounds(10, 24, 543, 20);
 			txtArama.setColumns(10);
 		}
 		return txtArama;
@@ -262,7 +235,7 @@ public class OgrenciIslemleri extends JFrame{
 		if (panel_2 == null) {
 			panel_2 = new JPanel();
 			panel_2.setBorder(new TitledBorder(null, "Arama", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_2.setBounds(17, 252, 825, 55);
+			panel_2.setBounds(260, 149, 595, 55);
 			panel_2.setLayout(null);
 			panel_2.add(getTxtArama());
 		}
@@ -282,42 +255,169 @@ public class OgrenciIslemleri extends JFrame{
 		}
 		return txtMesaj;
 	}
-	private JDateChooser getDateBaslamaTrh() {
-		if (dateBaslamaTrh == null) {
-			dateBaslamaTrh = new JDateChooser();
-			dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
-			dateBaslamaTrh.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
-					if (dateBaslamaTrh.getDate() != null) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-						String gun = sdf.format(dateBaslamaTrh.getDate());
-						JOptionPane.showMessageDialog(OgrenciIslemleri.this, gun);
+	
+	private JButton getBtnOgrenciKaydet() {
+		if (btnOgrenciKaydet == null) {
+			btnOgrenciKaydet = new JButton("\u00D6\u011Frenci Kaydet");
+			btnOgrenciKaydet.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					DbServicessBase<Student> dao=new DbServicessBase<Student>();
+					Student temp=new Student();
+					
+					int row=tblOgrenciKayitTablosu.getSelectedRow();
+					temp.setId(selectedStudentId);
+					temp.setAd(txtOgrenciAdi.getText());
+					temp.setSoyad(txtOgrenciSoyadi.getText());
+					temp.setTel(txtOgrenciSoyadi.getText());
+					temp.setAdres(selectedStudentAdres);
+					temp.setMail(selectedStudentMail);
+					temp.setGroups((Groups)cmbGrupAdi.getSelectedItem());
+				
+					if (dao.update(temp)) {
+						lblMesaj.setText("Öðrenci Baþarý ile Kaydedildi");
+						ogrenciKayitTablosuGoster();
+						ogrenciTablosuGoster();
+					}
+					else {
+						lblMesaj.setText("Öðrenci Kaydedilemedi");
 
 					}
-
 				}
 			});
-			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
-				public void caretPositionChanged(InputMethodEvent event) {
-				}
-
-				public void inputMethodTextChanged(InputMethodEvent event) {
-					dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
-					JOptionPane.showMessageDialog(OgrenciIslemleri.this, dateBaslamaTrh.getDateFormatString());
+			btnOgrenciKaydet.setBounds(290, 90, 133, 48);
+		}
+		return btnOgrenciKaydet;
+	}
+	private JScrollPane getScrollPane_1() {
+		if (scrollPane_1 == null) {
+			scrollPane_1 = new JScrollPane();
+			scrollPane_1.setBounds(10, 382, 842, 152);
+			scrollPane_1.setViewportView(getTable_1_1());
+		}
+		return scrollPane_1;
+	}
+	private JTable getTable_1_1() {
+		if (tblOgrenciKayitTablosu == null) {
+			tblOgrenciKayitTablosu = new JTable();
+		}
+		return tblOgrenciKayitTablosu;
+	}
+	private JLabel getLblrencininSoyad() {
+		if (lblrencininSoyad == null) {
+			lblrencininSoyad = new JLabel(" Soyad\u0131:");
+			lblrencininSoyad.setBounds(10, 85, 95, 14);
+		}
+		return lblrencininSoyad;
+	}
+	private JTextField getTxtOgrenciAdi() {
+		if (txtOgrenciAdi == null) {
+			txtOgrenciAdi = new JTextField();
+			txtOgrenciAdi.setBounds(75, 29, 86, 20);
+			txtOgrenciAdi.setColumns(10);
+		}
+		return txtOgrenciAdi;
+	}
+	private JTextField getTxtOgrenciSoyadi() {
+		if (txtOgrenciSoyadi == null) {
+			txtOgrenciSoyadi = new JTextField();
+			txtOgrenciSoyadi.setBounds(75, 82, 86, 20);
+			txtOgrenciSoyadi.setColumns(10);
+		}
+		return txtOgrenciSoyadi;
+	}
+	private JPanel getPnlOgrenciBilgileri() {
+		if (pnlOgrenciBilgileri == null) {
+			pnlOgrenciBilgileri = new JPanel();
+			pnlOgrenciBilgileri.setBorder(new TitledBorder(null, "\u00D6\u011Frenci Bilgileri", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+			pnlOgrenciBilgileri.setBounds(10, 11, 218, 166);
+			pnlOgrenciBilgileri.setLayout(null);
+			pnlOgrenciBilgileri.add(getLblKursAd());
+			pnlOgrenciBilgileri.add(getTxtOgrenciAdi());
+			pnlOgrenciBilgileri.add(getLblrencininSoyad());
+			pnlOgrenciBilgileri.add(getTxtOgrenciSoyadi());
+			pnlOgrenciBilgileri.add(getLblTelno());
+			pnlOgrenciBilgileri.add(getTxtTelno());
+		}
+		return pnlOgrenciBilgileri;
+	}
+	private JTable getTblOgrenciTablosu() {
+		if (tblOgrenciTablosu == null) {
+			tblOgrenciTablosu = new JTable();
+			tblOgrenciTablosu.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+					int row=tblOgrenciTablosu.getSelectedRow();
+					
+					txtOgrenciAdi.setText(CourseUtils.getValue(tblOgrenciTablosu.getValueAt(row, 1).toString()));
+					txtOgrenciSoyadi.setText(CourseUtils.getValue(tblOgrenciTablosu.getValueAt(row, 2).toString()));
+					txtTelno.setText(CourseUtils.getValue(tblOgrenciTablosu.getValueAt(row, 3).toString()));
+					selectedStudentId=Long.valueOf( tblOgrenciTablosu.getValueAt(row, 0).toString());
+					selectedStudentAdres=CourseUtils.getValue(tblOgrenciTablosu.getValueAt(row, 4).toString());
+					selectedStudentMail=CourseUtils.getValue(tblOgrenciTablosu.getValueAt(row, 5).toString());
 				}
 			});
-			dateBaslamaTrh.setBounds(281, 67, 95, 20);
 		}
-		return dateBaslamaTrh;
+		return tblOgrenciTablosu;
 	}
-	
-	private JButton getBtnYeniGrupA() {
-		if (btnYeniGrupA == null) {
-			btnYeniGrupA = new JButton("Yeni Grup A\u00E7");
-			btnYeniGrupA.setBounds(661, 154, 133, 48);
+	private JLabel getLblKursAd_1() {
+		if (lblKursAd_1 == null) {
+			lblKursAd_1 = new JLabel("Kurs Ad\u0131:");
+			lblKursAd_1.setBounds(259, 25, 65, 14);
 		}
-		return btnYeniGrupA;
+		return lblKursAd_1;
 	}
-
+	private JComboBox getCmbKursAdi() {
+		if (cmbKursAdi == null) {
+			cmbKursAdi = new JComboBox();
+			cmbKursAdi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					DbServicessBase<Groups> dao=new DbServicessBase<Groups>();
+					Courses kurs=(Courses) cmbKursAdi.getModel().getSelectedItem();
+					Long id=kurs.getId();
+					
+					String hql="from Groups where course_id=:id";
+				
+				
+					DefaultComboBoxModel<Groups> model=new DefaultComboBoxModel<Groups>();
+					//List<Groups> kurslar=dao.getAllRows(temp);
+					cmbGrupAdi.setModel(model);
+					
+				}
+			});
+			cmbKursAdi.setBounds(345, 25, 108, 20);
+		}
+		return cmbKursAdi;
+	}
+	private JComboBox getCmbGrupAdi() {
+		if (cmbGrupAdi == null) {
+			cmbGrupAdi = new JComboBox();
+			cmbGrupAdi.setBounds(345, 59, 108, 20);
+		}
+		return cmbGrupAdi;
+	}
+	private JLabel getLblTelno() {
+		if (lblTelno == null) {
+			lblTelno = new JLabel("Tel.No:");
+			lblTelno.setBounds(10, 127, 58, 14);
+		}
+		return lblTelno;
+	}
+	private JTextField getTxtTelno() {
+		if (txtTelno == null) {
+			txtTelno = new JTextField();
+			txtTelno.setColumns(10);
+			txtTelno.setBounds(75, 124, 86, 20);
+		}
+		return txtTelno;
+	}
+	private JLabel getLblMesaj() {
+		if (lblMesaj == null) {
+			lblMesaj = new JLabel("");
+			lblMesaj.setForeground(new Color(255, 0, 0));
+			lblMesaj.setBounds(10, 545, 559, 27);
+		}
+		return lblMesaj;
+	}
 }

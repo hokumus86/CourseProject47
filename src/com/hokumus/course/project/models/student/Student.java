@@ -17,6 +17,7 @@ import com.hokumus.course.project.models.CourseUsers;
 import com.hokumus.course.project.models.GenderEnums;
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.models.base.BaseEntity;
+import com.hokumus.course.project.models.management.Groups;
 
 
 @Entity
@@ -32,6 +33,7 @@ public class Student extends BaseEntity{
     private Date kayitTarihi;
     private GenderEnums cinsiyet;
     private CourseUsers userId;
+    private Groups groups;
 
    
 
@@ -118,6 +120,16 @@ public class Student extends BaseEntity{
 
 	public void setUserId(CourseUsers userId) {
 		this.userId = userId;
+	}
+
+	 @ManyToOne
+	 @JoinColumn(name = "grup_id")
+	public Groups getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Groups groups) {
+		this.groups = groups;
 	}
 
 	@Override
