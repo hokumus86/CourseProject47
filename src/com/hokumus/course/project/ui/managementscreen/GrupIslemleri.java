@@ -1,7 +1,18 @@
 package com.hokumus.course.project.ui.managementscreen;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -9,12 +20,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.hokumus.course.project.models.management.Courses;
@@ -25,19 +35,7 @@ import com.hokumus.course.project.models.management.LessonClass;
 import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
-
-import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 
 public class GrupIslemleri extends JFrame{
@@ -76,6 +74,8 @@ public class GrupIslemleri extends JFrame{
 	private JButton btnYeniGrupA;
 	private JTable tblGruplar;
 	private Long selectedItemId;
+	private String gunBaslama;
+	private String gunBitis;
 	public GrupIslemleri() {
 		initialize();
 	}
@@ -151,15 +151,15 @@ public class GrupIslemleri extends JFrame{
 		
 		for (int i = 0; i < grup_listesi.size(); i++) {
 			
-			data[i][0]=grup_listesi.get(i).getId().toString();
-			data[i][1]=grup_listesi.get(i).getCourses().toString();
-			data[i][2]=grup_listesi.get(i).getAdi().toString();
-			data[i][3]=grup_listesi.get(i).getTeacher();
-			data[i][4]=String.valueOf(grup_listesi.get(i).getOgrenciSayisi());
-			data[i][5]=grup_listesi.get(i).getLessonClass().toString();
-			//data[i][6]=grup_listesi.get(i).getDays().getName();
-			data[i][7]=grup_listesi.get(i).getBaslamaTarihi().toString();
-			data[i][8]=grup_listesi.get(i).getBitisTarihi().toString();
+			data[i][0]=CourseUtils.getValue(grup_listesi.get(i).getId());
+			data[i][1]=CourseUtils.getValue(grup_listesi.get(i).getCourses());
+			data[i][2]=CourseUtils.getValue(grup_listesi.get(i).getAdi());
+			data[i][3]=CourseUtils.getValue(grup_listesi.get(i).getTeacher());
+			data[i][4]=CourseUtils.getValue(String.valueOf(grup_listesi.get(i).getOgrenciSayisi()));
+			data[i][5]=CourseUtils.getValue(grup_listesi.get(i).getLessonClass());
+			//data[i][6]=CourseUtils.getValue(grup_listesi.get(i).getDays().getName());
+			data[i][7]=CourseUtils.getValue(grup_listesi.get(i).getBaslamaTarihi());
+			data[i][8]=CourseUtils.getValue(grup_listesi.get(i).getBitisTarihi());
 			
 			
 		}
@@ -370,6 +370,28 @@ public class GrupIslemleri extends JFrame{
 	private JButton getBtnGuncelle() {
 		if (btnGuncelle == null) {
 			btnGuncelle = new JButton("G\u00FCncelle");
+			btnGuncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					
+					DbServicessBase<Groups> dao=new DbServicessBase<Groups>();
+					Groups guncelgrup=new Groups();
+					guncelgrup.setCourses((Courses)cmbKursAdi.getModel().getSelectedItem());
+					guncelgrup.setAdi(txtGrupAdi.getText());
+					guncelgrup.setTeacher((Teacher) cmbOgretmen.getModel().getSelectedItem());
+					guncelgrup.setLessonClass((LessonClass) cmbSinif.getModel().getSelectedItem());
+					guncelgrup.setOgrenciSayisi(Integer.valueOf(txtOgrenciSayisi.getText()));
+					guncelgrup.setBaslamaTarihi(new Date(gunBaslama));
+					guncelgrup.setBitisTarihi(new Date(gunBitis));
+					
+					if (dao.update(guncelgrup)) {
+						txtMesaj.setText("Grup Baþarý ile Güncellendi");
+					}
+					else {
+						txtMesaj.setText("Grup Güncellenemedi");
+					}
+					
+				}
+			});
 			btnGuncelle.setBounds(594, 25, 108, 38);
 		}
 		return btnGuncelle;
@@ -391,6 +413,32 @@ public class GrupIslemleri extends JFrame{
 	private JButton getBtnSil() {
 		if (btnSil == null) {
 			btnSil = new JButton("Sil");
+			btnSil.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					DbServicessBase<Groups> dao=new DbServicessBase<Groups>();
+					Groups silinecekGrup=new Groups();
+					
+					int row=tblGruplar.getSelectedRow();
+					silinecekGrup.setId(Long.valueOf(tblGruplar.getValueAt(row, 0).toString()));
+					silinecekGrup.setCourses((Courses) cmbKursAdi.getModel().getElementAt(row));
+					silinecekGrup.setAdi(tblGruplar.getValueAt(row, 2).toString());
+					silinecekGrup.setTeacher((Teacher) cmbOgretmen.getModel().getElementAt(row));
+					silinecekGrup.setOgrenciSayisi(Integer.valueOf(tblGruplar.getValueAt(row, 4).toString()));
+					silinecekGrup.setLessonClass((LessonClass)cmbSinif.getModel().getElementAt(row));
+					silinecekGrup.setDays((Days) tblGruplar.getValueAt(row, 6));
+					silinecekGrup.setBaslamaTarihi(dateBaslamaTrh.getDate());
+					silinecekGrup.setBitisTarihi(dateBitisTrh.getDate());
+					
+					if (dao.delete(silinecekGrup)) {
+						txtMesaj.setText("Grup Baþarý Ýle Silindi");
+						grupTablosuGoster();
+					}
+					else {
+						txtMesaj.setText("Grup Silinemedi");
+
+					}
+				}
+			});
 			btnSil.setBounds(594, 95, 108, 38);
 		}
 		return btnSil;
@@ -456,6 +504,7 @@ public class GrupIslemleri extends JFrame{
 		}
 		return txtMesaj;
 	}
+	
 	private JDateChooser getDateBaslamaTrh() {
 		if (dateBaslamaTrh == null) {
 			dateBaslamaTrh = new JDateChooser();
@@ -464,9 +513,9 @@ public class GrupIslemleri extends JFrame{
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (dateBaslamaTrh.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-						String gun = sdf.format(dateBaslamaTrh.getDate());
-						JOptionPane.showMessageDialog(GrupIslemleri.this, gun);
+					
+						gunBaslama = sdf.format(dateBaslamaTrh.getDate());
+						System.out.println(gunBaslama);
 
 					}
 
@@ -478,7 +527,7 @@ public class GrupIslemleri extends JFrame{
 
 				public void inputMethodTextChanged(InputMethodEvent event) {
 					dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
-					JOptionPane.showMessageDialog(GrupIslemleri.this, dateBaslamaTrh.getDateFormatString());
+					
 				}
 			});
 			dateBaslamaTrh.setBounds(281, 67, 95, 20);
@@ -492,11 +541,11 @@ public class GrupIslemleri extends JFrame{
 			dateBitisTrh.addPropertyChangeListener(new PropertyChangeListener() {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (dateBitisTrh.getDate() != null) {
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-						String gun = sdf.format(dateBitisTrh.getDate());
-						JOptionPane.showMessageDialog(GrupIslemleri.this, gun);
-
+						SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+						
+						gunBitis = sdf.format(dateBitisTrh.getDate());
+						//System.out.println(gunBitis);
+						
 					}
 
 				}
@@ -507,7 +556,7 @@ public class GrupIslemleri extends JFrame{
 
 				public void inputMethodTextChanged(InputMethodEvent event) {
 					dateBitisTrh.setDateFormatString("dd/MM/yyyy");
-					JOptionPane.showMessageDialog(GrupIslemleri.this, dateBitisTrh.getDateFormatString());
+					
 				}
 			});
 			dateBitisTrh.setBounds(281, 140, 95, 20);
@@ -522,22 +571,22 @@ public class GrupIslemleri extends JFrame{
 					
 					DbServicessBase<Groups> dao=new DbServicessBase<Groups>();
 					Groups yenigrup=new Groups();
-					yenigrup.setCourses((Courses) cmbKursAdi.getSelectedItem());
+					yenigrup.setCourses((Courses)cmbKursAdi.getModel().getSelectedItem());
 					yenigrup.setAdi(txtGrupAdi.getText());
-					yenigrup.setTeacher((Teacher) getCmbOgretmen().getSelectedItem());
-					yenigrup.setLessonClass((LessonClass) cmbSinif.getSelectedItem());
+					yenigrup.setTeacher((Teacher) cmbOgretmen.getModel().getSelectedItem());
+					yenigrup.setLessonClass((LessonClass) cmbSinif.getModel().getSelectedItem());
 					yenigrup.setOgrenciSayisi(Integer.valueOf(txtOgrenciSayisi.getText()));
-					yenigrup.setBaslamaTarihi(dateBaslamaTrh.getDate());
-					yenigrup.setBitisTarihi(dateBitisTrh.getDate());
-					
-					DbServicessBase<Days> dao1=new DbServicessBase<Days>();
+					yenigrup.setBaslamaTarihi(new Date(gunBaslama));
+					yenigrup.setBitisTarihi(new Date(gunBitis));
+
+					/*DbServicessBase<Days> dao1=new DbServicessBase<Days>();
 					yenigrup.setDays(gunSecimi());
 					Days d = yenigrup.getDays();
 					d.setName("Deneme");
 					dao1.save(d);
 					Days d1 = new Days();
 					d1.setName("Deneme");
-					yenigrup.setDays(dao1.search(d1).get(0));
+					yenigrup.setDays(dao1.search(d1).get(0));*/
 					
 					if (dao.save(yenigrup)) {
 						txtMesaj.setText("Grup Baþarý ile Oluþturuldu");
@@ -564,13 +613,21 @@ public class GrupIslemleri extends JFrame{
 					int row=tblGruplar.getSelectedRow();
 					
 					selectedItemId = Long.valueOf(tblGruplar.getValueAt(row, 0).toString());
-					cmbKursAdi.setSelectedItem(tblGruplar.getValueAt(row, 1));
+					cmbKursAdi.getModel().setSelectedItem(tblGruplar.getValueAt(row, 1));
 					txtGrupAdi.setText(tblGruplar.getValueAt(row, 2).toString());
-					cmbOgretmen.setSelectedItem(tblGruplar.getValueAt(row, 3));
+					cmbOgretmen.getModel().setSelectedItem(tblGruplar.getValueAt(row, 3));
 					txtOgrenciSayisi.setText(tblGruplar.getValueAt(row, 4).toString());
-					cmbSinif.setSelectedItem(tblGruplar.getValueAt(row, 5));
-					dateBaslamaTrh.setDate(new Date((long) tblGruplar.getValueAt(row, 7)));
-					dateBitisTrh.setDate(new Date((long) tblGruplar.getValueAt(row, 8)));
+					cmbSinif.getModel().setSelectedItem(tblGruplar.getValueAt(row, 5));
+					
+					/*try {
+						SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy");
+						dateBitisTrh.setDate(sdf1.parse(tblGruplar.getValueAt(row, 8).toString()));
+						dateBaslamaTrh.setDate(sdf1.parse(tblGruplar.getValueAt(row, 7).toString()));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
+					
 					
 					
 				}

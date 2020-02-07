@@ -11,8 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.hokumus.course.project.models.base.BaseEntity;
+import com.hokumus.course.project.models.student.Student;
 import com.hokumus.course.project.models.teacher.Teacher;
 
 @Entity
@@ -28,6 +31,7 @@ public class Groups extends BaseEntity {
 	private Days Days;
 	private Date baslamaTarihi;
 	private Date bitisTarihi;
+	
 
 	@Id
 	@SequenceGenerator(name = "seq_group", allocationSize = 1, sequenceName = "seq_group")
@@ -99,6 +103,7 @@ public class Groups extends BaseEntity {
 	}
 
 	@Column(name = "start_date")
+	@Temporal(TemporalType.DATE)
 	public Date getBaslamaTarihi() {
 		return baslamaTarihi;
 	}
@@ -108,6 +113,7 @@ public class Groups extends BaseEntity {
 	}
 
 	@Column(name = "end_date")
+	@Temporal(TemporalType.DATE)
 	public Date getBitisTarihi() {
 		return bitisTarihi;
 	}
@@ -115,6 +121,7 @@ public class Groups extends BaseEntity {
 	public void setBitisTarihi(Date bitisTarihi) {
 		this.bitisTarihi = bitisTarihi;
 	}
+	
 
 	@Override
 	public String toString() {
