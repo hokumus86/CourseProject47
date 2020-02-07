@@ -22,7 +22,6 @@ public class Odev extends BaseEntity {
 	private Groups groups;
 	private Date bslngctarihi;
 	private Date btstarihi;
-	private Teacher ogretmen;
 	private String odev;
 	
 
@@ -58,14 +57,6 @@ public class Odev extends BaseEntity {
 	public void setBtstarihi(Date btstarihi) {
 		this.btstarihi = btstarihi;
 	}
-	@ManyToOne
-	@JoinColumn(name = "teacher_id")
-	public Teacher getOgretmen() {
-		return ogretmen;
-	}
-	public void setOgretmen(Teacher ogretmen) {
-		this.ogretmen = ogretmen;
-	}
 	@Column(name = "odev_icerigi", length = 50)
 	public String getOdev() {
 		return odev;
@@ -76,7 +67,7 @@ public class Odev extends BaseEntity {
 	@Override
 	public String toString() {
 		return "Odev [id=" + id + ", groups=" + groups + ", bslngctarihi=" + bslngctarihi + ", btstarihi=" + btstarihi
-				+ ", ogretmen=" + ogretmen + ", odev=" + odev + "]";
+				+ ", odev=" + odev + "]";
 	}
 	
 

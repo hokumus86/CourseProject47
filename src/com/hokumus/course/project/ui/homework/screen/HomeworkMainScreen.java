@@ -41,8 +41,7 @@ public class HomeworkMainScreen extends JFrame {
 	private JDateChooser dateBaslamaTrh;
 	private JLabel lblBitiTarihi;
 	private JDateChooser dateBitisTrh;
-	private JLabel lblretmen;
-	private JComboBox cmbogretmen;
+
 	private JLabel lbldevIerii;
 	private JTextField txtodev;
 	public HomeworkMainScreen() {
@@ -50,7 +49,7 @@ public class HomeworkMainScreen extends JFrame {
 	}
 
 	private void initialize() {
-		setTitle("\\u00D6dev G\\u00F6rev -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
+		setTitle("ÖDEV GÖREV -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());
 		getContentPane().setLayout(null);
 		getContentPane().add(getBtngoster());
 		getContentPane().add(getBtnolustur());
@@ -63,8 +62,7 @@ public class HomeworkMainScreen extends JFrame {
 		getContentPane().add(getDateBaslamaTrh());
 		getContentPane().add(getLblBitiTarihi());
 		getContentPane().add(getDateBitisTrh());
-		getContentPane().add(getLblretmen());
-		getContentPane().add(getCmbogretmen());
+	
 		getContentPane().add(getLbldevIerii());
 		getContentPane().add(getTxtodev());
 		setBounds(350, 70, 600, 400);
@@ -130,8 +128,7 @@ public class HomeworkMainScreen extends JFrame {
 			data[i][1]=odev_listesi.get(i).getGroups().getAdi().toString();
 			data[i][2]=odev_listesi.get(i).getBslngctarihi().toString();
 			data[i][3]=odev_listesi.get(i).getBtstarihi().toString();
-			data[i][4]=odev_listesi.get(i).getOgretmen().getAd().toString();
-			data[i][5]=odev_listesi.get(i).getOdev().toString();
+			data[i][4]=odev_listesi.get(i).getOdev().toString();
 			
 			
 		}
@@ -198,8 +195,7 @@ public class HomeworkMainScreen extends JFrame {
 					cmbgrup.setSelectedItem(tableodevler.getValueAt(row, 1).toString());
 					dateBaslamaTrh.setDateFormatString(tableodevler.getValueAt(row, 2).toString());
 					dateBitisTrh.setDateFormatString(tableodevler.getValueAt(row, 3).toString());
-					cmbogretmen.setSelectedItem(tableodevler.getValueAt(row, 4).toString());
-					txtodev.setText(tableodevler.getValueAt(row, 5).toString());
+					txtodev.setText(tableodevler.getValueAt(row, 4).toString());
 		
 				//	selectedeItemId = Long.valueOf(tblKurslar.getValueAt(row, 0).toString());
 					
@@ -249,7 +245,7 @@ public class HomeworkMainScreen extends JFrame {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 						String gun = sdf.format(dateBaslamaTrh.getDate());
-						JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
+				//		JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
 
 					}
 
@@ -285,7 +281,7 @@ public class HomeworkMainScreen extends JFrame {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 						String gun = sdf.format(dateBitisTrh.getDate());
-						JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
+					//	JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
 
 					}
 
@@ -304,20 +300,7 @@ public class HomeworkMainScreen extends JFrame {
 		}
 		return dateBitisTrh;
 	}
-	private JLabel getLblretmen() {
-		if (lblretmen == null) {
-			lblretmen = new JLabel("\u00D6\u011Fretmen :");
-			lblretmen.setBounds(23, 98, 89, 14);
-		}
-		return lblretmen;
-	}
-	private JComboBox getCmbogretmen() {
-		if (cmbogretmen == null) {
-			cmbogretmen = new JComboBox();
-			cmbogretmen.setBounds(143, 95, 96, 20);
-		}
-		return cmbogretmen;
-	}
+
 	private JLabel getLbldevIerii() {
 		if (lbldevIerii == null) {
 			lbldevIerii = new JLabel("\u00D6dev \u0130\u00E7eri\u011Fi :");
