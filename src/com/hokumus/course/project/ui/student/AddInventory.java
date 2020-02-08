@@ -245,8 +245,8 @@ public class AddInventory extends JFrame {
 			mnýtmKullancGncelle = new JMenuItem("Kullan\u0131c\u0131 G\u00FCncelle");
 			mnýtmKullancGncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddInventory addInventory=new AddInventory();
-					addInventory.setVisible(true);
+					ActionInventory actionInventory=new ActionInventory();
+					actionInventory.setVisible(true);
 					dispose();
 				}
 			});

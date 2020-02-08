@@ -252,8 +252,8 @@ public class AddStudent extends JFrame {
 			mnýtmGüncelle = new JMenuItem("\u00D6\u011Frenci G\u00FCncelle");
 			mnýtmGüncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddStudent addstudent=new AddStudent();
-					addstudent.setVisible(true);
+					ActionStudent actionstudent=new ActionStudent();
+					actionstudent.setVisible(true);
 					dispose();
 				}
 			});

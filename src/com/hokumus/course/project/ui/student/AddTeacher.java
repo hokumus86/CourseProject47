@@ -266,8 +266,8 @@ public class AddTeacher extends JFrame {
 			mnýtmNewMenuItem = new JMenuItem("G\u00FCncelle");
 			mnýtmNewMenuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddTeacher addteacher = new AddTeacher();
-					addteacher.setVisible(true);
+					ActionTeacher actionteacher = new ActionTeacher();
+					actionteacher.setVisible(true);
 					dispose();
 				}
 			});
