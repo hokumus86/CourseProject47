@@ -21,7 +21,7 @@ public class MainScreen extends JFrame{
 	public MainScreen() {
 		
 		initialize();
-	}
+	} 
 
 	private void initialize() {
 		setTitle("Tan\u0131mlama Mod\u00FCl\u00FC -"+CourseUtils.loginedUser.getUserName()+" - "+CourseUtils.loginedUser.getRole());

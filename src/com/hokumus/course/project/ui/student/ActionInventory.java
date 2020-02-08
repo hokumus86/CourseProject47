@@ -22,7 +22,6 @@ import com.hokumus.course.project.utils.dao.InventoryDAO;
 @SuppressWarnings("serial") 
 public class ActionInventory extends JFrame {
 
-
 	private JTable table;
 	private JTextField txtTanim;
 	private JTextField txtgrntiSüresi;

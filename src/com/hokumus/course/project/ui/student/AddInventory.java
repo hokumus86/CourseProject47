@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class AddInventory extends JFrame {
-  
 
 	private JLabel lblTanim;  
 	private JTextField txtTanim;

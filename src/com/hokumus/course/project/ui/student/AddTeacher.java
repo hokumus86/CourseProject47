@@ -23,7 +23,7 @@ import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class AddTeacher extends JFrame {
-
+ 
 	private JLabel lblAdi;
 	private JTextField txtAdi;
 	private JLabel lblSoyadi;

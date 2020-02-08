@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
 @SuppressWarnings("serial")
 public class ActionTeacher extends JFrame {
  
-
 	private JTable table; 
 	private JTextField txtEmail;
 	private JTextField txtAdi;
