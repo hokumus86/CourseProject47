@@ -21,7 +21,10 @@ import com.hokumus.course.project.models.student.Student;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
-@SuppressWarnings("serial")
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
 public class AddStudent extends JFrame {
   
 	
@@ -41,8 +44,9 @@ public class AddStudent extends JFrame {
 	private JButton btnIptal;
 	private JLabel lblMesaj;
 	private Long selectedItemId;
-	
-	
+	private JMenuBar menuBar;
+	private JMenu mnGüncelle;
+	private JMenuItem mnýtmGüncelle;
 
 	public AddStudent() {
 		
@@ -53,7 +57,7 @@ public class AddStudent extends JFrame {
 		
 		setTitle("KAYIT " + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getRole());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(300, 300, 550, 330);
+		setBounds(100, 100, 550, 330);
 		setBackground(Color.BLACK);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblAdi());
@@ -71,11 +75,8 @@ public class AddStudent extends JFrame {
 		getContentPane().add(getBtnKayit());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
+		getContentPane().add(getMenuBar_1());
 	
-		
-		
-		
-
 	}
 	private JLabel getLblAdi() {
 		if (lblAdi == null) {
@@ -118,7 +119,6 @@ public class AddStudent extends JFrame {
 					if (dateKayýtTarihi.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						String gun = sdf.format(dateKayýtTarihi.getDate());
-						JOptionPane.showMessageDialog(AddStudent.this, gun);
 					}
 				}
 			});
@@ -232,5 +232,33 @@ public class AddStudent extends JFrame {
 			lblMesaj.setBounds(10, 261, 514, 23);
 		}
 		return lblMesaj;
+	}
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.setBounds(0, 0, 534, 22);
+			menuBar.add(getMnGüncelle());
+		}
+		return menuBar;
+	}
+	private JMenu getMnGüncelle() {
+		if (mnGüncelle == null) {
+			mnGüncelle = new JMenu("Yeni");
+			mnGüncelle.add(getMnýtmGüncelle());
+		}
+		return mnGüncelle;
+	}
+	private JMenuItem getMnýtmGüncelle() {
+		if (mnýtmGüncelle == null) {
+			mnýtmGüncelle = new JMenuItem("\u00D6\u011Frenci G\u00FCncelle");
+			mnýtmGüncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddStudent addstudent=new AddStudent();
+					addstudent.setVisible(true);
+					dispose();
+				}
+			});
+		}
+		return mnýtmGüncelle;
 	}
 }

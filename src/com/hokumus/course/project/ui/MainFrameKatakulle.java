@@ -2,6 +2,7 @@ package com.hokumus.course.project.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
 
 import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.ui.accounting.MainScreenAccounting;
@@ -30,12 +31,12 @@ public class MainFrameKatakulle extends JFrame {
 	private JButton button_5;
 	private JButton btnMuhasebeMod2;
 	private JButton button_7;
-	
 	private boolean closingOpr=false;
 
 	public MainFrameKatakulle() {
 		
 		initialize();
+	
 	}
 
 	private void initialize() {
@@ -52,7 +53,8 @@ public class MainFrameKatakulle extends JFrame {
 		getContentPane().add(getButton_5());
 		getContentPane().add(getBtnMuhasebeMod2());
 		getContentPane().add(getButton_7());
-		setSize(857, 610);
+		setBounds(100, 100, 860, 600);
+		
 		switch (CourseUtils.loginedUser.getRole()) {
 		case ADMIN:
 

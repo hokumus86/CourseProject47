@@ -18,5 +18,4 @@ public class Runner {
 
 		new LoginFrame().setVisible(true);
 	}
-
 }

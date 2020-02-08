@@ -42,7 +42,6 @@ public class LoginFrame extends JFrame{
 				CourseUtils.loginedUser = temp;
 				new MainFrameKatakulle().setVisible(true);
 				dispose();
-				
 			}
 		});
 		

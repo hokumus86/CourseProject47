@@ -2,7 +2,6 @@ package com.hokumus.course.project.ui.student;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
@@ -12,13 +11,16 @@ import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-
 import javax.swing.JButton;
 import com.hokumus.course.project.models.inventory.Inventory;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.InventoryDAO;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class AddInventory extends JFrame {
@@ -38,6 +40,9 @@ public class AddInventory extends JFrame {
 	private JLabel lblExpenses;
 	private JTextField txtExpenses;
 	private Long selectedItemId;
+	private JMenuBar menuBar;
+	private JMenu mnKullaniciGüncelle;
+	private JMenuItem mnýtmKullancGncelle;
 	
 
 	public AddInventory() {
@@ -49,7 +54,7 @@ public class AddInventory extends JFrame {
 		
 		setTitle("KAYIT " + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getRole());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(300, 300, 655, 359);
+		setBounds(100, 100, 650, 360);
 		setBackground(Color.BLACK);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblTanim());
@@ -65,10 +70,8 @@ public class AddInventory extends JFrame {
 		getContentPane().add(getDateBitisTrh());
 		getContentPane().add(getLblExpenses());
 		getContentPane().add(getTxtExpenses());
+		getContentPane().add(getMenuBar_1());
 		
-		
-		
-
 	}
 	private JLabel getLblTanim() {
 		if (lblTanim == null) {
@@ -94,21 +97,15 @@ public class AddInventory extends JFrame {
 						public void propertyChange(PropertyChangeEvent evt) {
 							if (dateBaslamaTrh.getDate() != null) {
 								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
 								String gun = sdf.format(dateBaslamaTrh.getDate());
-								JOptionPane.showMessageDialog(AddInventory.this, gun);
-
 							}
-
 						}
 					});
 					dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
 						public void caretPositionChanged(InputMethodEvent event) {
 						}
-
 						public void inputMethodTextChanged(InputMethodEvent event) {
 							dateBaslamaTrh.setDateFormatString("dd/MM/yyyy");
-							JOptionPane.showMessageDialog(AddInventory.this, dateBaslamaTrh.getDateFormatString());
 						}
 					});
 			dateBaslamaTrh.setBounds(470, 55, 130, 20);
@@ -148,11 +145,9 @@ public class AddInventory extends JFrame {
 					Inventory ýnventory = new Inventory();
 					ýnventory.setId(selectedItemId);
 					ýnventory.setTanim(txtTanim.getText());
-				    ýnventory.setExpenses(txtExpenses.getText());
-				    
+				    ýnventory.setExpenses(new BigDecimal(txtExpenses.getText())); 
 					if (Inventorydao.save(ýnventory)) {
 						lblMesaj.setText("Baþarýlý..!");
-						
 					} else
 						lblMesaj.setText("Baþarýsýz..!");
 				}
@@ -198,21 +193,15 @@ public class AddInventory extends JFrame {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (dateBitisTrh.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
 						String gun = sdf.format(dateBitisTrh.getDate());
-						JOptionPane.showMessageDialog(AddInventory.this, gun);
-
 					}
-
 				}
 			});
 			dateBaslamaTrh.addInputMethodListener(new InputMethodListener() {
 				public void caretPositionChanged(InputMethodEvent event) {
 				}
-
 				public void inputMethodTextChanged(InputMethodEvent event) {
 					dateBitisTrh.setDateFormatString("dd/MM/yyyy");
-					JOptionPane.showMessageDialog(AddInventory.this, dateBitisTrh.getDateFormatString());
 				}
 			});
 			dateBitisTrh.setBounds(470, 129, 130, 20);
@@ -234,5 +223,33 @@ public class AddInventory extends JFrame {
 			txtExpenses.setBounds(137, 187, 158, 20);
 		}
 		return txtExpenses;
+	}
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.setBounds(0, 0, 639, 22);
+			menuBar.add(getMnKullaniciGüncelle());
+		}
+		return menuBar;
+	}
+	private JMenu getMnKullaniciGüncelle() {
+		if (mnKullaniciGüncelle == null) {
+			mnKullaniciGüncelle = new JMenu("Yeni");
+			mnKullaniciGüncelle.add(getMnýtmKullancGncelle());
+		}
+		return mnKullaniciGüncelle;
+	}
+	private JMenuItem getMnýtmKullancGncelle() {
+		if (mnýtmKullancGncelle == null) {
+			mnýtmKullancGncelle = new JMenuItem("Kullan\u0131c\u0131 G\u00FCncelle");
+			mnýtmKullancGncelle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddInventory addInventory=new AddInventory();
+					addInventory.setVisible(true);
+					dispose();
+				}
+			});
+		}
+		return mnýtmKullancGncelle;
 	}
 }

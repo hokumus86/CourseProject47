@@ -23,13 +23,9 @@ public class Inventory {
     private BigDecimal garanti;
     private Date garantiBaslamaTarihi;
     private Date garantiBitisTarihi;
-    private String expenses;
+    private BigDecimal expenses;
     private String Kullaným;
 
-   
-	
-
-	
 
 	@Id
     @SequenceGenerator(name = "seq_inventory", allocationSize = 1, sequenceName = "seq_inventory")
@@ -87,17 +83,16 @@ public class Inventory {
 		Kullaným = kullaným;
 	}
 
-    @ManyToOne
-    @JoinColumn(name = "exspense_id")
-    public String getExpenses() {
+   @ManyToOne
+    @JoinColumn(name = "expense_id")
+    public BigDecimal getExpenses() {
 		return expenses;
 	}
 
-	public void setExpenses(String expenses) {
+	public void setExpenses(BigDecimal expenses) {
 		this.expenses = expenses;
 	}
   
-
     @Override
     public String toString() {
         return  "tanimi = "+tanim+ " id = "+id;
