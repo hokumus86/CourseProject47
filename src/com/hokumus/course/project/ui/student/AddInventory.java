@@ -141,11 +141,11 @@ public class AddInventory extends JFrame {
 			btnKayit.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					InventoryDAO Inventorydao = new InventoryDAO();
-					Inventory ýnventory = new Inventory();
-					ýnventory.setId(selectedItemId);
-					ýnventory.setTanim(txtTanim.getText());
-				    ýnventory.setExpenses(new BigDecimal(txtExpenses.getText())); 
-					if (Inventorydao.save(ýnventory)) {
+					Inventory inventory = new Inventory();
+					inventory.setId(selectedItemId);
+					inventory.setTanim(txtTanim.getText());
+				    inventory.setExpenses(new BigDecimal(txtExpenses.getText())); 
+					if (Inventorydao.save(inventory)) {
 						lblMesaj.setText("Baþarýlý..!");
 					} else
 						lblMesaj.setText("Baþarýsýz..!");
