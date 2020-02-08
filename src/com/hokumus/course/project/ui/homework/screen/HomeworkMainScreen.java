@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -41,6 +42,8 @@ public class HomeworkMainScreen extends JFrame {
 	private JDateChooser dateBaslamaTrh;
 	private JLabel lblBitiTarihi;
 	private JDateChooser dateBitisTrh;
+	private String odevbaslama;
+	private String odevbitis;
 
 	private JLabel lbldevIerii;
 	private JTextField txtodev;
@@ -71,6 +74,7 @@ public class HomeworkMainScreen extends JFrame {
 		List<Groups> gruplar=dao.getAllRows(new Groups());
 		DefaultComboBoxModel model = new DefaultComboBoxModel(gruplar.toArray());		
 		cmbgrup.setModel(model);
+		getContentPane().add(getTxtmsj());
 		switch (CourseUtils.loginedUser.getRole()) {
 		case ADMIN:
 			
@@ -110,6 +114,7 @@ public class HomeworkMainScreen extends JFrame {
 		}
 	}
 	DefaultTableModel model=new DefaultTableModel();
+	private JLabel txtmsj;
 	public void odevTablosuGoster() {
 		
 		
@@ -153,7 +158,19 @@ public class HomeworkMainScreen extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					DbServicessBase<Odev> dao=new DbServicessBase<Odev>();
 					Odev temp=new Odev();
-					//temp.setGroups(cmbgrup.getSelectedItem().toString());
+					temp.setGroups((Groups) cmbgrup.getModel().getSelectedItem());
+					temp.setBslngctarihi(new Date(odevbaslama));
+					temp.setBtstarihi(new Date(odevbitis));
+					temp.setOdev(String.valueOf(txtodev.getText()));
+					
+					if (dao.save(temp)) {
+						txtmsj.setText("Baþarýlý!!!");
+						odevTablosuGoster();
+						
+					}
+					else{
+						txtmsj.setText("Baþarýsýz!!");
+					}
 					
 				}
 			});
@@ -244,7 +261,7 @@ public class HomeworkMainScreen extends JFrame {
 					if (dateBaslamaTrh.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-						String gun = sdf.format(dateBaslamaTrh.getDate());
+						odevbaslama = sdf.format(dateBaslamaTrh.getDate());
 				//		JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
 
 					}
@@ -280,7 +297,7 @@ public class HomeworkMainScreen extends JFrame {
 					if (dateBitisTrh.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-						String gun = sdf.format(dateBitisTrh.getDate());
+						odevbitis = sdf.format(dateBitisTrh.getDate());
 					//	JOptionPane.showMessageDialog(HomeworkMainScreen.this, gun);
 
 					}
@@ -304,16 +321,23 @@ public class HomeworkMainScreen extends JFrame {
 	private JLabel getLbldevIerii() {
 		if (lbldevIerii == null) {
 			lbldevIerii = new JLabel("\u00D6dev \u0130\u00E7eri\u011Fi :");
-			lbldevIerii.setBounds(23, 122, 89, 14);
+			lbldevIerii.setBounds(23, 98, 89, 14);
 		}
 		return lbldevIerii;
 	}
 	private JTextField getTxtodev() {
 		if (txtodev == null) {
 			txtodev = new JTextField();
-			txtodev.setBounds(143, 119, 134, 20);
+			txtodev.setBounds(143, 102, 289, 37);
 			txtodev.setColumns(10);
 		}
 		return txtodev;
+	}
+	private JLabel getTxtmsj() {
+		if (txtmsj == null) {
+			txtmsj = new JLabel("");
+			txtmsj.setBounds(10, 122, 123, 14);
+		}
+		return txtmsj;
 	}
 }
