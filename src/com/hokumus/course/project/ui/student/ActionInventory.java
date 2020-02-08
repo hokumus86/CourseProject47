@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import com.hokumus.course.project.models.inventory.Inventory;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.InventoryDAO;
-
+ 
 @SuppressWarnings("serial") 
 public class ActionInventory extends JFrame {
 

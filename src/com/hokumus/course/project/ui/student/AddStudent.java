@@ -26,7 +26,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 public class AddStudent extends JFrame {
-  
+   
 	private JLabel lblAdi;
 	private JTextField txtAdi; 
 	private JLabel lblSoyadi;

@@ -21,7 +21,7 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
+ 
 @SuppressWarnings("serial")
 public class AddInventory extends JFrame {
 

@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+ 
 @SuppressWarnings("serial")
 public class ActionStudent extends JFrame {
  

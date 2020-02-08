@@ -11,7 +11,7 @@ import com.hokumus.course.project.ui.LoginFrame;
 import com.hokumus.course.project.ui.MainFrameKatakulle;
 import com.hokumus.course.project.utils.CourseUtils;
 import javax.swing.JButton;
-  
+   
 @SuppressWarnings("serial")
 public class MainScreen extends JFrame{
 	private JButton btnOgrenci;
