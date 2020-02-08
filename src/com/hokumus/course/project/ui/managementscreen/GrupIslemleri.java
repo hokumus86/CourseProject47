@@ -173,6 +173,14 @@ public class GrupIslemleri extends JFrame{
 		
 		
 	}
+		public void cast(String s,int row1,int row) {
+			 s = (String)tblGruplar.getValueAt(row, row1);
+			String[] s1 = s.split("-");
+			Courses c = new Courses();
+			c.setId(Long.parseLong(s1[0]));
+			c.setAdi(s1[1]);
+			
+		}
 	public  Days gunSecimi() {
 		Days gun=new Days();
 
@@ -621,9 +629,23 @@ public class GrupIslemleri extends JFrame{
 					
 					cmbKursAdi.getModel().setSelectedItem(c);
 					txtGrupAdi.setText(tblGruplar.getValueAt(row, 2).toString());
-					cmbOgretmen.getModel().setSelectedItem(tblGruplar.getValueAt(row, 3));
+					
+					String  t = (String)tblGruplar.getValueAt(row, 3);
+					String[] t1 = t.split("-");
+					Teacher te = new Teacher();
+					te.setId(Long.parseLong(t1[0]));
+					te.setAd(t1[1]);
+					te.setSoyad(t1[2]);
+					cmbOgretmen.getModel().setSelectedItem(te);
 					txtOgrenciSayisi.setText(tblGruplar.getValueAt(row, 4).toString());
-					cmbSinif.getModel().setSelectedItem(tblGruplar.getValueAt(row, 5));
+					
+					String  l= (String)tblGruplar.getValueAt(row, 5);
+					String[] l1 = t.split("-");
+					LessonClass  le = new LessonClass();
+					te.setId(Long.parseLong(l1[0]));
+					te.setAd(l1[1]);
+
+					cmbSinif.getModel().setSelectedItem(le);
 					
 					/*try {
 						SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy");

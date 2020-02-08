@@ -59,7 +59,7 @@ public class LessonClass extends BaseEntity{
     
     @Override
     public String toString() {
-    	return "" + adi;
+    	return id+"-" + adi;
     }
 
 }
