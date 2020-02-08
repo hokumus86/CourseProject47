@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import com.hokumus.course.project.models.CourseUsers;
 import com.hokumus.course.project.models.GenderEnums;
-import com.hokumus.course.project.models.UserRoleTypes;
 import com.hokumus.course.project.models.base.BaseEntity;
 import com.hokumus.course.project.models.management.Groups;
 
@@ -134,7 +133,7 @@ public class Student extends BaseEntity{
 
 	@Override
     public String toString() {
-        return  "adi = "+ad+ " soyadý = "+soyad+ " id = "+id;
+        return  "adi = "+ad+ " soyadi = "+soyad+ " id = "+id;
     }
     
 

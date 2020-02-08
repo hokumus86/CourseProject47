@@ -613,7 +613,13 @@ public class GrupIslemleri extends JFrame{
 					int row=tblGruplar.getSelectedRow();
 					
 					selectedItemId = Long.valueOf(tblGruplar.getValueAt(row, 0).toString());
-					cmbKursAdi.getModel().setSelectedItem(tblGruplar.getValueAt(row, 1));
+					String  s = (String)tblGruplar.getValueAt(row, 1);
+					String[] s1 = s.split("-");
+					Courses c = new Courses();
+					c.setId(Long.parseLong(s1[0]));
+					c.setAdi(s1[1]);
+					
+					cmbKursAdi.getModel().setSelectedItem(c);
 					txtGrupAdi.setText(tblGruplar.getValueAt(row, 2).toString());
 					cmbOgretmen.getModel().setSelectedItem(tblGruplar.getValueAt(row, 3));
 					txtOgrenciSayisi.setText(tblGruplar.getValueAt(row, 4).toString());
