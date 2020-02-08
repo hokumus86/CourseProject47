@@ -22,10 +22,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+ 
 @SuppressWarnings("serial")
 public class ActionStudent extends JFrame {
-
+ 
 	private JTable table;
 	private JTextField txtEmail;
 	private JTextField txtAdi;
@@ -85,6 +85,10 @@ public class ActionStudent extends JFrame {
 		txtAdi.setBounds(64, 24, 192, 20);
 		txtAdi.setColumns(10);
 		getContentPane().add(txtAdi);
+		
+		lblMesaj = new JLabel("");
+		lblMesaj.setBounds(10, 386, 573, 23);
+		getContentPane().add(lblMesaj);
 
 		JLabel lblSoyadi = new JLabel("Soyad\u0131");
 		lblSoyadi.setFont(new Font("Arial", Font.BOLD, 12));
@@ -116,9 +120,7 @@ public class ActionStudent extends JFrame {
 		getContentPane().add(btnGuncelle);
 		btnGuncelle.setFont(new Font("Arial", Font.BOLD, 14));
 
-		lblMesaj = new JLabel("");
-		lblMesaj.setBounds(10, 397, 573, 23);
-		getContentPane().add(lblMesaj);
+	
 		
 		JButton btnSil = new JButton("Sil");
 		btnSil.addActionListener(new ActionListener() {
@@ -141,8 +143,6 @@ public class ActionStudent extends JFrame {
 		btnSil.setFont(new Font("Arial", Font.BOLD, 14));
 		btnSil.setBounds(330, 113, 110, 23);
 		getContentPane().add(btnSil);
-
-		
 
 		JLabel lblTelNo = new JLabel("Tel No");
 		lblTelNo.setFont(new Font("Arial", Font.BOLD, 12));

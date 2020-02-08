@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.hokumus.course.project.models.accounting.Expenses;
+
 
 @Entity
 @Table(name = "inventory")
@@ -23,13 +25,9 @@ public class Inventory {
     private BigDecimal garanti;
     private Date garantiBaslamaTarihi;
     private Date garantiBitisTarihi;
-    private String expenses;
+    private Expenses expenses;
     private String Kullaným;
 
-   
-	
-
-	
 
 	@Id
     @SequenceGenerator(name = "seq_inventory", allocationSize = 1, sequenceName = "seq_inventory")
@@ -87,17 +85,16 @@ public class Inventory {
 		Kullaným = kullaným;
 	}
 
-    @ManyToOne
-    @JoinColumn(name = "exspense_id")
-    public String getExpenses() {
+   @ManyToOne
+    @JoinColumn(name = "expense_id")
+    public Expenses getExpenses() {
 		return expenses;
 	}
 
-	public void setExpenses(String expenses) {
+	public void setExpenses(Expenses expenses) {
 		this.expenses = expenses;
 	}
   
-
     @Override
     public String toString() {
         return  "tanimi = "+tanim+ " id = "+id;

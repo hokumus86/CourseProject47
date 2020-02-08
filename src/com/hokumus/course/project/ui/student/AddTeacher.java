@@ -17,12 +17,14 @@ import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.TeacherDAO;
 import com.toedter.calendar.JDateChooser;
-
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+ 
 @SuppressWarnings("serial")
 public class AddTeacher extends JFrame {
-	
-
-	private JLabel lblAdi; 
+ 
+	private JLabel lblAdi;
 	private JTextField txtAdi;
 	private JLabel lblSoyadi;
 	private JTextField txtSoyadi;
@@ -38,18 +40,19 @@ public class AddTeacher extends JFrame {
 	private JButton btnIptal;
 	private JLabel lblMesaj;
 	private Long selectedItemId;
-	
+	private JMenuBar menuBar;
+	private JMenu mnGüncelle;
+	private JMenuItem mnýtmNewMenuItem;
 
 	public AddTeacher() {
-		
+
 		initialize();
 	}
-
 	private void initialize() {
-		
+
 		setTitle("KAYIT " + CourseUtils.loginedUser.getUserName() + " - " + CourseUtils.loginedUser.getRole());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(300, 300, 550, 330);
+		setBounds(100, 100, 550, 330);
 		setBackground(Color.BLACK);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblAdi());
@@ -67,6 +70,7 @@ public class AddTeacher extends JFrame {
 		getContentPane().add(getBtnKayit());
 		getContentPane().add(getBtnIptal());
 		getContentPane().add(getLblMesaj());
+		getContentPane().add(getMenuBar_1());
 
 	}
 	private JLabel getLblAdi() {
@@ -77,6 +81,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblAdi;
 	}
+
 	private JTextField getTxtAdi() {
 		if (txtAdi == null) {
 			txtAdi = new JTextField();
@@ -85,6 +90,7 @@ public class AddTeacher extends JFrame {
 		}
 		return txtAdi;
 	}
+
 	private JLabel getLblSoyadi() {
 		if (lblSoyadi == null) {
 			lblSoyadi = new JLabel("Soyad\u0131");
@@ -93,6 +99,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblSoyadi;
 	}
+
 	private JTextField getTxtSoyadi() {
 		if (txtSoyadi == null) {
 			txtSoyadi = new JTextField();
@@ -101,6 +108,7 @@ public class AddTeacher extends JFrame {
 		}
 		return txtSoyadi;
 	}
+
 	private JDateChooser getDateKayýtTarihi() {
 		if (dateKayýtTarihi == null) {
 			dateKayýtTarihi = new JDateChooser();
@@ -109,7 +117,6 @@ public class AddTeacher extends JFrame {
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (dateKayýtTarihi.getDate() != null) {
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-						@SuppressWarnings("unused")
 						String gun = sdf.format(dateKayýtTarihi.getDate());
 					}
 				}
@@ -120,13 +127,13 @@ public class AddTeacher extends JFrame {
 
 				public void inputMethodTextChanged(InputMethodEvent event) {
 					dateKayýtTarihi.setDateFormatString("dd/MM/yyyy");
-					
 				}
 			});
 			dateKayýtTarihi.setBounds(346, 90, 144, 22);
 		}
 		return dateKayýtTarihi;
 	}
+
 	private JLabel getLblKayitTarihi() {
 		if (lblKayitTarihi == null) {
 			lblKayitTarihi = new JLabel("Kay\u0131t Tarihi");
@@ -135,6 +142,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblKayitTarihi;
 	}
+
 	private JTextField getTxtTelNo() {
 		if (txtTelNo == null) {
 			txtTelNo = new JTextField();
@@ -143,6 +151,7 @@ public class AddTeacher extends JFrame {
 		}
 		return txtTelNo;
 	}
+
 	private JLabel getLblTelNo() {
 		if (lblTelNo == null) {
 			lblTelNo = new JLabel("Telefon No");
@@ -151,6 +160,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblTelNo;
 	}
+
 	private JLabel getLblAdres() {
 		if (lblAdres == null) {
 			lblAdres = new JLabel("Adres");
@@ -159,6 +169,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblAdres;
 	}
+
 	private JTextField getTxtAdres() {
 		if (txtAdres == null) {
 			txtAdres = new JTextField();
@@ -167,6 +178,7 @@ public class AddTeacher extends JFrame {
 		}
 		return txtAdres;
 	}
+
 	private JLabel getLblEmail() {
 		if (lblEmail == null) {
 			lblEmail = new JLabel("Email");
@@ -175,6 +187,7 @@ public class AddTeacher extends JFrame {
 		}
 		return lblEmail;
 	}
+
 	private JTextField getTxtEmail() {
 		if (txtEmail == null) {
 			txtEmail = new JTextField();
@@ -183,6 +196,7 @@ public class AddTeacher extends JFrame {
 		}
 		return txtEmail;
 	}
+
 	private JButton getBtnKayit() {
 		if (btnKayit == null) {
 			btnKayit = new JButton("Kaydet");
@@ -207,6 +221,7 @@ public class AddTeacher extends JFrame {
 		}
 		return btnKayit;
 	}
+
 	private JButton getBtnIptal() {
 		if (btnIptal == null) {
 			btnIptal = new JButton("\u0130ptal");
@@ -220,11 +235,43 @@ public class AddTeacher extends JFrame {
 		}
 		return btnIptal;
 	}
+
 	private JLabel getLblMesaj() {
 		if (lblMesaj == null) {
 			lblMesaj = new JLabel("");
 			lblMesaj.setBounds(10, 261, 514, 23);
 		}
 		return lblMesaj;
+	}
+
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.setBounds(0, 0, 534, 22);
+			menuBar.add(getMnGüncelle());
+		}
+		return menuBar;
+	}
+
+	private JMenu getMnGüncelle() {
+		if (mnGüncelle == null) {
+			mnGüncelle = new JMenu("Yeni");
+			mnGüncelle.add(getMnýtmNewMenuItem());
+		}
+		return mnGüncelle;
+	}
+
+	private JMenuItem getMnýtmNewMenuItem() {
+		if (mnýtmNewMenuItem == null) {
+			mnýtmNewMenuItem = new JMenuItem("G\u00FCncelle");
+			mnýtmNewMenuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddTeacher addteacher = new AddTeacher();
+					addteacher.setVisible(true);
+					dispose();
+				}
+			});
+		}
+		return mnýtmNewMenuItem;
 	}
 }

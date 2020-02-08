@@ -25,7 +25,7 @@ public class IronHead {
     private Date tarih;
     private Inventory Iventory;
     private Employee Employee;
-    private String Teacher;
+    private Teacher Teacher;
     private BigDecimal Zaman;
 
   
@@ -90,11 +90,11 @@ public class IronHead {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    public String getTeacher() {
+    public Teacher getTeacher() {
         return Teacher;
     }
 
-    public void setTeacher(String Teacher) {
+    public void setTeacher(Teacher Teacher) {
         this.Teacher = Teacher;
     }
 

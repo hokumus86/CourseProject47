@@ -16,6 +16,7 @@ import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
 
 public class LoginFrame extends JFrame{
+
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JTextField txtUserName;
@@ -42,7 +43,6 @@ public class LoginFrame extends JFrame{
 				CourseUtils.loginedUser = temp;
 				new MainFrameKatakulle().setVisible(true);
 				dispose();
-				
 			}
 		});
 		
