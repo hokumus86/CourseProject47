@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -40,6 +39,7 @@ public class IncomeScreen extends JFrame {
 	
 	
 	DbServicessBase<IncomeType> dao1 = new DbServicessBase<IncomeType>();
+	private JDateChooser dateIncome;
 	public IncomeScreen() {
 		setTitle("Muhasebe Gelir Ekraný");
 		getContentPane().setLayout(null);
@@ -68,7 +68,7 @@ public class IncomeScreen extends JFrame {
 				Incomings temp = new Incomings();
 				temp.setMiktar(Integer.parseInt(txtUcret.getText()));
 				temp.setTanim(comboBox.getSelectedItem().toString());
-				temp.setTarih(getDate().getDate());
+				temp.setTarih(dateIncome.getDate());
 				dao.save(temp);
 				Doldur();
 				
@@ -94,7 +94,7 @@ public class IncomeScreen extends JFrame {
 				temp.setId(secilenId);
 				temp.setMiktar(Integer.parseInt(txtUcret.getText()));
 				temp.setTanim(comboBox.getSelectedItem().toString());
-				temp.setTarih(getDate().getDate());
+				temp.setTarih(dateIncome.getDate());
 				dao.update(temp);
 				Doldur();
 			}
@@ -136,8 +136,9 @@ public class IncomeScreen extends JFrame {
 		getContentPane().add(lblTanm);
 		
 		JLabel lblTarih = new JLabel("Tarih");
-		lblTarih.setBounds(176, 344, 136, 14);
+		lblTarih.setBounds(176, 343, 136, 14);
 		getContentPane().add(lblTarih);
+		getContentPane().add(getDateIncome());
 		
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -146,11 +147,6 @@ public class IncomeScreen extends JFrame {
 				txtUcret.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 1)));
 			}
 		});
-		
-		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(176, 369, 156, 20);
-		getContentPane().add(dateChooser);
 		
 		
 		
@@ -169,9 +165,6 @@ public class IncomeScreen extends JFrame {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.addRow(new Object[] { temp.getId(), temp.getMiktar(), temp.getTanim(), temp.getTarih() });
 
-			table.getColumnModel().getColumn(1).setPreferredWidth(100);
-			table.getColumnModel().getColumn(2).setPreferredWidth(100);
-			table.getColumnModel().getColumn(3).setPreferredWidth(100);
 		return table;
 
 	}
@@ -223,5 +216,32 @@ public class IncomeScreen extends JFrame {
 		table.setModel(model);
 
 	}
+	private JDateChooser getDateIncome() {
+		if (dateIncome == null) {
+			dateIncome = new JDateChooser();
+			dateIncome.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (dateIncome.getDate() != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+						String gun = sdf.format(dateIncome.getDate());
+						JOptionPane.showMessageDialog(IncomeScreen.this, gun);
+					}
+
+				}
+			});
+			dateIncome.addInputMethodListener(new InputMethodListener() {
+				public void caretPositionChanged(InputMethodEvent event) {
+				}
+
+				public void inputMethodTextChanged(InputMethodEvent event) {
+					dateIncome.setDateFormatString("dd/MM/yyyy");
+					JOptionPane.showMessageDialog(IncomeScreen.this, dateIncome.getDateFormatString());
+				}
+			});
+
+			dateIncome.setBounds(180, 367, 152, 22);
+		}
+		return dateIncome;
+	}
 }

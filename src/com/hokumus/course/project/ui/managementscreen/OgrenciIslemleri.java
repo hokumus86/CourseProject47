@@ -37,6 +37,7 @@ import com.hokumus.course.project.models.teacher.Teacher;
 import com.hokumus.course.project.utils.CourseUtils;
 import com.hokumus.course.project.utils.MyHBUtil;
 import com.hokumus.course.project.utils.dao.DbServicessBase;
+import com.hokumus.course.project.utils.dao.StudentDAO;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -157,7 +158,7 @@ public class OgrenciIslemleri extends JFrame{
 	
 	public void ogrenciKayitTablosuGoster() {
 	
-		DbServicessBase<Student> dao=new DbServicessBase<Student>(); 
+		StudentDAO dao=new StudentDAO(); 
 		Student temp=new Student();
 		Long groupsId=((Groups)cmbGrupSorgula.getSelectedItem()).getId();
 		System.out.println(groupsId);
@@ -165,7 +166,7 @@ public class OgrenciIslemleri extends JFrame{
 		g.setId(groupsId);
 		temp.setGroups(g);
 		
-		List<Student>  kayitlistesi=dao.search(temp);
+		List<Student>  kayitlistesi=dao.searchForGroups(temp);
 
 		String [] columnNames= {"ID","GRUP ADI","жа. ADI","жа. SOYADI","жа. TEL.NO"};
 		String [][] data=new String [kayitlistesi.size()][columnNames.length];

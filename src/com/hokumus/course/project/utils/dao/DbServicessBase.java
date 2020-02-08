@@ -91,6 +91,11 @@ public class DbServicessBase<T> implements IDbServicess<T>{
 					.equals("Integer")) {
 						cr.add(Restrictions.eq(field[i].getName(),field[i].get(temp) ));
 					}
+					if(field[i].getType().getName().substring(field[i].getType()
+							.getName().lastIndexOf('.') + 1,field[i].getType().getName().length())
+					.equals("Groups")) {
+						cr.add(Restrictions.eq(field[i].getName(),field[i].get(temp) ));
+					}
 				}
 				if(field[i].get(temp) != null &&!field[i].get(temp).equals("") ) {
 					if(field[i].getType().getName().substring(field[i].getType().getName().lastIndexOf('.') + 1)
