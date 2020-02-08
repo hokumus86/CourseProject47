@@ -162,7 +162,7 @@ public class OgrenciIslemleri extends JFrame{
 		Long groupsId=((Groups)cmbGrupSorgula.getSelectedItem()).getId();
 		System.out.println(groupsId);
 		temp.getGroups().setId(groupsId);
-		//if (temp.getGroups().getId()==groupsId) {
+		
 		List<Student>  kayitlistesi=dao.search(temp);
 
 		String [] columnNames= {"ID","GRUP ADI","жа. ADI","жа. SOYADI","жа. TEL.NO"};
@@ -181,7 +181,7 @@ public class OgrenciIslemleri extends JFrame{
 		
 		model=new DefaultTableModel(data,columnNames);
 		tblOgrenciKayitTablosu.setModel(model);
-		//}	
+		
 	}
 	public void arama(String ara) {
 		
