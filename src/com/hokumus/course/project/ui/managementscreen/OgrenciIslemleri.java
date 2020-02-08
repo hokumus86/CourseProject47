@@ -161,7 +161,9 @@ public class OgrenciIslemleri extends JFrame{
 		Student temp=new Student();
 		Long groupsId=((Groups)cmbGrupSorgula.getSelectedItem()).getId();
 		System.out.println(groupsId);
-		temp.getGroups().setId(groupsId);
+		Groups g = new Groups();
+		g.setId(groupsId);
+		temp.setGroups(g);
 		
 		List<Student>  kayitlistesi=dao.search(temp);
 
