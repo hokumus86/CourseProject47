@@ -20,7 +20,7 @@ public class Incomings extends BaseEntity{
 
     private Long id;
     private String tanim;
-    private BigDecimal miktar;
+    private int miktar;
     private Date tarih;
 //    private StudentPayments StudentPayments;
 
@@ -45,13 +45,13 @@ public class Incomings extends BaseEntity{
 	}
     
     @Column(name = "quantity",precision = 14,scale = 2)
-    public BigDecimal getMiktar() {
+    public int getMiktar() {
         return miktar;
     }
 
 	
 
-	public void setMiktar(BigDecimal miktar) {
+	public void setMiktar(int miktar) {
         this.miktar = miktar;
     }
 

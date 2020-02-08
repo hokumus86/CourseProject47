@@ -38,8 +38,6 @@ public class IncomeScreen extends JFrame {
 	private JComboBox comboBox;
 	private Long secilenId;
 	
-	DbServicessBase<Incomings> dao = new DbServicessBase<Incomings>();
-	Incomings temp = new Incomings();
 	
 	DbServicessBase<IncomeType> dao1 = new DbServicessBase<IncomeType>();
 	public IncomeScreen() {
@@ -66,7 +64,9 @@ public class IncomeScreen extends JFrame {
 		JButton btnYeniGelirEkle = new JButton("Yeni Gelir Ekle");
 		btnYeniGelirEkle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				temp.setMiktar(new BigDecimal(Integer.parseInt(txtUcret.getText())));
+				DbServicessBase<Incomings> dao = new DbServicessBase<Incomings>();
+				Incomings temp = new Incomings();
+				temp.setMiktar(Integer.parseInt(txtUcret.getText()));
 				temp.setTanim(comboBox.getSelectedItem().toString());
 				temp.setTarih(getDate().getDate());
 				dao.save(temp);
@@ -89,8 +89,10 @@ public class IncomeScreen extends JFrame {
 		JButton btnGelirGuncelle = new JButton("Gelir G\u00FCncelleme");
 		btnGelirGuncelle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DbServicessBase<Incomings> dao = new DbServicessBase<Incomings>();
+				Incomings temp = new Incomings();
 				temp.setId(secilenId);
-				temp.setMiktar(new BigDecimal(Integer.parseInt(txtUcret.getText())));
+				temp.setMiktar(Integer.parseInt(txtUcret.getText()));
 				temp.setTanim(comboBox.getSelectedItem().toString());
 				temp.setTarih(getDate().getDate());
 				dao.update(temp);
@@ -161,7 +163,8 @@ public class IncomeScreen extends JFrame {
 					new String[] { "ID", "Ücretin Miktarý", "Taným", "Tarih" }) {
 			});
 
-			
+			DbServicessBase<Incomings> dao = new DbServicessBase<Incomings>();
+			Incomings temp = new Incomings();
 
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.addRow(new Object[] { temp.getId(), temp.getMiktar(), temp.getTanim(), temp.getTarih() });
@@ -202,6 +205,8 @@ public class IncomeScreen extends JFrame {
 	}
 	
 	private void Doldur() {
+		DbServicessBase<Incomings> dao = new DbServicessBase<Incomings>();
+		Incomings temp = new Incomings();
 		IncomingsDAO incomedao = new IncomingsDAO();
 		List<Incomings> liste = incomedao.getAllRows(new Incomings());
 		String[][] data = new String[liste.size()][4];
