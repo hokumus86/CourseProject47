@@ -15,6 +15,7 @@
    		<property name="hibernate.hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
 		<property name="hibernate.show_sql">true</property> <!-- Show SQL in console -->
 		<mapping class="com.hokumus.course.project.models.CourseUsers"/>
+		<mapping class="com.hokumus.course.project.models.inventory.Inventory"/>
 		<mapping class="com.hokumus.course.project.models.student.Student"/>
 		<mapping class="com.hokumus.course.project.models.management.Courses"/>
 		<mapping class="com.hokumus.course.project.models.management.LessonClass"/>
@@ -28,11 +29,10 @@
 		<mapping class="com.hokumus.course.project.models.management.Days"/>
 		<mapping class="com.hokumus.course.project.models.management.GroupDays"/>
 		<mapping class="com.hokumus.course.project.models.accounting.Incomings"/>
-		<mapping class="com.hokumus.course.project.models.inventory.Inventory"/>
 		<mapping class="com.hokumus.course.project.models.inventory.IronHead"/>
 		<mapping class="com.hokumus.course.project.models.accounting.Expenses"/>
 		<mapping class="com.hokumus.course.project.models.humenresources.Employee"/>
-		
+		<mapping class="com.hokumus.course.project.models.homeworks.Odev"/>
 		
 	</session-factory>
 </hibernate-configuration>

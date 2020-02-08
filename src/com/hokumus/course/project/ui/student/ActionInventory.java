@@ -102,7 +102,7 @@ public class ActionInventory extends JFrame {
 				ýnventory.setTanim(txtTanim.getText());
 				ýnventory.setExpenses(new Expenses());
 				ýnventory.setGaranti(new BigDecimal(txtFiyat.getText()));
-				ýnventory.setKullaným(txtkullanýmyeri.getText());
+				ýnventory.setKullanim(txtkullanýmyeri.getText());
 				if (ýnventorydao.update(ýnventory)) {
 					lblMesaj.setText("Baþarýlý..!");
 					tabloDoldur();
@@ -122,7 +122,7 @@ public class ActionInventory extends JFrame {
 				ýnventory.setTanim(txtTanim.getText());
 				ýnventory.setExpenses(new Expenses());
 				ýnventory.setGaranti(new BigDecimal(txtFiyat.getText()));
-				ýnventory.setKullaným(txtkullanýmyeri.getText());
+				ýnventory.setKullanim(txtkullanýmyeri.getText());
 				if (ýnventorydao.delete(ýnventory)) {
 					lblMesaj.setText("Baþarýlý..!");
 					tabloDoldur();
@@ -161,7 +161,7 @@ public class ActionInventory extends JFrame {
 			data[i][0] = String.valueOf(liste.get(i).getId());
 			data[i][1] = liste.get(i).getTanim();
 			data[i][2] = liste.get(i).getGaranti().toString();
-			data[i][3] = liste.get(i).getKullaným();
+			data[i][3] = liste.get(i).getKullanim();
 			data[i][4] = liste.get(i).getExpenses().toString();
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);

@@ -26,7 +26,7 @@ public class Inventory {
     private Date garantiBaslamaTarihi;
     private Date garantiBitisTarihi;
     private Expenses expenses;
-    private String Kullaným;
+    private String kullanim;
 
 
 	@Id
@@ -76,13 +76,13 @@ public class Inventory {
         this.garantiBitisTarihi = garantiBitisTarihi;
     }
     
-    @Column(name = "Place Of Use")
-    public String getKullaným() {
-		return Kullaným;
+    @Column(name = "place_of_use")
+    public String getKullanim() {
+		return this.kullanim;
 	}
 
-	public void setKullaným(String kullaným) {
-		Kullaným = kullaným;
+	public void setKullanim(String kullanim) {
+		this.kullanim = kullanim;
 	}
 
    @ManyToOne
