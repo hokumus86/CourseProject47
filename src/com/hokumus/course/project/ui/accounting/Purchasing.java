@@ -26,14 +26,14 @@ public class Purchasing extends JFrame {
 	private JTextField txtmlzm;
 	private JTextField txtfiyat;
 	private JDateChooser tarih;
-	private JScrollPane scrollPane;
-	private JTable table;
 	private JButton btnGncelle;
 	private JButton btnSil;
 	private Long selecteditemid;
 	private JLabel lblAdet;
 	private JTextField txtadet;
 	private JLabel lblEsyaMalzmadet;
+	private JScrollPane scrollPane;
+	private JTable table;
 	
 	public Purchasing() {
 		
@@ -88,7 +88,7 @@ public class Purchasing extends JFrame {
 				DbServicessBase<Purchasings> dao = new DbServicessBase<Purchasings>();
 				Purchasings kaydet = new Purchasings();
 				
-			
+				
 				kaydet.setAdet(new BigDecimal(txtadet.getText()));
 				kaydet.setMalzeme(txtmlzm.getText());
 				kaydet.setFiyat(new BigDecimal(txtfiyat.getText()));
@@ -96,6 +96,7 @@ public class Purchasing extends JFrame {
 				
 				if (dao.save(kaydet)) {
 					JOptionPane.showMessageDialog(Purchasing.this, "Kayýt Baþarýlý");
+					satinalmatablosu();
 				}
 				else {
 					JOptionPane.showMessageDialog(Purchasing.this, "Kayýt Baþarýsýz");
@@ -117,97 +118,48 @@ public class Purchasing extends JFrame {
 		JLabel lblEsyamlzmtarih = new JLabel("E\u015Fya yada Malzemenin Tarihini Giriniz.");
 		lblEsyamlzmtarih.setBounds(10, 304, 197, 14);
 		getContentPane().add(lblEsyamlzmtarih);
-		getContentPane().add(getScrollPane());
 		getContentPane().add(getBtnGncelle());
 		getContentPane().add(getBtnSil());
 		getContentPane().add(getLblAdet());
 		getContentPane().add(getTxtadet());
 		getContentPane().add(getLblEsyaMalzmadet());
+		getContentPane().add(getScrollPane_1());
 		
 	
 
 	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setBounds(207, 11, 267, 375);
-			scrollPane.setLayout(null);
-			scrollPane.setViewportView(getTable());
-			satinalmatablosu();
-		}
-		return scrollPane;
-	}
 	private void satinalmatablosu() {
 		PurchasingDao purchdao = new PurchasingDao();
 		List<Purchasings> liste = purchdao.getAllRows(new Purchasings());
+		
 		String[][] data = new String[liste.size()][5];
 		String[] columns = { "ID","MALZEME","FÝYAT","ADET","TARÝH"};
 		for (int i = 0; i < liste.size(); i++) {
-			
 			data[i][0] = String.valueOf(liste.get(i).getId());
 			data[i][1] = liste.get(i).getMalzeme();
 			data[i][2] = liste.get(i).getFiyat().toString();
 			data[i][3] = liste.get(i).getAdet().toString();
 			data[i][4] = liste.get(i).getTarih().toString();
+			
 		}
 		DefaultTableModel model = new DefaultTableModel(data, columns);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"ID", "MALZEME", "F\u0130YAT", "ADET", "TAR\u0130H"
-			}
-		));
-		getTable().getColumnModel().getColumn(1).setPreferredWidth(100);
-		getTable().getColumnModel().getColumn(2).setPreferredWidth(100);
-		getTable().getColumnModel().getColumn(3).setPreferredWidth(100);
-			
+			table.setModel(model);
 		
-	}
-	
-	private JTable getTable() {
-		if (table == null) {
-			table = new JTable();
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					
-					selecteditemid = Long.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
-					txtmlzm.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 1)));
-					txtfiyat.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 2)));
-					txtadet.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 3)));
-					
-				}
-			});
-			scrollPane.setViewportView(table);
-			satinalmatablosu();
-			table.setModel(new DefaultTableModel(new Object[][] {},
-					new String[] { "ID", "MALZEME","FÝYAT","ADET","TARÝH" }) {
-				
-			
-			
-			});
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			model.addRow(new Object[] {  });
-			return table;
-		}
-		return table;
 	}
 	private JButton getBtnGncelle() {
 		if (btnGncelle == null) {
 			btnGncelle = new JButton("G\u00FCncelle");
+			
 			btnGncelle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
 					DbServicessBase<Purchasings> purchdao = new DbServicessBase<Purchasings>();
 					Purchasings guncelle = new Purchasings();
 					
-					guncelle.setId(selecteditemid);
+					
 					guncelle.setFiyat(new BigDecimal(txtfiyat.getText()));
 					guncelle.setMalzeme(txtmlzm.getText());
-					guncelle.setTarih(tarih.getDate());
+					guncelle.setId(selecteditemid);
 					guncelle.setAdet(new BigDecimal(txtadet.getText()));
 					
 					if (purchdao.update(guncelle)) {
@@ -232,10 +184,10 @@ public class Purchasing extends JFrame {
 					Purchasings sil = new Purchasings();
 					
 					sil.setId(selecteditemid);
-					sil.setFiyat(new BigDecimal(txtfiyat.getText()));
+					sil.setFiyat(new BigDecimal(txtfiyat.getText().toString()));
 					sil.setMalzeme(txtmlzm.getText());
 					sil.setTarih(tarih.getDate());
-					sil.setAdet(new BigDecimal(txtadet.getText()));
+					
 					
 					if (purchdao.delete(sil)) {
 						JOptionPane.showMessageDialog(Purchasing.this, " baþarýlý");
@@ -270,5 +222,33 @@ public class Purchasing extends JFrame {
 			lblEsyaMalzmadet.setBounds(10, 219, 197, 21);
 		}
 		return lblEsyaMalzmadet;
+	}
+	private JScrollPane getScrollPane_1() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(207, 30, 267, 344);
+			scrollPane.setViewportView(getTable_1());
+			satinalmatablosu();
+		}
+		return scrollPane;
+	}
+	private JTable getTable_1() {
+		if (table == null) {
+			table = new JTable();
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				
+					selecteditemid = Long.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
+					txtmlzm.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 1)));
+					txtfiyat.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 2)));
+					txtadet.setText(CourseUtils.getValue(table.getValueAt(table.getSelectedRow(), 3)));
+					
+				
+				}
+				
+			});
+		}
+		return table;
 	}
 }

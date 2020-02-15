@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.transaction.Transactional.TxType;
+
 import com.hokumus.course.project.models.accounting.Bill;
 import com.hokumus.course.project.ui.student.AddStudent;
 import com.hokumus.course.project.utils.dao.BillDAO;
@@ -72,11 +75,14 @@ public class Bills extends JFrame {
 		JButton btnKaydet = new JButton("Kaydet");
 		btnKaydet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+							
 				DbServicessBase<Bill> dao = new DbServicessBase<Bill>();
+			
+						
 				Bill kaydet = new Bill();	
 				kaydet.setId(selecteditemid);
 				kaydet.setTarih(dateTarih.getDate());
-				kaydet.setFaturalar(getName().getBytes());
+				kaydet.setFaturalar(faturalar);
 				if (dao.save(kaydet)) {
 					JOptionPane.showMessageDialog(Bills.this, "kaydetme baþarýlý");
 					faturatablosu();

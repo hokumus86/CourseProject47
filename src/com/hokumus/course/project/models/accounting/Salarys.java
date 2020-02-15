@@ -15,13 +15,14 @@ import com.hokumus.course.project.models.base.BaseEntity;
 
 @Entity
 @Table(name = "salary")
-public class Salary extends BaseEntity {
+public class Salarys extends BaseEntity {
 	private Long id;
-	private String ogretmen_maas;
-	private String ogretmen_sec;
+	private BigDecimal ogretmen_maas;
+	private String ogretmen;
 	private BigDecimal personel_maas;
-	private String personel_sec;
+	private String personel;
 	private Date tarih2;
+	
 	
 	
 	@Id
@@ -34,18 +35,19 @@ public class Salary extends BaseEntity {
 		this.id = id;
 	}
 	@Column(name = "teachers_salary",length = 50)
-	public String getOgretmen_maas() {
+	public BigDecimal getOgretmen_maas() {
 		return ogretmen_maas;
 	}
-	public void setOgretmen_maas(String ogretmen_maas) {
+	public void setOgretmen_maas(BigDecimal ogretmen_maas) {
 		this.ogretmen_maas = ogretmen_maas;
 	}
 	@Column(name = "selected_teacher",length = 50)
-	public String getOgretmen_sec() {
-		return ogretmen_sec;
+	public String getOgretmen() {
+		return ogretmen;
 	}
-	public void setOgretmen_sec(String ogretmen_sec) {
-		this.ogretmen_sec = ogretmen_sec;
+	
+	public void setOgretmen(String ogretmen) {
+		this.ogretmen = ogretmen;
 	}
 	@Column(name = "employees_salary")
 	public BigDecimal getPersonel_maas() {
@@ -55,11 +57,11 @@ public class Salary extends BaseEntity {
 		this.personel_maas = personel_maas;
 	}
 	@Column(name = "selected_employee")
-	public String getPersonel_sec() {
-		return personel_sec;
+	public String getPersonel() {
+		return personel;
 	}
-	public void setPersonel_sec(String personel_sec) {
-		this.personel_sec = personel_sec;
+	public void setPersonel(String personel) {
+		this.personel = personel;
 	}
 	@Column(name = "date")
 	public Date getTarih2() {
@@ -70,9 +72,10 @@ public class Salary extends BaseEntity {
 	}
 	@Override
 	public String toString() {
-		return "Salary [id=" + id + ", ogretmen_maas=" + ogretmen_maas + ", ogretmen_sec=" + ogretmen_sec
-				+ ", personel_maas=" + personel_maas + ", personel_sec=" + personel_sec + ", tarih2=" + tarih2 + "]";
+		return "Salarys [id=" + id + ", ogretmen_maas=" + ogretmen_maas + ", ogretmen=" + ogretmen + ", personel_maas="
+				+ personel_maas + ", personel=" + personel + ", tarih2=" + tarih2 + "]";
 	}
+	
 	
 	
 	
